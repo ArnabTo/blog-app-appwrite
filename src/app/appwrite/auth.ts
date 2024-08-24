@@ -1,23 +1,31 @@
-import conf from "../../conf/conf";
-import { Client, Account, ID } from "appwrite";
+import { Client, Account, ID } from "appwrite"
+import conf from '../../conf/conf';
 
-export class AuthService {
-    client = new Client();
-    account;
+type CreateUserAccount = {
+    email: string,
+    password: string,
+    name: string,
+    avatar: string
+}
 
-    constructor() {
-        this.client
-            .setEndpoint(conf.appwriteUrl)
-            .setProject(conf.appwriteProjectId);
-        this.account = new Account(this.client);
-    }
+type LoginUserAccount = {
+    email: string,
+    password: string
+}
 
-    async register(email: string, password: string, name: string) {
+const appWriteClient = new Client();
+
+appWriteClient.setEndpoint(conf.appwriteUrl).setProject(conf.appwriteProjectId);
+
+export const account = new Account(appWriteClient);
+
+export class AuthServices {
+
+    async register({ email, password, name, avatar }: CreateUserAccount) {
         try {
-            const createAccount = await this.account.create(ID.unique(), email, password, name);
-
+            const createAccount = await account.create(ID.unique(), email, password, name);
             if (createAccount) {
-                return this.login(email, password);
+                return this.loginUser({ email, password })
             } else {
                 return createAccount
             }
@@ -26,38 +34,53 @@ export class AuthService {
             throw error
         }
     }
-    async login(email: string, password: string) {
+
+    async loginUser({ email, password }: LoginUserAccount) {
         try {
-            const loginAccount = await this.account.createEmailPasswordSession(email, password);
+            const loginUser = await account.createEmailPasswordSession(email, password);
+            if (loginUser) {
+                return loginUser
+            }
         } catch (error) {
             console.log('Login Error', error)
             throw error
         }
     }
 
-    async currentUser() {
+    async userStatus(): Promise<boolean> {
+             try {
+                const status = await this.getUser();
+                return Boolean(status);
+             } catch (error) {
+                
+             }
+        return false;
+    }
+
+    async getUser() {
         try {
-            const currentUser = await this.account.get();
-            if(currentUser) {
-                return currentUser
-            }else {
-                return null
+            const user = await account.get();
+            if (user) {
+                return user
             }
         } catch (error) {
-            console.log('Getting user', error)
+            console.log('Getting User Error', error)
             throw error
         }
     }
-    async logout() {
+
+    async logOut() {
         try {
-            const logoutAccount = await this.account.deleteSession("current");
+            const logout = await account.deleteSession("current");
         } catch (error) {
             console.log('Logout Error', error)
             throw error
         }
     }
+
 }
 
-const authService = new AuthService();
+const authServices = new AuthServices();
+export default authServices;
 
-export default authService;
+
