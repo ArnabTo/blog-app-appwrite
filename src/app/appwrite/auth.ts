@@ -29,8 +29,8 @@ export class AuthServices {
             } else {
                 return createAccount
             }
-        } catch (error) {
-            console.log('Register Error', error)
+        } catch (error: any) {
+            console.log('Register Error', error.message)
             throw error
         }
     }
