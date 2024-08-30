@@ -1,11 +1,12 @@
 import { Client, Account, ID } from "appwrite"
 import conf from '../../conf/conf';
 
+
 type CreateUserAccount = {
     email: string,
     password: string,
     name: string,
-    // avatar: string
+    avatarId: string
 }
 
 type LoginUserAccount = {
@@ -13,19 +14,17 @@ type LoginUserAccount = {
     password: string
 }
 
-const appWriteClient = new Client();
-
-appWriteClient.setEndpoint(conf.appwriteUrl).setProject(conf.appwriteProjectId);
+export const appWriteClient = new Client().setEndpoint(conf.appwriteUrl).setProject(conf.appwriteProjectId);
 
 export const account = new Account(appWriteClient);
 
 export class AuthServices {
 
-    async register({ email, password, name }: CreateUserAccount) {
+    async register({ email, password, name, avatarId }: CreateUserAccount) {
         try {
             const createAccount = await account.create(ID.unique(), email, password, name);
             if (createAccount) {
-                return this.loginUser({ email, password })
+                return this.loginUser({ email, password });
             } else {
                 return createAccount
             }
