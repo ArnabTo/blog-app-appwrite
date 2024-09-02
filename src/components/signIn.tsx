@@ -55,7 +55,7 @@ export default function SignIn() {
 
     return (
         <div className="flex flex-col items-center justify-center h-screen">
-            <div className="w-full md:w-1/2 bg-white border-2 px-10 py-5 rounded-2xl shadow-lg">
+            <div className="w-full md:w-1/3 bg-white border-2 px-10 py-5 rounded-2xl shadow-lg">
                 <div className="flex flex-col gap-3 mb-3">
                     <h1 className="text-4xl font-extrabold text-start">Sign In</h1>
                     <p className="text-lg">Login to your account</p>

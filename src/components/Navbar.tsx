@@ -3,6 +3,7 @@ import authServices from "@/app/appwrite/auth";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@nextui-org/progress";
+import { CustomButton } from "./custom/CustomButton";
 const NavigationBar = () => {
 
     type User = {
@@ -26,18 +27,19 @@ const NavigationBar = () => {
         "Log Out",
     ];
 
-    const checkUser = async () => {
-        try {
-            const user = await authServices.getUser();
-            if (user) {
-                setUser(user);
-            }
-        } catch (error) {
-            console.log(error)
-            setUser(null);
-        }
-    }
+
     useEffect(() => {
+        const checkUser = async () => {
+            try {
+                const user = await authServices.getUser();
+                if (user) {
+                    setUser(user);
+                }
+            } catch (error) {
+                console.log(error)
+                setUser(null);
+            }
+        }
         checkUser()
     }, []);
 
@@ -49,7 +51,7 @@ const NavigationBar = () => {
             console.log("Error logging out:", error);
         }
     };
-
+    console.log(user)
     return (
         <Navbar onMenuOpenChange={setIsMenuOpen}>
             <NavbarContent>
@@ -87,13 +89,13 @@ const NavigationBar = () => {
                 <NavbarItem>
                     {
                         user ?
-                            <Button onClick={handleLogout} color="secondary" variant="shadow">
-                                Sign Out
-                            </Button>
+                            <CustomButton onClick={handleLogout} color="black" size="md">
+                                Sign out
+                            </CustomButton>
                             :
-                            <Button as={Link} color="secondary" href="/sign-in" variant="shadow">
+                            <CustomButton as={Link} href="/sign-in" color="black" size="md">
                                 Sign In
-                            </Button>
+                            </CustomButton>
                     }
                 </NavbarItem>
             </NavbarContent>

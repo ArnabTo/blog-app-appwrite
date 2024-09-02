@@ -18,4 +18,7 @@ export class StorageServices {
             throw error;
         }
     }
-}
+};
+
+const storageServices = new StorageServices();
+export default storageServices;

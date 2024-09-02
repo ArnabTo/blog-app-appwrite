@@ -6,7 +6,6 @@ type CreateUserAccount = {
     email: string,
     password: string,
     name: string,
-    avatarId: string
 }
 
 type LoginUserAccount = {
@@ -20,7 +19,7 @@ export const account = new Account(appWriteClient);
 
 export class AuthServices {
 
-    async register({ email, password, name, avatarId }: CreateUserAccount) {
+    async register({ email, password, name }: CreateUserAccount) {
         try {
             const createAccount = await account.create(ID.unique(), email, password, name);
             if (createAccount) {
