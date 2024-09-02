@@ -5,13 +5,13 @@ const storage = new Storage(appWriteClient);
 
 type FileUpload = {
     file: File,
-    buckedId: string
 }
 export class StorageServices {
 
-    async uploadFile({file, buckedId}: FileUpload) {
+    async uploadFile(file: FileUpload) {
         try {
-            const uploadFIle = await storage.createFile(ID.unique(), buckedId, file);
+            console.log(file);
+            const uploadFIle = await storage.createFile("66c8cc460030b3492d9b", ID.unique(), file);
             return uploadFIle;
         } catch (error) {
             console.log('Error uploading file', error);

@@ -4,20 +4,24 @@ import { appWriteClient } from "./auth";
 type InputData = {
     name: string;
     email: string;
+    avatarId: string;
+    avatarBucketId: string;
 }
 
 const database = new Databases(appWriteClient);
 
 export class DataBaseServices {
-    async insertData({name, email}: InputData) {
+    async insertData({name, email, avatarId, avatarBucketId}: InputData) {
         try {
             const cratedDatabase = await database.createDocument(
                 '66c8c9a6000f305a13fe', 
                 '66d1fb2700069104cb81', 
-                ID.unique(), {
+                ID.unique(), 
+                {
                 name: name, 
                 email: email,
-                avatarId: ID.unique()
+                avatarId: avatarId,
+                avatarBucketId: avatarBucketId
             })
             if(cratedDatabase) {
                 return cratedDatabase

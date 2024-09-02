@@ -11,6 +11,7 @@ import dataBaseServices from "@/app/appwrite/database";
 import { ID } from "appwrite";
 import storageServices from "@/app/appwrite/storage";
 import Image from "next/image";
+import { Loader } from "lucide-react";
 
 type InputData = {
   name: string;
@@ -25,25 +26,25 @@ export default function SignUp() {
   const [emailMsg, setEmailMsg] = useState('');
   const [passMsg, setPassMsg] = useState('');
   const [nameMsg, setNameMsg] = useState('');
-  const [preview, setPreview]=useState(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
-
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { setAuthStatus } = useAuth();
   const { register, handleSubmit, formState: { errors }, watch } = useForm<InputData>();
 
   const selectedFile = watch("profileAvatar");
-  console.log(selectedFile)
+  // console.log(selectedFile)
   const handleSignUp = async (data: InputData) => {
     setErrorMsg('');
     const { name, email, password, profileAvatar } = data;
- 
+
     if (name && email && password) {
       setNameMsg('');
       setEmailMsg('');
       setPassMsg('');
       setErrorMsg('');
-      
+
       if (!/^[a-zA-Z0-9]+$/.test(name)) {
         setNameMsg('name can only contain letters and numbers');
         return;
@@ -58,40 +59,58 @@ export default function SignUp() {
       // }
     }
 
-    const file = data.profileAvatar;
 
-    // try {
-    //   const signUpuser = await authServices.register({name:name, email:email, password:password});
-    //   if (signUpuser) {
-    //     setAuthStatus(true);
-    //     const avatarId = ID.unique();
-    //     // const insertUserinDatabase = await dataBaseServices.insertData({name:name, email:email});
-    //    const uploadAvatar = await storageServices.uploadFile({buckedId: avatarId, file: profileAvatar});
-    //    if(uploadAvatar) {
-    //      console.log(uploadAvatar)
-    //    }
-    //     //router.push('/');
-    //   }
-    // } catch (error: any) {
-    //   setErrorMsg(error.message);
-    //   console.log(error);
-    // }
+    const selectedFile = data.profileAvatar;
+    console.log(selectedFile)
+ 
+    try {
+      setLoading(true);
+      const signUpuser = await authServices.register({ name: name, email: email, password: password });
+      if (signUpuser) {
+        setAuthStatus(true);
+        try {
+          if (profileAvatar && profileAvatar.length > 0) {
+            const file = data.profileAvatar[0]
+            const uploadFile = await storageServices.uploadFile(file);
+            if (uploadFile) {
+              console.log(uploadFile, 'uploaded')
+              const bucketId = uploadFile.bucketId;
+              const fileId = uploadFile.$id;
+              const insertData = await dataBaseServices.insertData({ name: name, email: email, avatarId: fileId, avatarBucketId: bucketId });
+              if (insertData) {
+                setLoading(false);
+                router.push('/');
+              }
+            }
+          }
+        } catch (error) {
+          console.log(error, 'error on fileupload and insertdata')
+        }
+      }
+    } catch (error: any) {
+      setErrorMsg(error.message);
+      console.log(error, 'error on sign up');
+    }finally{
+      setLoading(false);
+    }
 
   };
 
 
   const onFileChange = () => {
-    if (selectedFile) {
-      const objectUrl = URL.createObjectURL(selectedFile);
+    const fileList = selectedFile as unknown as FileList; // Cast selectedFile to FileList
+    if (fileList && fileList.length > 0) {
+      const file = fileList[0];
+      const objectUrl = URL.createObjectURL(file);
       setPreview(objectUrl);
     }
-  }
+  };
 
   useEffect(() => {
-    if (selectedFile) {
+    if (selectedFile && selectedFile.length > 0) {
       onFileChange();
     }
-  }, [selectedFile]);
+  }, [selectedFile])
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -116,30 +135,29 @@ export default function SignUp() {
             {...register('password', { required: true })}
             type="password" label="Password" />
           <p className="text-red-500">{errors.password && <span>This field is required</span>}{passMsg}</p>
-         <span>
-          {
-            preview && (
+          <span>
+            {preview && (
               <div>
                 <Image src={preview} width={200} height={200} alt="preview" className="max-w-[200px] rounded-md" />
               </div>
-            )
-          }
-         </span>
+            )}
+          </span>
           <Input
             {...register('profileAvatar', { required: true })}
-            type="file"/>
+            type="file" />
           <p className="text-red-500">{errors.password && <span>This field is required</span>}{passMsg}</p>
           <Button
             type="submit"
             color="success"
             className="bg-black text-white font-bold shadow-md py-7"
+            disabled={loading}
           >
-            Sign Up
+            { loading ? <p className="flex justify-center items-center gap-4"><Loader/> wait</p> : "Sign Up"}
           </Button>
           <Link className="text-blue-500" href="/sign-in">Already have an account? Sign In</Link>
-        {
-          errorMsg && <p className="text-red-500">{errorMsg}</p>
-        }
+          {
+            errorMsg && <p className="text-red-500">{errorMsg}</p>
+          }
         </form>
       </div>
     </div>
