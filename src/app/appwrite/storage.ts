@@ -6,6 +6,10 @@ const storage = new Storage(appWriteClient);
 type FileUpload = {
     file: File,
 }
+type GetFile = {
+    fileId: string,
+    bucketId: string
+}
 export class StorageServices {
 
     async uploadFile(file: FileUpload) {
@@ -17,6 +21,18 @@ export class StorageServices {
             console.log('Error uploading file', error);
             throw error;
         }
+    }
+
+    async getFileUrl({bucketId, fileId}:GetFile) {
+     try {
+        const file = await storage.getFileView(bucketId, fileId);
+        if(file) {
+            return file;
+        }
+     } catch (error) {
+      console.log(error, 'error getting file');
+      throw error  
+     }
     }
 };
 

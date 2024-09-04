@@ -31,6 +31,18 @@ export class DataBaseServices {
             throw error
         }
     }
+
+    async getData(){
+        try {
+            const readData = await database.listDocuments('66c8c9a6000f305a13fe', '66d1fb2700069104cb81');
+            if(readData) {
+                return readData
+            }
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
 };
 
 const dataBaseServices = new DataBaseServices();
