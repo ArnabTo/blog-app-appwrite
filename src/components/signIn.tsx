@@ -2,7 +2,7 @@
 import authServices from "@/app/appwrite/auth";
 import useAuth from "@/context/useAuth";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
@@ -11,7 +11,6 @@ import Link from "next/link";
 type InputData = {
     email: string;
     password: string;
-    // avatar: "https://th.bing.com/th/id/OIP.x7X2oAehk5M9IvGwO_K0PgHaHa?rs=1&pid=ImgDetMain"
 };
 
 export default function SignIn() {
@@ -23,7 +22,15 @@ export default function SignIn() {
     const { setAuthStatus } = useAuth();
 
     const { register, handleSubmit, formState: { errors } } = useForm<InputData>();
-
+    useEffect(() => {
+        const userCheck = async () => {
+            const isUser = await authServices.userStatus();
+            if (isUser) {
+                router.push('/');
+            }
+        }
+        userCheck();
+    }, [])
     const handleSignUp = async (data: InputData) => {
         const { email, password } = data;
 
@@ -45,6 +52,7 @@ export default function SignIn() {
             if (loginUser) {
                 setAuthStatus(true);
                 router.push('/');
+                window.location.reload();
             }
         } catch (error: any) {
             setErrorMsg(error.message);
@@ -76,7 +84,7 @@ export default function SignIn() {
                         className="bg-black text-white font-bold shadow-md py-7"
                     >
                         Sign In
-                    </Button> 
+                    </Button>
                     <Link className="text-blue-500" href="/sign-up">New user? Create a new account</Link>
                 </form>
             </div>

@@ -12,6 +12,8 @@ import { ID } from "appwrite";
 import storageServices from "@/app/appwrite/storage";
 import Image from "next/image";
 import { Loader } from "lucide-react";
+import { useAppDispatch, useAppStore } from "@/lib/hooks";
+import { setUserData } from "@/lib/features/userSlice";
 
 type InputData = {
   name: string;
@@ -30,11 +32,22 @@ export default function SignUp() {
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const store = useAppStore();
+  const dispatch = useAppDispatch();
   const { setAuthStatus } = useAuth();
   const { register, handleSubmit, formState: { errors }, watch } = useForm<InputData>();
 
   const selectedFile = watch("profileAvatar");
-  // console.log(selectedFile)
+
+  useEffect(() => {
+    const userCheck = async () => {
+        const isUser = await authServices.userStatus();
+        if (isUser) {
+            router.push('/');
+        }
+    }
+    userCheck();
+}, [])
   const handleSignUp = async (data: InputData) => {
     setErrorMsg('');
     const { name, email, password, profileAvatar } = data;
@@ -68,6 +81,7 @@ export default function SignUp() {
       const signUpuser = await authServices.register({ name: name, email: email, password: password });
       if (signUpuser) {
         setAuthStatus(true);
+        store.dispatch(setUserData({ name: name, email: email, avatar: 'default' }));
         try {
           if (profileAvatar && profileAvatar.length > 0) {
             const file = data.profileAvatar[0]
@@ -80,6 +94,7 @@ export default function SignUp() {
               if (insertData) {
                 setLoading(false);
                 router.push('/');
+              window.location.reload();
               }
             }
           }
