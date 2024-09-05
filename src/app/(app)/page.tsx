@@ -3,12 +3,15 @@ import { useEffect, useState } from "react";
 import StoreProvider from "../StoreProvider";
 import { useAppSelector } from "@/lib/hooks";
 import authServices from "../appwrite/auth";
+import HomePage from "@/components/HomePage";
 
 export default function Home() {
 
   return (
 
-      <h1>Wellcome to BlogHub Private routes</h1>
+    <div>
+      <HomePage />
+    </div>
 
   );
 }

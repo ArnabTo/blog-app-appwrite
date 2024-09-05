@@ -20,3 +20,19 @@
     text-wrap: balance;
   }
 }
+
+
+/* span.swiper-pagination-bullet{
+  width: 15px;
+  height: 15px;
+} */
+span.swiper-pagination-bullet{
+  width: 15px;
+  height: 15px;
+  background: transparent;
+  border: 2px solid #ffffff;
+}
+span.swiper-pagination-bullet.swiper-pagination-bullet-active{
+  background: #ffffff;
+  transition: 0.3s ease-in-out;
+}
