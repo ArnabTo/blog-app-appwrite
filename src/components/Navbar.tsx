@@ -1,6 +1,6 @@
 'use client';
 import authServices from "@/app/appwrite/auth";
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button, Image, Avatar } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button, Image, Avatar, Switch } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@nextui-org/progress";
 import { CustomButton } from "./custom/CustomButton";
@@ -8,6 +8,8 @@ import dataBaseServices from "@/app/appwrite/database";
 import storageServices from "@/app/appwrite/storage";
 import { useAppSelector } from "@/lib/hooks";
 import StoreProvider from "@/app/StoreProvider";
+import { MoonIcon, SunIcon } from "lucide-react";
+import ThemeSwitch from "./custom/ThemeSwitch";
 
 const NavigationBar = () => {
 
@@ -29,7 +31,7 @@ const NavigationBar = () => {
         "Log Out",
     ];
 
- 
+
     useEffect(() => {
         const checkUser = async () => {
             try {
@@ -152,16 +154,19 @@ const NavigationBar = () => {
                         }
                     </NavbarItem>
                     <NavbarItem>
-                        {
-                            user ?
-                                <CustomButton onClick={handleLogout} color="black" size="md">
-                                    Sign out
-                                </CustomButton>
-                                :
-                                <CustomButton as={Link} href="/sign-in" color="black" size="md">
-                                    Sign In
-                                </CustomButton>
-                        }
+                        <div className="flex items-center gap-4">
+                            {
+                                user ?
+                                    <CustomButton onClick={handleLogout} color="black" size="md">
+                                        Sign out
+                                    </CustomButton>
+                                    :
+                                    <CustomButton as={Link} href="/sign-in" color="black" size="md">
+                                        Sign In
+                                    </CustomButton>
+                            }
+                            <ThemeSwitch />
+                        </div>
                     </NavbarItem>
                 </NavbarContent>
                 <NavbarMenu>

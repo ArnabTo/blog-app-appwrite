@@ -59,7 +59,7 @@ const Hero = () => {
     ];
 
     return (
-        <div className="relative -top-16 w-full h-[600px] sm:h-[500px] md:h-[600px] lg:h-[700px] mb-96 rounded-lg">
+        <div className="relative -top-16 w-full h-[600px] sm:h-[500px] md:h-[600px] lg:h-[700px] rounded-lg">
             <Swiper
                 spaceBetween={30}
                 effect={'fade'}

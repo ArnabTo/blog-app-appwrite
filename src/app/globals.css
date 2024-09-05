@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  background: #faf8ff;
+  /* background: #faf8ff; */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,6 +19,15 @@
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* global.css */
+body {
+  @apply bg-white text-black;
+}
+
+.dark body {
+  @apply bg-black text-white;
 }
 
 
