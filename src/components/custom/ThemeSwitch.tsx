@@ -41,7 +41,7 @@ const ThemeSwitch = (props) => {
           })}
           onClick={() => setTheme(isDarkMode ? "light" : "dark")} // Toggle between themes
         >
-          {isDarkMode ? <SunIcon /> : <MoonIcon />}
+          {isDarkMode ? <SunIcon  /> : <MoonIcon />}
         </div>
       </Component>
     </div>

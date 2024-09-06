@@ -23,11 +23,11 @@
 
 /* global.css */
 body {
-  @apply bg-white text-black;
+  @apply bg-[#EBF2FA] text-[#303036];
 }
 
 .dark body {
-  @apply bg-black text-white;
+  @apply bg-black text-[#F0F757];
 }
 
 
@@ -44,4 +44,23 @@ span.swiper-pagination-bullet{
 span.swiper-pagination-bullet.swiper-pagination-bullet-active{
   background: #ffffff;
   transition: 0.3s ease-in-out;
+}
+
+.glass-dark-bg {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* For Safari */
+  border-radius: 16px;
+}
+
+.glass-light-bg {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.4) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* For Safari */
+  border-radius: 16px;
+}
+
+.glass-dark, .glass-light {
+  position: relative;
+  overflow: hidden;
 }

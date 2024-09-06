@@ -11,10 +11,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#8685ef",
+        //ligth theme
+        primary: "#CAFF33",
         secondary: "#faf8ff",
         accent: "#e3e0f3",
-        neutral: "#474554",
+        neutral: "#303036",
+        textcolor: "#121212",
+        bedgebg:'#F1F0F1'
+
+        //dark theme
+  
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -27,3 +33,13 @@ const config: Config = {
   plugins: [nextui()]
 };
 export default config;
+
+
+// #E7E247
+
+
+// #EBF2FA
+
+// #303036
+
+// #F3FB25
