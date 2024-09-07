@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@import url('https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 :root {
   /* background: #faf8ff; */
 }
@@ -24,6 +27,7 @@
 /* global.css */
 body {
   @apply bg-[#EBF2FA] text-[#303036];
+  font-family: "Tinos", system-ui;
 }
 
 .dark body {
