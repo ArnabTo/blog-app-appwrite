@@ -3,13 +3,13 @@ import authServices from "@/app/appwrite/auth";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button, Image, Avatar, Switch } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@nextui-org/progress";
-import { CustomButton } from "./custom/CustomButton";
+import { CustomButton } from "../custom/CustomButton";
 import dataBaseServices from "@/app/appwrite/database";
 import storageServices from "@/app/appwrite/storage";
 import { useAppSelector } from "@/lib/hooks";
 import StoreProvider from "@/app/StoreProvider";
 import { MoonIcon, SunIcon } from "lucide-react";
-import ThemeSwitch from "./custom/ThemeSwitch";
+import ThemeSwitch from "../custom/ThemeSwitch";
 
 const NavigationBar = () => {
 
