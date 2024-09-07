@@ -13,14 +13,34 @@ import ThemeSwitch from "./custom/ThemeSwitch";
 
 const NavigationBar = () => {
 
-    type User = {
-        name: string;
+    interface User {
+        $id: string;
+        $createdAt: string;
+        $updatedAt: string;
+        accessedAt: string;
         email: string;
+        emailVerification: boolean;
+        labels: any[];
+        mfa: boolean;
+        name: string;
+        passwordUpdate: string;
+        phone: string;
+        phoneVerification: boolean;
+        prefs: any;
+        registration: string;
+        status: boolean;
+        targets: any[];
+    }
+    interface UserType {
+        avatarBucketId: string;
+        avatarId: string;
+        email: string;
+        name: string;
     }
     const [user, setUser] = useState<User | null>(null);
     const [userEmail, setUserEmail] = useState<string | null>(null);
     const [userData, setUserData] = useState<User | null>(null);
-    const [currentUserData, setCurrentUserData] = useState<User | null>(null);
+    const [currentUserData, setCurrentUserData] = useState<UserType | null>(null);
     const [profileAvatar, setProfileAvatar] = useState<string | null>(null);
     const [loader, setLoader] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -58,26 +78,32 @@ const NavigationBar = () => {
             try {
                 const userData = await dataBaseServices.getData();
                 if (userData) {
-                    const currentUserData = userData.documents.filter((doc) => doc.email == userEmail)
-                    setCurrentUserData(currentUserData);
+                    const currentUserData = userData.documents.find((doc) => doc.email == userEmail)
+
+                    const requiredUserData = {
+                        avatarBucketId: currentUserData?.avatarBucketId,
+                        avatarId: currentUserData?.avatarId,
+                        email: currentUserData?.email,
+                        name: currentUserData?.name,
+                    }
+                    setCurrentUserData(requiredUserData);
                     if (currentUserData) {
-                        currentUserData.map(async (doc) => {
-                            const bucketId = doc.avatarBucketId;
-                            const fildId = doc.avatarId
-                            const getUserImage = await storageServices.getFileUrl({ bucketId: bucketId, fileId: fildId });
-                            setProfileAvatar(getUserImage);
-                        })
+                        const bucketId = currentUserData.avatarBucketId;
+                        const fildId = currentUserData.avatarId
+                        const getUserImage = await storageServices.getFileUrl({ bucketId: bucketId, fileId: fildId });
+                        if (getUserImage) {
+                            setProfileAvatar(getUserImage?.href);
+                        }
 
+                        // const userImagesPromises = currentUserData.map(async (doc) => {
+                        //     const bucketId = doc.avatarBucketId;
+                        //     const fileId = doc.avatarId;
+                        //     const fileUrl = await storageServices.getFileUrl({ bucketId, fileId });
+                        //     return fileUrl;
+                        // });
 
-                        const userImagesPromises = currentUserData.map(async (doc) => {
-                            const bucketId = doc.avatarBucketId;
-                            const fileId = doc.avatarId;
-                            const fileUrl = await storageServices.getFileUrl({ bucketId, fileId });
-                            return fileUrl;
-                        });
-
-                        const userImages = await Promise.all(userImagesPromises);
-                        setProfileAvatar(userImages);
+                        // const userImages = await Promise.all(userImagesPromises);
+                        // setProfileAvatar(userImages);
                     }
                 }
 
@@ -101,7 +127,7 @@ const NavigationBar = () => {
             console.log("Error logging out:", error);
         }
     };
-   
+
 
     return (
         <StoreProvider>

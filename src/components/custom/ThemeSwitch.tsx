@@ -5,7 +5,7 @@ import { MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
-const ThemeSwitch = (props) => {
+const ThemeSwitch = (props:any) => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   

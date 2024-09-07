@@ -1,6 +1,5 @@
 import { Databases, ID } from "appwrite";
 import { appWriteClient } from "./auth";
-import conf from "@/conf/conf";
 
 type InputData = {
     name: string;
@@ -15,8 +14,8 @@ export class DataBaseServices {
     async insertData({name, email, avatarId, avatarBucketId}: InputData) {
         try {
             const cratedDatabase = await database.createDocument(
-                conf.appwriteDatabaseId,
-                conf.appwriteUserCollectionId,
+                '66c8c9a6000f305a13fe', 
+                '66d1fb2700069104cb81', 
                 ID.unique(), 
                 {
                 name: name, 
@@ -35,7 +34,7 @@ export class DataBaseServices {
 
     async getData(){
         try {
-            const readData = await database.listDocuments(conf.appwriteDatabaseId, conf.appwriteUserCollectionId);
+            const readData = await database.listDocuments('66c8c9a6000f305a13fe', '66d1fb2700069104cb81');
             if(readData) {
                 return readData
             }

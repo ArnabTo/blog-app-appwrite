@@ -19,7 +19,7 @@ type InputData = {
   name: string;
   email: string;
   password: string;
-  profileAvatar: File;
+  profileAvatar: FileList | File[];
   // avatar: "https://th.bing.com/th/id/OIP.x7X2oAehk5M9IvGwO_K0PgHaHa?rs=1&pid=ImgDetMain"
 };
 
@@ -41,13 +41,13 @@ export default function SignUp() {
 
   useEffect(() => {
     const userCheck = async () => {
-        const isUser = await authServices.userStatus();
-        if (isUser) {
-            router.push('/');
-        }
+      const isUser = await authServices.userStatus();
+      if (isUser) {
+        router.push('/');
+      }
     }
     userCheck();
-}, [])
+  }, [])
   const handleSignUp = async (data: InputData) => {
     setErrorMsg('');
     const { name, email, password, profileAvatar } = data;
@@ -75,7 +75,7 @@ export default function SignUp() {
 
     const selectedFile = data.profileAvatar;
     console.log(selectedFile)
- 
+
     try {
       setLoading(true);
       const signUpuser = await authServices.register({ name: name, email: email, password: password });
@@ -84,17 +84,16 @@ export default function SignUp() {
         store.dispatch(setUserData({ name: name, email: email, avatar: 'default' }));
         try {
           if (profileAvatar && profileAvatar.length > 0) {
-            const file = data.profileAvatar[0]
+            const file = profileAvatar[0];
             const uploadFile = await storageServices.uploadFile(file);
             if (uploadFile) {
-              console.log(uploadFile, 'uploaded')
               const bucketId = uploadFile.bucketId;
               const fileId = uploadFile.$id;
               const insertData = await dataBaseServices.insertData({ name: name, email: email, avatarId: fileId, avatarBucketId: bucketId });
               if (insertData) {
                 setLoading(false);
                 router.push('/');
-              window.location.reload();
+                window.location.reload();
               }
             }
           }
@@ -105,7 +104,7 @@ export default function SignUp() {
     } catch (error: any) {
       setErrorMsg(error.message);
       console.log(error, 'error on sign up');
-    }finally{
+    } finally {
       setLoading(false);
     }
 
@@ -122,7 +121,7 @@ export default function SignUp() {
   };
 
   useEffect(() => {
-    if (selectedFile && selectedFile.length > 0) {
+    if (selectedFile) {
       onFileChange();
     }
   }, [selectedFile])
@@ -167,7 +166,7 @@ export default function SignUp() {
             className="bg-black text-white font-bold shadow-md py-7"
             disabled={loading}
           >
-            { loading ? <p className="flex justify-center items-center gap-4"><Loader/> wait</p> : "Sign Up"}
+            {loading ? <p className="flex justify-center items-center gap-4"><Loader /> wait</p> : "Sign Up"}
           </Button>
           <Link className="text-blue-500" href="/sign-in">Already have an account? Sign In</Link>
           {
@@ -175,7 +174,7 @@ export default function SignUp() {
           }
         </form>
       </div>
-  
+
     </div>
   );
 }
