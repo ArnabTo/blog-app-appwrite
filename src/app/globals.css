@@ -54,7 +54,7 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active{
 }
 
 .glass-light-bg {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.4) 100%);
+  background: white;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px); /* For Safari */
   border-radius: 16px;

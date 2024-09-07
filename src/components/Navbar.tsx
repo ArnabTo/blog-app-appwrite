@@ -101,9 +101,7 @@ const NavigationBar = () => {
             console.log("Error logging out:", error);
         }
     };
-    // console.log(user, 'userAuthData');
-    // console.log(currentUserData, 'currentUserData');
-    // console.log(userEmail, 'userEmail');
+   
 
     return (
         <StoreProvider>

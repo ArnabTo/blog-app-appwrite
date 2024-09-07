@@ -4,6 +4,7 @@ const conf = {
   appwriteApiKey : String(process.env.APPWRITE_API_KEY),
   appwriteDatabaseId : String(process.env.APPWRITE_DATABASE_ID),
   appwriteCollectionId : String(process.env.APPWRITE_COLLECTION_ID),
+  appwriteUserCollectionId: String(process.env.APPWRITE_USER_COLLECTION_ID),
   appwriteBucketId : String(process.env.APPWRITE_BUCKET_ID),
 }
 

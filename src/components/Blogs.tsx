@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, CardBody, CardFooter, Pagination } from '@nextui-org/react';
 import blogs from '../blogs.json';
 import Image from 'next/image';

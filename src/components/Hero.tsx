@@ -86,7 +86,7 @@ const Hero = () => {
                             <div>
                                 <div className="absolute bottom-36 md:bottom-16 left-5 sm:left-10 z-10 w-full sm:w-2/3 md:w-1/2">
                                     <div className="bg-[#E7E7E7] text-black border border-white w-fit px-2 sm:px-3 py-1 text-sm rounded-full">{blog.tag}</div>
-                                    <h2 className="text-2xl  text-primary sm:text-3xl md:text-4xl font-extrabold w-full sm:w-2/3">
+                                    <h2 className="text-2xl  text-primary sm:text-3xl md:text-4xl font-extrabold w-full">
                                         {blog.title}
                                     </h2>
                                     <p className="mt-4 text-sm text-white sm:text-base md:text-lg">{blog.description}</p>

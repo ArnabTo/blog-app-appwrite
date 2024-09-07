@@ -11,15 +11,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={montserrat.className}>
-        <Providers>
-          <StoreProvider>
-            <NavigationBar />
-            {children}
-          </StoreProvider>
-        </Providers>
-      </body>
-    </html>
+    <div>
+      <Providers>
+        <StoreProvider>
+          <NavigationBar />
+          {children}
+        </StoreProvider>
+      </Providers>
+    </div>
   );
 }

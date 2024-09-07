@@ -1,6 +1,6 @@
 import { appWriteClient } from "./auth";
 import { Storage, ID } from "appwrite";
-
+import conf from "@/conf/conf";
 const storage = new Storage(appWriteClient);
 
 type FileUpload = {
@@ -12,10 +12,10 @@ type GetFile = {
 }
 export class StorageServices {
 
-    async uploadFile(file: FileUpload) {
+    async uploadFile({file}: FileUpload) {
         try {
             console.log(file);
-            const uploadFIle = await storage.createFile("66c8cc460030b3492d9b", ID.unique(), file);
+            const uploadFIle = await storage.createFile(conf.appwriteBucketId, ID.unique(), file);
             return uploadFIle;
         } catch (error) {
             console.log('Error uploading file', error);
