@@ -19,7 +19,7 @@ export default function Blogs() {
     }
 
     return (
-        <section className='max-w-7xl mx-auto'>
+        <section className='max-w-7xl mx-auto mb-28'>
             <h1 className={`text-3xl font-extrabold mb-10 ${theme == 'dark' ? 'text-primary' : 'text-neutral'} `}>
                 Blogs
             </h1>
