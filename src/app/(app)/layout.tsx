@@ -4,6 +4,7 @@ import { Providers } from "../providers";
 import NavigationBar from "@/components/Shared/Navbar";
 import StoreProvider from "../StoreProvider";
 import Footer from "@/components/Shared/Footer";
+import AuthProviderWrapper from "@/context/AuthProviderWrapper";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -15,11 +16,13 @@ export default function RootLayout({
   return (
     <div>
       <Providers>
+        <AuthProviderWrapper>
         <StoreProvider>
           <NavigationBar />
           {children}
-        <Footer/>
+          <Footer />
         </StoreProvider>
+        </AuthProviderWrapper>
       </Providers>
     </div>
   );

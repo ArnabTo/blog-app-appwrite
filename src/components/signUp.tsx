@@ -8,7 +8,6 @@ import { Button } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import dataBaseServices from "@/app/appwrite/database";
-import { ID } from "appwrite";
 import storageServices from "@/app/appwrite/storage";
 import Image from "next/image";
 import { Loader } from "lucide-react";

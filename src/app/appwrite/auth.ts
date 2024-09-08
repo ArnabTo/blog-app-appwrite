@@ -50,7 +50,7 @@ export class AuthServices {
                 const status = await this.getUser();
                 return Boolean(status);
              } catch (error) {
-                
+                console.log(error, 'Error from userStatus')
              }
         return false;
     }
