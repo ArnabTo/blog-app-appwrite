@@ -1,6 +1,6 @@
 'use client';
 import authServices from "@/app/appwrite/auth";
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button, Image, Avatar, Switch } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button, Image, Avatar, Switch, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@nextui-org/progress";
 import { CustomButton } from "../custom/CustomButton";
@@ -167,23 +167,44 @@ const NavigationBar = () => {
                 </NavbarContent>
                 <NavbarContent justify="end">
                     <NavbarItem className="hidden lg:flex">
-                        {
-                            profileAvatar ? (
-                                <Avatar
-                                    src={profileAvatar}
-                                />
-                            ) : (
-                                <></>
-                            )
-                        }
+
+                        <Dropdown>
+                            <DropdownTrigger>
+                                {
+                                    profileAvatar ? (
+                                        <Avatar
+                                            className="cursor-pointer" src={profileAvatar}
+                                        />
+                                    ) : (
+                                        <></>
+                                    )
+                                }
+                            </DropdownTrigger>
+                            <DropdownMenu aria-label="Static Actions">
+                                <DropdownItem key="new">Profile</DropdownItem>
+                                <DropdownItem key="copy">
+                                    <Link href="/dashboard">Dashboard</Link>
+                                </DropdownItem>
+                                <DropdownItem key="edit">Edit file</DropdownItem>
+                                {/* <DropdownItem key="sign out">
+                                    <CustomButton onClick={handleLogout} color="black" size="md">
+                                        Sign out
+                                    </CustomButton>
+                                </DropdownItem> */}
+                                <DropdownItem  onClick={handleLogout} key="delete" className="text-danger" color="danger">
+                                    Sign out
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
                     </NavbarItem>
                     <NavbarItem>
                         <div className="flex items-center gap-4">
                             {
                                 user ?
-                                    <CustomButton onClick={handleLogout} color="black" size="md">
-                                        Sign out
-                                    </CustomButton>
+                                    // <CustomButton onClick={handleLogout} color="black" size="md">
+                                    //     Sign out
+                                    // </CustomButton>
+                                    <></>
                                     :
                                     <CustomButton as={Link} href="/sign-in" color="black" size="md">
                                         Sign In
