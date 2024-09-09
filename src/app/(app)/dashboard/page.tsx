@@ -2,7 +2,7 @@
 import DashboardComponent from '@/components/DashboardComponent';
 import { AuthContext } from '@/context/AuthProvider';
 import useUser from '@/hooks/useUser';
-import { Skeleton } from '@nextui-org/react';
+import { Skeleton, Spinner } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import React, { useContext } from 'react';
 
@@ -14,25 +14,15 @@ const Dashboard = () => {
 
     if (isLoading) {
         return <div className='flex justify-center items-center gap-20 max-w-6xl mx-auto h-screen'>
-            <Skeleton className="rounded-lg h-1/2 w-full">
-                <div className="w-full h-24 rounded-lg bg-red-500">
-                    Loading
-                </div>
-            </Skeleton>
-            <Skeleton className="rounded-lg h-1/2 w-full">
-                <div className="h-24 rounded-lg bg-green-500">
-                    Loading
-                </div>
-            </Skeleton>
+            <Spinner color="success" />
         </div>
     }
 
     if (!authStatus) {
-        router.push('/login');
+        router.push('/sign-in');
     }
     return (
-        <div className='h-screen'>
-            This is userdashboard
+        <div>
             <DashboardComponent></DashboardComponent>
         </div>
     );

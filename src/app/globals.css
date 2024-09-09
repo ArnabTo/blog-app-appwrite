@@ -31,7 +31,7 @@ body {
 }
 
 .dark body {
-  @apply bg-black text-[#F0F757];
+  @apply bg-black text-[#EBF2FA];
 }
 
 

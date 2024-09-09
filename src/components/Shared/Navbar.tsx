@@ -132,7 +132,7 @@ const NavigationBar = () => {
 const { user, profileAvatar, handleLogout } = useUser();
     return (
         <StoreProvider>
-            <Navbar onMenuOpenChange={setIsMenuOpen} className="shadow-md">
+            <Navbar onMenuOpenChange={setIsMenuOpen} className="shadow-md bg-transparent">
                 <NavbarContent>
                     <NavbarMenuToggle
                         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
