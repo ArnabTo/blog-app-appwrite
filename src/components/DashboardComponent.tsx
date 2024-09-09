@@ -80,7 +80,8 @@ const DashboardComponent = () => {
                         <Image className="rounded-full w-20 h-20" src={profileAvatar ?? ''} width={100} height={100} alt="avatar" />
                     )}
                     <p className="font-medium">{loader ? <Skeleton className="w-32 h-6" /> : user?.name}</p>
-                    <p>{user?.followers} 5 Followers</p>
+                    {/* <p>{user?.followers} 5 Followers</p> */}
+                    <p> 5 Followers</p>
                 </div>
             </div>
         </div>

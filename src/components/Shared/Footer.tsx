@@ -8,7 +8,7 @@ const Footer = () => {
         <footer className="px-1 py-1">
             <div className="bg-black grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 items-center py-16 px-10 rounded-lg">
                 <div>
-                    <div className="flex items-center gap-3 mb-4"> <Image className="" src={Logo} width={50} height={50} />
+                    <div className="flex items-center gap-3 mb-4"> <Image src={Logo} width={50} height={50} alt="logo"/>
                         <h2 className="text-3xl text-secondary font-extrabold">BlogVerse</h2></div>
                     <p className="text-gray-500">BlogVerse is a sleek platform for sharing ideas and stories, offering easy-to-use tools for writers to create and connect with readers.</p>
                     <p>&copy; 2024 BlogVerse. All copyrights reserved</p>
