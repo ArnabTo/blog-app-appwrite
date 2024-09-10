@@ -11,9 +11,11 @@ import StoreProvider from "@/app/StoreProvider";
 import { MoonIcon, SunIcon } from "lucide-react";
 import ThemeSwitch from "../custom/ThemeSwitch";
 import useUser from "@/hooks/useUser";
+import { useTheme } from "next-themes";
 
 const NavigationBar = () => {
 
+    const {theme} = useTheme();
     interface User {
         $id: string;
         $createdAt: string;
@@ -146,22 +148,22 @@ const { user, profileAvatar, handleLogout } = useUser();
 
                 <NavbarContent className="hidden sm:flex gap-4" justify="center">
                     <NavbarItem isActive>
-                        <Link href="/">
+                        <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${ theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} href="/">
                             Home
                         </Link>
                     </NavbarItem>
                     <NavbarItem>
-                        <Link color="foreground" href="#"  >
+                        <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${ theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
                             About Us
                         </Link>
                     </NavbarItem>
                     <NavbarItem>
-                        <Link color="foreground" href="#"  >
+                        <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${ theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
                             Blogs
                         </Link>
                     </NavbarItem>
                     <NavbarItem>
-                        <Link color="foreground" href="#">
+                        <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${ theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#">
                             Products
                         </Link>
                     </NavbarItem>
