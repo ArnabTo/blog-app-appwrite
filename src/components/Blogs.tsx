@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Card, CardBody, CardFooter, Pagination } from '@nextui-org/react';
+import { Avatar, Card, CardBody, CardFooter, Pagination } from '@nextui-org/react';
 import blogs from '../blogs.json';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -38,14 +38,17 @@ export default function Blogs() {
                                         height={270}
                                     />
                                 </CardBody>
-                                <CardFooter className="pb-0 pt-2 px-4 flex-col items-start relative z-10">
+                                <CardFooter className="pb-0 pt-2 px-4 flex-col items-start relative z-10 space-y-2">
                                     <small
                                         className={`text-default-500 px-2 py-1 rounded-full mb-2 ${theme == 'dark' ? 'text-textcolor' : 'text-textcolor'
                                             } ${theme == 'dark' ? 'bg-[#F1F0F1]' : 'bg-primary'}`}
                                     >
                                         {blog.tag}
                                     </small>
-                                    <p className="text-tiny uppercase font-bold">{blog.author}</p>
+                                    <div className='flex items-center gap-2'>
+                                        <Avatar size='sm' src={blog?.authorImage} />
+                                        <p className="text-tiny uppercase font-bold">{blog.author}</p>
+                                    </div>
                                     <h4
                                         className={`font-bold text-large ${theme == 'dark' ? 'text-primary' : 'text-textcolor'
                                             }`}
