@@ -1,10 +1,11 @@
 'use client';
 import useUser from "@/hooks/useUser";
-import { Avatar, Divider, Skeleton, Spinner } from "@nextui-org/react";
+import { Avatar, Divider, Skeleton, Spinner, Tooltip } from "@nextui-org/react";
 import Image from "next/image";
 import blogs from '../blogs.json';
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import { CirclePlus, Plus } from "lucide-react";
 
 const DashboardComponent = () => {
     const { user, profileAvatar, loader } = useUser();
@@ -18,7 +19,7 @@ const DashboardComponent = () => {
             <div className="flex">
                 <div className="w-11/12 mx-5 space-y-10">
                     <h1 className="text-4xl text-start font-extrabold">Your Blogs</h1>
-                    <div>
+                    <div className="space-y-10">
                         <div className="grid grid-cols-1 space-y-5">
                             {loader ? (
                                 <>
@@ -66,6 +67,13 @@ const DashboardComponent = () => {
                                 )
                             )}
                         </div>
+                    </div>
+                    <div className="flex justify-center items-center">
+                        <Tooltip content="Create Blog">
+                            <Link href="/create-blog">
+                                <CirclePlus size={35} />
+                            </Link>
+                        </Tooltip>
                     </div>
                 </div>
 
