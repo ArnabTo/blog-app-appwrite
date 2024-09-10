@@ -16,9 +16,9 @@ const DashboardComponent = () => {
 
     return (
         <div className="max-w-6xl mx-auto my-20">
-            <div className="flex">
+            <div className="flex flex-col-reverse lg:flex-row space-y-10">
                 <div className="w-11/12 mx-5 space-y-10">
-                    <h1 className="text-4xl text-start font-extrabold">Your Blogs</h1>
+                    <h1 className="text-4xl text-center lg:text-start font-extrabold">Your Blogs</h1>
                     <div className="space-y-10">
                         <div className="grid grid-cols-1 space-y-5">
                             {loader ? (
@@ -31,7 +31,7 @@ const DashboardComponent = () => {
                                 userBlogs && userBlogs.length > 0 ? (
                                     userBlogs.map((blog) => (
                                         <Link key={blog.id} href={`/blogs/${blog.id}`} className={`rounded-lg ${theme == 'dark' ? 'bg-textcolor' : 'bg-accent'}`}>
-                                            <div className="flex justify-between items-center">
+                                            <div className="flex flex-col lg:flex-row justify-between items-center">
                                                 <div className="pl-5 py-5">
                                                     <div className="flex items-center gap-3">
                                                         <Avatar src={profileAvatar ?? ''} size="sm" />
@@ -47,9 +47,8 @@ const DashboardComponent = () => {
                                                         <p className="text-gray-500">{blog?.postDate}</p>
                                                     </div>
                                                 </div>
-                                                {/* Ensure the parent div and image take full height */}
-                                                <div className="w-48 h-48 relative">
-                                                    <Image className="object-cover" fill src={blog?.thumbnail} alt="thumbnail" />
+                                                <div className="w-full sm:w-52 h-52 relative">
+                                                    <Image className="object-cover w-full h-full" fill src={blog?.thumbnail} alt="thumbnail" />
                                                 </div>
                                             </div>
                                         </Link>
@@ -70,7 +69,7 @@ const DashboardComponent = () => {
                     </div>
                     <div className="flex justify-center items-center">
                         <Tooltip content="Create Blog">
-                            <Link href="/create-blog">
+                            <Link href="/dashboard/create-blog">
                                 <CirclePlus size={35} />
                             </Link>
                         </Tooltip>
@@ -81,7 +80,7 @@ const DashboardComponent = () => {
                     <Divider orientation="vertical" />
                 </div>
 
-                <div className="w-1/2 px-5 h-screen flex flex-col justify-start">
+                <div className="w-full lg:w-1/2 px-5 lg:h-screen flex flex-col items-center lg:justify-start">
                     {loader ? (
                         <Skeleton className="rounded-full w-20 h-20" />
                     ) : (
