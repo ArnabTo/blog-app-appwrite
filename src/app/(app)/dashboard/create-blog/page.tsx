@@ -6,7 +6,23 @@ import useUser from "@/hooks/useUser";
 import { Input } from "@nextui-org/input";
 import { Button, Select, SelectItem } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+// Define types for the blog data
+type InputData = {
+    title: string;
+    thumbnail: FileList;
+    category: string;
+    authorAvatar: string;
+    author: string;
+    authorEmail: string;
+    createdAt: string;
+    content: string;
+    readTime: string;
+};
+
+// Define types for the state variables
+type CategoryType = "Technology" | "Health" | "Personal" | "Business" | "Custom" | string;
 
 const CreateBlogPage = () => {
     const { user, profileAvatar } = useUser();
@@ -30,79 +46,66 @@ const CreateBlogPage = () => {
         'list', 'bullet', 'indent', 'link', 'image', 'video'
     ];
 
-    type InputData = {
-        title: string;
-        thumbnail: FileList;
-        category: string;
-    };
+    const [content, setContent] = useState<string>('');  // Type as string
+    const [preview, setPreview] = useState<string>('');  // Type as string for the image preview URL
+    const [thumbnailUrl, setThumbnailUrl] = useState<string>('');        // Type as string for the thumbnail URL
+    const [selectedCategory, setSelectedCategory] = useState<CategoryType>('');  // Type with defined categories
 
-    const [content, setContent] = useState('');
-    const [preview, setPreview] = useState('');
-    const [turl, settUrl] = useState('');
+    const { register, handleSubmit, formState: { errors }, watch } = useForm<InputData>(); // Typed form data
 
-    const [customCategory, setCustomCategory] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState<any>('');
-
-    const { register, handleSubmit, formState: { errors }, watch } = useForm<InputData>();
-
-    
-    const categories = [
+    const categories: CategoryType[] = [
         "Technology",
         "Health",
         "Personal",
         "Business",
         "Custom"
-    ]
-    const handleForm = async (data: InputData) => {
-        const { title, thumbnail, category } = data;
+    ];
 
-        
+    const handleForm: SubmitHandler<InputData> = async (data) => {
+        const { title, thumbnail, category } = data;
 
         // Calculate reading time based on word count
         const wordCount = content.trim().split(/\s+/).length;
         const readTime = Math.ceil(wordCount / 200); // average 200 words per minute
 
-        // try {
-        //     if (thumbnail && thumbnail.length > 0) {
-        //         const file = thumbnail[0];
-        //         const uploadThumbnail = await storageServices.uploadFile(file);
-        //         if (uploadThumbnail && user?.email) {
-        //             const bucketId = uploadThumbnail.bucketId;
-        //             const fileId = uploadThumbnail.$id;
-        //             const thumbnailUrl = await storageServices.getFileUrl({ bucketId, fileId });
-        //             if (thumbnailUrl) {
-        //                 settUrl(thumbnailUrl.toString());
+        try {
+            if (thumbnail && thumbnail.length > 0) {
+                const file = thumbnail[0];
+                const uploadThumbnail = await storageServices.uploadFile(file);
+                if (uploadThumbnail && user?.email) {
+                    const bucketId = uploadThumbnail.bucketId;
+                    const fileId = uploadThumbnail.$id;
+                    const thumbnailUrl = await storageServices.getFileUrl({ bucketId, fileId });
+                    if (thumbnailUrl) {
+                    setThumbnailUrl(thumbnailUrl.toString());
 
-        //                 const options: Intl.DateTimeFormatOptions = {
-        //                     day: 'numeric',
-        //                     month: 'long',
-        //                     year: 'numeric',
-        //                 };
+                        const options: Intl.DateTimeFormatOptions = {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric',
+                        };
 
-        //                 const saveBlog = await dataBaseServices.saveBlog({
-        //                     title: title,
-        //                     content: content,
-        //                     email: user?.email,
-        //                     thumbnail: thumbnailUrl.toString(),
-        //                     author: user?.name,
-        //                     authorEmail: user?.email,
-        //                     authorAvatar: profileAvatar,
-        //                     postDate: new Date().toLocaleDateString('en-GB', options),
-        //                     category: finalCategory,
-        //                     readTime: `${readTime} min read`, // Add read time
-        //                 });
+                        const saveBlog = await dataBaseServices.saveBlog({
+                            title: title,
+                            content: content,
+                            thumbnail: thumbnailUrl.toString(),
+                            author: user?.name || 'Unknown', // Fallback to 'Unknown'
+                            authorEmail: user?.email,
+                            authorAvatar: profileAvatar || '',
+                            createdAt: new Date().toLocaleDateString('en-GB', options),
+                            category: selectedCategory || category,
+                            readTime: `${readTime} min read`, // Add read time
+                        });
 
-        //                 if (saveBlog) {
-        //                     console.log(saveBlog, 'Blog created successfully');
-        //                 }
-        //             }
-        //         }
-        //     }
-        // } catch (error) {
-        //     console.log(error, 'Error creating blog');
-        // }
-
-        
+                        if (saveBlog) {
+                            console.log(saveBlog, 'Blog created successfully');
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error, 'Error creating blog');
+        }
     };
 
     const selectFile = watch('thumbnail');
@@ -122,17 +125,8 @@ const CreateBlogPage = () => {
         }
     }, [selectFile]);
 
-
-    const handleSelectionChange = (keys) => {
-        const selectedIndex = keys[0];
-        const selectedCategory = categorie[selectedIndex];
-        setSelectedCategory(selectedCategory);
-        console.log(selectedCategory); // This should log the value of the selected category
-    };
-
-    console.log(selectedCategory)
     return (
-        <div className="max-w-6xl mx-auto p-4 h-screen space-y-10 my-20">
+        <div className="max-w-6xl mx-auto p-4 space-y-10 my-20">
             <h1 className="text-3xl font-extrabold text-center">Create your blogs</h1>
             <form onSubmit={handleSubmit(handleForm)} className="space-y-5">
                 <div>
@@ -152,74 +146,39 @@ const CreateBlogPage = () => {
                     {errors.thumbnail && <span>This field is required</span>}
                 </div>
 
-                <div className="mb-4">
-                    <QuillEditor value={content} onChange={setContent} theme="snow" modules={modules} formats={formats} />
+                <div className="mb-16">
+                    <QuillEditor
+                        className="h-[30rem] mb-4 rounded-md"
+                        value={content}
+                        onChange={setContent}
+                        theme="snow"
+                        modules={modules}
+                        formats={formats}
+                    />
                 </div>
 
-                <div className="mb-4">
-                    {/* <label className="block mb-2">Category</label>
+                <div className="mb-4 space-y-5">
                     <Select
                         label="Select Category"
-                        placeholder="Select an option"
                         className="max-w-xs"
-                        selectedKeys={[selectedCategory]}
-                        onSelectionChange={(keys) => {
-                            const key = keys[0];
-                            setSelectedCategory(key as string);
-                        }}
+                        onChange={(e) => setSelectedCategory(categories[Number(e.target.value)])}
                     >
-                        {categories.map((category) => (
-                            <SelectItem key={category.value}>{category.label}</SelectItem>
-                        ))}
-                    </Select>
-
-                    {selectedCategory === 'custom' && (
-                        <Input
-                            label="Custom Category"
-                            placeholder="Enter custom category"
-                            value={customCategory}
-                            onChange={(e) => setCustomCategory(e.target.value)}
-                            className="mt-4"
-                        />
-                    )} */}
-
-
-                    <Select
-                        label="Select an animal"
-                        className="max-w-xs"
-                        onChange={ (e) => {setSelectedCategory(categories[e.target.value])} }
-                    >
-                        {categories.map((animal, index) => (
+                        {categories.map((category, index) => (
                             <SelectItem key={index}>
-                                {animal}
-                            </SelectItem>
-                        ))}
-                    </Select>
-
-                    {
-                        selectedCategory === 'custom' && (
-                    }
-
-
-                    {/* <Select
-                        label="Select Category"
-                        placeholder="Select an option"
-                        className="max-w-xs"
-                        selectedKeys={[selectedCategory]}
-                        onSelectionChange={(keys) => {
-                            const selectedIndex = keys[0];
-                            const selectedCategoryValue = categorie.find((category, index) => index === selectedIndex);
-                            setSelectedCategory(selectedCategoryValue);
-                            console.log(selectedCategoryValue); // This should log the value of the selected category
-                        }}
-                    >
-                        {categorie.map((category, index) => (
-                            <SelectItem key={index} value={category}>
                                 {category}
                             </SelectItem>
                         ))}
-                    </Select> */}
+                    </Select>
 
+                    {selectedCategory === 'Custom' && (
+                        <div>
+                            <Input
+                                label="Add your custom category"
+                                type="text"
+                                {...register('category', { required: true })}
+                            />
+                        </div>
+                    )}
                 </div>
 
                 <Button type="submit">Save Blog</Button>

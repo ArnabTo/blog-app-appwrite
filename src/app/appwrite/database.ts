@@ -12,11 +12,11 @@ type BlogData = {
     content: string;
     authorEmail: string;
     thumbnail: string;
-    postDate: string;
+    createdAt: string;
     category: string;
-    customTags: string;
     authorAvatar: string;
     author: string;
+    readTime: string;
 }
 
 const database = new Databases(appWriteClient);
@@ -42,7 +42,7 @@ export class DataBaseServices {
             throw error
         }
     }
-    async saveBlog({title, content, authorEmail, thumbnail, postDate, category, customTags, authorAvatar, author}: BlogData) {
+    async saveBlog({title, content, authorEmail, thumbnail, createdAt, category, authorAvatar, author, readTime}: BlogData) {
         try {
             const cratedDatabase = await database.createDocument(
                 '66c8c9a6000f305a13fe',  // database Id
@@ -54,10 +54,10 @@ export class DataBaseServices {
                 content: content,
                 thumbnail: thumbnail,
                 author: author,
-                postDate: postDate,
+                createdAt: createdAt,
                 category: category,
-                customTags: customTags,
-                authorAvatar: authorAvatar
+                authorAvatar: authorAvatar,
+                readTime: readTime
             })
             if(cratedDatabase) {
                 return cratedDatabase
