@@ -26,12 +26,12 @@
 
 /* global.css */
 body {
-  @apply bg-[#EBF2FA] text-[#303036];
+  @apply bg-[#ffffff] text-[#303036];
   font-family: "Tinos", system-ui;
 }
 
 .dark body {
-  @apply bg-black text-[#EBF2FA];
+  @apply bg-black text-[#ffffff];
 }
 
 

@@ -30,7 +30,7 @@ const DashboardComponent = () => {
                             ) : (
                                 userBlogs && userBlogs.length > 0 ? (
                                     userBlogs.map((blog) => (
-                                        <Link key={blog.id} href={`/blogs/${blog.id}`} className={`rounded-lg ${theme == 'dark' ? 'bg-textcolor' : 'bg-accent'}`}>
+                                        <Link key={blog.id} href={`/blogs/${blog.id}`} className={`rounded-lg shadow-lg ${theme == 'dark' ? 'bg-textcolor' : 'bg-accent'}`}>
                                             <div className="flex flex-col lg:flex-row justify-between items-center">
                                                 <div className="pl-5 py-5">
                                                     <div className="flex items-center gap-3">
