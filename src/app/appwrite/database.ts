@@ -66,6 +66,21 @@ export class DataBaseServices {
             console.log('Error creating database', error)
             throw error
         }
+    };
+
+    async getBlogsData(){
+        try {
+            const getBlogs = await database.listDocuments(
+                '66c8c9a6000f305a13fe',
+                '66c8ca010010a285f838'
+            )
+            if(getBlogs){
+                return getBlogs;
+            }
+        } catch (error) {
+            console.log(error, 'Error fetching blogs');
+            throw error
+        }
     }
 
     async getData(){
