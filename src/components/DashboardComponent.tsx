@@ -9,6 +9,7 @@ import useBlogs from "@/hooks/useBlogs";
 import DOMPurify from "dompurify";
 import dataBaseServices from "@/app/appwrite/database";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const DashboardComponent = () => {
     const { user, profileAvatar, loader } = useUser();
@@ -20,6 +21,7 @@ const DashboardComponent = () => {
 
     const handleBlogDelete = async (targetBlogId: string) => {
         deleteBlog(targetBlogId);
+        toast.success('Blog deleted successfully');
     }
    
     return (

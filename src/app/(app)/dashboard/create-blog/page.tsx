@@ -8,6 +8,7 @@ import { Button, Select, SelectItem } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { toast } from "sonner";
 
 // Define types for the blog data
 type InputData = {
@@ -64,8 +65,7 @@ const CreateBlogPage = () => {
         "Business",
         "Custom"
     ];
-    console.log(selectedCategory)
-    console.log(finalCategory)
+    
     const handleForm: SubmitHandler<InputData> = async (data) => {
         const { title, thumbnail, category } = data;
 
@@ -103,7 +103,10 @@ const CreateBlogPage = () => {
 
                         if (saveBlog) {
                             console.log(saveBlog, 'Blog created successfully');
-                            router.push('/dashboard');
+                            toast.success('Blog created successfully');
+                            setTimeout(() => {
+                                router.push('/dashboard');
+                            }, 2000);
                         }
                     }
                 }

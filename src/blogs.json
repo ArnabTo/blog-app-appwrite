@@ -60,18 +60,6 @@
     "shortDescription": "A look into how architecture impacts the growth and innovation in urban spaces."
   },
   {
-    "id": 6,
-    "title": "The Future of Renewable Energy",
-    "description": "How renewable energy is changing the world and what lies ahead.",
-    "thumbnail": "https://images.pexels.com/photos/162388/solar-panel-photovoltaic-energy-alternative-energy-162388.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    "tag": "Science",
-    "author": "Alex Johnson",
-    "authorImage": "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=1",
-    "authorEmail": "arnabsd929@gmail.com",
-    "postDate": "August 18, 2024",
-    "shortDescription": "Explore advancements in renewable energy and how they impact our planet."
-  },
-  {
     "id": 7,
     "title": "Mastering the Art of Photography",
     "description": "Learn the skills and techniques to elevate your photography to the next level.",
