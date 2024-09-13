@@ -52,6 +52,8 @@ const CreateBlogPage = () => {
     const [preview, setPreview] = useState<string>('');  // Type as string for the image preview URL
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');        // Type as string for the thumbnail URL
     const [selectedCategory, setSelectedCategory] = useState<CategoryType>('');  // Type with defined categories
+    const [customCategory, setCustomCategory] = useState<string>('');
+    const [finalCategory, setFinalCategory] = useState<string>('');
 
     const { register, handleSubmit, formState: { errors }, watch } = useForm<InputData>(); // Typed form data
 
@@ -62,7 +64,8 @@ const CreateBlogPage = () => {
         "Business",
         "Custom"
     ];
-
+    console.log(selectedCategory)
+    console.log(finalCategory)
     const handleForm: SubmitHandler<InputData> = async (data) => {
         const { title, thumbnail, category } = data;
 
@@ -79,14 +82,13 @@ const CreateBlogPage = () => {
                     const fileId = uploadThumbnail.$id;
                     const thumbnailUrl = await storageServices.getFileUrl({ bucketId, fileId });
                     if (thumbnailUrl) {
-                    setThumbnailUrl(thumbnailUrl.toString());
+                        setThumbnailUrl(thumbnailUrl.toString());
 
                         const options: Intl.DateTimeFormatOptions = {
                             day: 'numeric',
                             month: 'long',
                             year: 'numeric',
                         };
-
                         const saveBlog = await dataBaseServices.saveBlog({
                             title: title,
                             content: content,
@@ -95,7 +97,7 @@ const CreateBlogPage = () => {
                             authorEmail: user?.email,
                             authorAvatar: profileAvatar || '',
                             createdAt: new Date().toLocaleDateString('en-GB', options),
-                            category: selectedCategory || category,
+                            category: finalCategory,
                             readTime: `${readTime} min read`, // Add read time
                         });
 
@@ -126,7 +128,12 @@ const CreateBlogPage = () => {
         if (selectFile) {
             onFileChange();
         }
-    }, [selectFile]);
+        if (selectedCategory === 'Custom') {
+            setFinalCategory(customCategory)
+        } else {
+            setFinalCategory(selectedCategory)
+        }
+    }, [selectFile, selectedCategory, customCategory, finalCategory]);
 
     return (
         <div className="max-w-6xl mx-auto p-4 space-y-10 my-20">
@@ -178,7 +185,7 @@ const CreateBlogPage = () => {
                             <Input
                                 label="Add your custom category"
                                 type="text"
-                                {...register('category', { required: true })}
+                                onChange={(e) => setCustomCategory(e.target.value)}
                             />
                         </div>
                     )}

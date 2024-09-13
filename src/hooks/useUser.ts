@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 
 
 const useUser = () => {
-
     
     interface User {
         $id: string;

@@ -35,7 +35,7 @@ export default function Blogs() {
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-10 space-y-3'>
                             {currentPageBlogs.map((blog: any) => {
                                 return (
-                                    <Link href={`/blogs/${blog.id}`} key={blog.id}>
+                                    <Link href={`/blogs/${blog.$id}`} key={blog.id}>
                                         <Card className={`py-4 shadow-lg h-full group relative overflow-hidden  ${theme == 'dark' ? 'glass-dark' : 'glass-light'}`}>
                                             <CardBody className="overflow-visible py-2 z-10">
                                                 <Image

@@ -2,15 +2,17 @@
 import useUser from "@/hooks/useUser";
 import { Avatar, Divider, Skeleton, Spinner, Tooltip } from "@nextui-org/react";
 import Image from "next/image";
-import blogs from '../blogs.json';
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { CirclePlus, Plus } from "lucide-react";
+import useBlogs from "@/hooks/useBlogs";
+import DOMPurify from "dompurify";
 
 const DashboardComponent = () => {
     const { user, profileAvatar, loader } = useUser();
     const { theme } = useTheme();
 
+    const { blogs } = useBlogs();
     // Filter blogs by user email
     const userBlogs = blogs.filter((blog) => blog.authorEmail === user?.email);
 
@@ -30,21 +32,21 @@ const DashboardComponent = () => {
                             ) : (
                                 userBlogs && userBlogs.length > 0 ? (
                                     userBlogs.map((blog) => (
-                                        <Link key={blog.id} href={`/blogs/${blog.id}`} className={`rounded-lg shadow-lg ${theme == 'dark' ? 'bg-textcolor' : 'bg-accent'}`}>
+                                        <Link key={blog?.$id} href={`/blogs/${blog.$id}`} className={`rounded-lg shadow-lg ${theme == 'dark' ? 'bg-textcolor' : 'bg-accent'}`}>
                                             <div className="flex flex-col lg:flex-row justify-between items-center">
-                                                <div className="pl-5 py-5">
+                                                <div className="w-full lg:w-4/5 lg:pl-5 py-5">
                                                     <div className="flex items-center gap-3">
-                                                        <Avatar src={profileAvatar ?? ''} size="sm" />
+                                                        <Avatar src={blog.authorAvatar ?? ''} size="sm" />
                                                         <span>{blog?.author}</span>
                                                     </div>
                                                     <div className="my-4">
                                                         <div className="flex flex-col gap-1 mb-1">
                                                             <p className="text-xl font-extrabold">{blog?.title}</p>
-                                                            <p className="line-clamp-2">{blog?.description}</p>
+                                                            <div className='line-clamp-3' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog?.content) }} />
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <p className="text-gray-500">{blog?.postDate}</p>
+                                                        <p className="text-gray-500">{blog?.createdAt}</p>
                                                     </div>
                                                 </div>
                                                 <div className="w-full sm:w-52 h-52 relative">
