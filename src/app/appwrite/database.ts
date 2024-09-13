@@ -22,19 +22,19 @@ type BlogData = {
 const database = new Databases(appWriteClient);
 
 export class DataBaseServices {
-    async insertData({name, email, avatarId, avatarBucketId}: InputData) {
+    async insertData({ name, email, avatarId, avatarBucketId }: InputData) {
         try {
             const cratedDatabase = await database.createDocument(
                 '66c8c9a6000f305a13fe',  // databaseid
                 '66d1fb2700069104cb81', // userdata collectin id
-                ID.unique(), 
+                ID.unique(),
                 {
-                name: name, 
-                email: email,
-                avatarId: avatarId,
-                avatarBucketId: avatarBucketId
-            })
-            if(cratedDatabase) {
+                    name: name,
+                    email: email,
+                    avatarId: avatarId,
+                    avatarBucketId: avatarBucketId
+                })
+            if (cratedDatabase) {
                 return cratedDatabase
             }
         } catch (error) {
@@ -42,24 +42,36 @@ export class DataBaseServices {
             throw error
         }
     }
-    async saveBlog({title, content, authorEmail, thumbnail, createdAt, category, authorAvatar, author, readTime}: BlogData) {
+    async getData() {
+        try {
+            const readData = await database.listDocuments('66c8c9a6000f305a13fe', '66d1fb2700069104cb81');
+            if (readData) {
+                return readData
+            }
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+    // create blog
+    async saveBlog({ title, content, authorEmail, thumbnail, createdAt, category, authorAvatar, author, readTime }: BlogData) {
         try {
             const cratedDatabase = await database.createDocument(
                 '66c8c9a6000f305a13fe',  // database Id
                 '66c8ca010010a285f838',  // article collection Id
-                ID.unique(), 
+                ID.unique(),
                 {
-                title: title,
-                authorEmail: authorEmail,
-                content: content,
-                thumbnail: thumbnail,
-                author: author,
-                createdAt: createdAt,
-                category: category,
-                authorAvatar: authorAvatar,
-                readTime: readTime
-            })
-            if(cratedDatabase) {
+                    title: title,
+                    authorEmail: authorEmail,
+                    content: content,
+                    thumbnail: thumbnail,
+                    author: author,
+                    createdAt: createdAt,
+                    category: category,
+                    authorAvatar: authorAvatar,
+                    readTime: readTime
+                })
+            if (cratedDatabase) {
                 return cratedDatabase
             }
         } catch (error) {
@@ -68,13 +80,14 @@ export class DataBaseServices {
         }
     };
 
-    async getBlogsData(){
+    //get blogs
+    async getBlogsData() {
         try {
             const getBlogs = await database.listDocuments(
-                '66c8c9a6000f305a13fe',
-                '66c8ca010010a285f838'
+                '66c8c9a6000f305a13fe', // database Id
+                '66c8ca010010a285f838' // article collection Id
             )
-            if(getBlogs){
+            if (getBlogs) {
                 return getBlogs;
             }
         } catch (error) {
@@ -83,17 +96,22 @@ export class DataBaseServices {
         }
     }
 
-    async getData(){
+    // update blogs
+
+    // delete blogs
+    async deleteBlog(targetBlogId: string){
         try {
-            const readData = await database.listDocuments('66c8c9a6000f305a13fe', '66d1fb2700069104cb81');
-            if(readData) {
-                return readData
-            }
+            const removeBlogfromDatabase = await database.deleteDocument(
+                '66c8c9a6000f305a13fe',  // database Id
+                '66c8ca010010a285f838',  // article collection Id
+                targetBlogId
+            )
         } catch (error) {
-            console.log(error)
-            throw error
+            
         }
     }
+
+
 };
 
 const dataBaseServices = new DataBaseServices();

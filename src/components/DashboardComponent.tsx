@@ -1,21 +1,27 @@
 'use client';
 import useUser from "@/hooks/useUser";
-import { Avatar, Divider, Skeleton, Spinner, Tooltip } from "@nextui-org/react";
+import { Avatar, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Skeleton, Spinner, Tooltip } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { CirclePlus, Plus } from "lucide-react";
+import { CirclePlus, Ellipsis, Option, Plus } from "lucide-react";
 import useBlogs from "@/hooks/useBlogs";
 import DOMPurify from "dompurify";
+import dataBaseServices from "@/app/appwrite/database";
+import { useEffect, useState } from "react";
 
 const DashboardComponent = () => {
     const { user, profileAvatar, loader } = useUser();
     const { theme } = useTheme();
 
-    const { blogs } = useBlogs();
+    const { blogs, deleteBlog } = useBlogs();
     // Filter blogs by user email
     const userBlogs = blogs.filter((blog) => blog.authorEmail === user?.email);
 
+    const handleBlogDelete = async (targetBlogId: string) => {
+        deleteBlog(targetBlogId);
+    }
+   
     return (
         <div className="max-w-6xl mx-auto my-20">
             <div className="flex flex-col-reverse lg:flex-row space-y-10">
@@ -32,9 +38,9 @@ const DashboardComponent = () => {
                             ) : (
                                 userBlogs && userBlogs.length > 0 ? (
                                     userBlogs.map((blog) => (
-                                        <Link key={blog?.$id} href={`/blogs/${blog.$id}`} className={`rounded-lg shadow-lg ${theme == 'dark' ? 'bg-textcolor' : 'bg-accent'}`}>
-                                            <div className="flex flex-col lg:flex-row justify-between items-center">
-                                                <div className="w-full lg:w-4/5 lg:pl-5 py-5">
+                                        <div key={blog?.$id} className={`rounded-lg shadow-lg lg:pl-5 py-5 ${theme == 'dark' ? 'bg-textcolor' : 'bg-accent'}`}>
+                                            <Link href={`/blogs/${blog.$id}`} className="flex flex-col lg:flex-row justify-between items-center">
+                                                <div className="w-full lg:w-4/5">
                                                     <div className="flex items-center gap-3">
                                                         <Avatar src={blog.authorAvatar ?? ''} size="sm" />
                                                         <span>{blog?.author}</span>
@@ -45,15 +51,30 @@ const DashboardComponent = () => {
                                                             <div className='line-clamp-3' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog?.content) }} />
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                        <p className="text-gray-500">{blog?.createdAt}</p>
-                                                    </div>
                                                 </div>
                                                 <div className="w-full sm:w-52 h-52 relative">
                                                     <Image className="object-cover w-full h-full" fill src={blog?.thumbnail} alt="thumbnail" />
                                                 </div>
+                                            </Link>
+                                            <div className="flex justify-between items-center pr-">
+                                                <p className="text-gray-500">{blog?.createdAt}</p>
+                                                <div className="cursor-pointer mt-5 lg:pr-5">
+                                                    <Dropdown>
+                                                        <DropdownTrigger>
+                                                            <Ellipsis />
+                                                        </DropdownTrigger>
+                                                        <DropdownMenu aria-label="Static Actions">
+                                                            <DropdownItem key="new">Edit</DropdownItem>
+                                                            <DropdownItem key="copy">Change visibility</DropdownItem>
+                                                            <DropdownItem key="edit">Share</DropdownItem>
+                                                            <DropdownItem onClick={() => handleBlogDelete(blog?.$id)} key="delete" className="text-danger" color="danger">
+                                                                Delete
+                                                            </DropdownItem>
+                                                        </DropdownMenu>
+                                                    </Dropdown>
+                                                </div>
                                             </div>
-                                        </Link>
+                                        </div>
                                     ))
                                 ) : (
                                     <div>

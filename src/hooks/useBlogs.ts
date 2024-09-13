@@ -53,11 +53,20 @@ const useBlogs = () => {
         }
     };
 
+    const deleteBlog = async (blogId: string) =>{
+       try {
+         await dataBaseServices.deleteBlog(blogId);
+         setBlogs(prevBlogs => prevBlogs.filter(blog=> blog.$id !== blogId))
+       } catch (error) {
+        console.log(error, 'Error deleting blog')
+        setError('Failed to delete blog')
+       }
+    }
     useEffect(() => {
         fetchBlogs();
     }, []);
 
-    return { blogs, loading, error };
+    return { blogs, loading, error, deleteBlog };
 };
 
 export default useBlogs;
