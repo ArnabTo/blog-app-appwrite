@@ -151,7 +151,7 @@ const CreateBlogPage = () => {
 
                 <div className="mb-16">
                     <QuillEditor
-                        className="h-[30rem] mb-4 rounded-md"
+                        className="h-[30rem] mb-16 rounded-md"
                         value={content}
                         onChange={setContent}
                         theme="snow"
