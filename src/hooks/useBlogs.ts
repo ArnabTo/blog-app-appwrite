@@ -16,7 +16,7 @@ type Blog = {
 };
 
 const useBlogs = () => {
-    const [allBlogs, setBlogs] = useState<Blog[]>([]);
+    const [blogs, setBlogs] = useState<Blog[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -57,7 +57,7 @@ const useBlogs = () => {
         fetchBlogs();
     }, []);
 
-    return { allBlogs, loading, error };
+    return { blogs, loading, error };
 };
 
 export default useBlogs;

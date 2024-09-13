@@ -5,6 +5,7 @@ import QuillEditor from "@/components/TextEditor/Editor";
 import useUser from "@/hooks/useUser";
 import { Input } from "@nextui-org/input";
 import { Button, Select, SelectItem } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -46,6 +47,7 @@ const CreateBlogPage = () => {
         'list', 'bullet', 'indent', 'link', 'image', 'video'
     ];
 
+    const router = useRouter();
     const [content, setContent] = useState<string>('');  // Type as string
     const [preview, setPreview] = useState<string>('');  // Type as string for the image preview URL
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');        // Type as string for the thumbnail URL
@@ -99,6 +101,7 @@ const CreateBlogPage = () => {
 
                         if (saveBlog) {
                             console.log(saveBlog, 'Blog created successfully');
+                            router.push('/dashboard');
                         }
                     }
                 }
