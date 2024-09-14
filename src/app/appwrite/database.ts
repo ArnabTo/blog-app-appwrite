@@ -1,4 +1,4 @@
-import { Databases, ID } from "appwrite";
+import { Databases, ID, Query } from "appwrite";
 import { appWriteClient } from "./auth";
 
 type InputData = {
@@ -19,6 +19,12 @@ type BlogData = {
     readTime: string;
 }
 
+type updatedBlogData = {
+    title: string;
+    content: string;
+    thumbnail: string;
+    category: string;
+}
 const database = new Databases(appWriteClient);
 
 export class DataBaseServices {
@@ -96,8 +102,45 @@ export class DataBaseServices {
         }
     }
 
+    // query blogs
+    async queryBlogs(query: string) {
+        try {
+            const getBlogs = await database.listDocuments(
+                '66c8c9a6000f305a13fe', // database Id
+                '66c8ca010010a285f838', // article collection Id
+                [
+                    Query.equal("$id", query)
+                ]
+            )
+            if (getBlogs) {
+                return getBlogs
+            }
+        } catch (error) {
+            console.log(error, 'Error fetching blogs');
+            throw error
+        }
+    }
     // update blogs
-
+    async updateBlog( id:string, {title, content, thumbnail, category }: updatedBlogData) {
+        try {
+            const updatedData = await database.updateDocument(
+                '66c8c9a6000f305a13fe',  // database Id
+                '66c8ca010010a285f838',  // article collection Id
+                id,
+                {
+                    title,
+                    content,
+                    thumbnail,
+                    category,
+                })
+            if (updatedData) {
+                return updatedData
+            }
+        } catch (error) {
+            console.log('Error updating database', error)
+            throw error
+        }
+    };
     // delete blogs
     async deleteBlog(targetBlogId: string){
         try {

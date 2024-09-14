@@ -66,7 +66,7 @@ const DashboardComponent = () => {
                                                             <Ellipsis />
                                                         </DropdownTrigger>
                                                         <DropdownMenu aria-label="Static Actions">
-                                                            <DropdownItem key="new">Edit</DropdownItem>
+                                                            <DropdownItem href={`/dashboard/update-blog/${blog?.$id}`} key="new"><Link href={`/dashboard/update-blog/${blog?.$id}`}>Edit</Link></DropdownItem>
                                                             <DropdownItem key="copy">Change visibility</DropdownItem>
                                                             <DropdownItem key="edit">Share</DropdownItem>
                                                             <DropdownItem onClick={() => handleBlogDelete(blog?.$id)} key="delete" className="text-danger" color="danger">
