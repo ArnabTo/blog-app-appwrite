@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { Providers } from "../providers";
 import NavigationBar from "@/components/Shared/Navbar";
-import StoreProvider from "../StoreProvider";
 import Footer from "@/components/Shared/Footer";
 import AuthProviderWrapper from "@/context/AuthProviderWrapper";
+import { ReduxProvider } from "../ReduxProvider";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -17,11 +17,11 @@ export default function RootLayout({
     <div>
       <Providers>
         <AuthProviderWrapper>
-        <StoreProvider>
+        <ReduxProvider>
           <NavigationBar />
           {children}
           <Footer />
-        </StoreProvider>
+        </ReduxProvider>
         </AuthProviderWrapper>
       </Providers>
     </div>

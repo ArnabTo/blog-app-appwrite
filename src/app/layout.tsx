@@ -3,10 +3,11 @@ import { Inter, Poppins, Tinos } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Toaster } from "sonner";
+import { ReduxProvider } from "./ReduxProvider";
 
 
 const inter = Inter({ subsets: ["latin"] });
-const poppins = Poppins({ weight: ["100","200","300","400","500","600",], subsets: ["latin"] });
+const poppins = Poppins({ weight: ["100", "200", "300", "400", "500", "600",], subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "BlogVerse",
@@ -22,8 +23,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={poppins.className}>
         <Providers>
+          <ReduxProvider>
             {children}
-            <Toaster/>
+            <Toaster />
+          </ReduxProvider>
         </Providers>
       </body>
     </html>

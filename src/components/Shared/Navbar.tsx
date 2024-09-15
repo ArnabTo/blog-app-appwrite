@@ -2,13 +2,7 @@
 import authServices from "@/app/appwrite/auth";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button, Image, Avatar, Switch, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { CircularProgress } from "@nextui-org/progress";
 import { CustomButton } from "../custom/CustomButton";
-import dataBaseServices from "@/app/appwrite/database";
-import storageServices from "@/app/appwrite/storage";
-import { useAppSelector } from "@/lib/hooks";
-import StoreProvider from "@/app/StoreProvider";
-import { MoonIcon, SunIcon } from "lucide-react";
 import ThemeSwitch from "../custom/ThemeSwitch";
 import useUser from "@/hooks/useUser";
 import { useTheme } from "next-themes";
@@ -40,12 +34,6 @@ const NavigationBar = () => {
         email: string;
         name: string;
     }
-    // const [user, setUser] = useState<User | null>(null);
-    // const [userEmail, setUserEmail] = useState<string | null>(null);
-    // const [userData, setUserData] = useState<User | null>(null);
-    // const [currentUserData, setCurrentUserData] = useState<UserType | null>(null);
-    // const [profileAvatar, setProfileAvatar] = useState<string | null>(null);
-    // const [loader, setLoader] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuItems = [
         "Profile",
@@ -55,85 +43,9 @@ const NavigationBar = () => {
     ];
 
 
-    // useEffect(() => {
-    //     const checkUser = async () => {
-    //         try {
-    //             const user = await authServices.getUser();
-    //             if (user) {
-    //                 setUser(user);
-    //                 setUserEmail(user.email);
-    //             }
-    //         } catch (error) {
-    //             console.log(error)
-    //             setUser(null);
-    //         }
-    //     }
-    //     checkUser();
-
-    // }, [setUserData]);
-
-    // useEffect(() => {
-    //     if (!userEmail) {
-    //         return
-    //     }
-    //     const getUserData = async () => {
-    //         setLoader(true);
-    //         try {
-    //             const userData = await dataBaseServices.getData();
-    //             if (userData) {
-    //                 const currentUserData = userData.documents.find((doc) => doc.email == userEmail)
-
-    //                 const requiredUserData = {
-    //                     avatarBucketId: currentUserData?.avatarBucketId,
-    //                     avatarId: currentUserData?.avatarId,
-    //                     email: currentUserData?.email,
-    //                     name: currentUserData?.name,
-    //                 }
-    //                 setCurrentUserData(requiredUserData);
-    //                 if (currentUserData) {
-    //                     const bucketId = currentUserData.avatarBucketId;
-    //                     const fildId = currentUserData.avatarId
-    //                     const getUserImage = await storageServices.getFileUrl({ bucketId: bucketId, fileId: fildId });
-    //                     if (getUserImage) {
-    //                         setProfileAvatar(getUserImage?.href);
-    //                     }
-
-    //                     // const userImagesPromises = currentUserData.map(async (doc) => {
-    //                     //     const bucketId = doc.avatarBucketId;
-    //                     //     const fileId = doc.avatarId;
-    //                     //     const fileUrl = await storageServices.getFileUrl({ bucketId, fileId });
-    //                     //     return fileUrl;
-    //                     // });
-
-    //                     // const userImages = await Promise.all(userImagesPromises);
-    //                     // setProfileAvatar(userImages);
-    //                 }
-    //             }
-
-    //         } catch (error) {
-    //             console.log(error)
-    //             setCurrentUserData(null);
-    //         } finally {
-    //             setLoader(false);
-    //         }
-
-    //     }
-
-    //     getUserData();
-    // }, [userEmail]);
-    // const handleLogout = async () => {
-    //     try {
-    //         await authServices.logOut();
-    //         setUser(null); // Clear user state after logging out
-    //         window.location.reload();
-    //     } catch (error) {
-    //         console.log("Error logging out:", error);
-    //     }
-    // };
-
 const { user, profileAvatar, handleLogout } = useUser();
     return (
-        <StoreProvider>
+  
             <Navbar onMenuOpenChange={setIsMenuOpen} className="shadow-md bg-transparent">
                 <NavbarContent>
                     <NavbarMenuToggle
@@ -234,7 +146,7 @@ const { user, profileAvatar, handleLogout } = useUser();
                     ))}
                 </NavbarMenu>
             </Navbar>
-        </StoreProvider>
+
     );
 };
 

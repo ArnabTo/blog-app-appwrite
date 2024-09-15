@@ -80,16 +80,6 @@ const useUser = () => {
                         if (getUserImage) {
                             setProfileAvatar(getUserImage?.href);
                         }
-
-                        // const userImagesPromises = currentUserData.map(async (doc) => {
-                        //     const bucketId = doc.avatarBucketId;
-                        //     const fileId = doc.avatarId;
-                        //     const fileUrl = await storageServices.getFileUrl({ bucketId, fileId });
-                        //     return fileUrl;
-                        // });
-
-                        // const userImages = await Promise.all(userImagesPromises);
-                        // setProfileAvatar(userImages);
                     }
                 }
 

@@ -7,7 +7,9 @@ import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
-
+import { useAppDispatch } from "@/lib/hooks";
+import { logIn } from "@/store/features/authSlice";
+import { useDispatch } from "react-redux";
 type InputData = {
     email: string;
     password: string;
@@ -20,6 +22,7 @@ export default function SignIn() {
     const [errorMsg, setErrorMsg] = useState('');
     const router = useRouter();
     const { setAuthStatus } = useAuth();
+    const dispatch = useDispatch();
 
     const { register, handleSubmit, formState: { errors } } = useForm<InputData>();
     useEffect(() => {
@@ -49,6 +52,7 @@ export default function SignIn() {
         }
         try {
             const loginUser = await authServices.loginUser(data);
+            dispatch(logIn(loginUser));
             if (loginUser) {
                 setAuthStatus(true);
                 router.push('/');
