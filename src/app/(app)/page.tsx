@@ -6,10 +6,8 @@ import { ReduxProvider } from "../ReduxProvider";
 export default function Home() {
 
   return (
-
     <ReduxProvider>
       <HomePage/>
     </ReduxProvider>
-
   );
 }

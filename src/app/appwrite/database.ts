@@ -12,6 +12,8 @@ type BlogData = {
     content: string;
     authorEmail: string;
     thumbnail: string;
+    thumbnailId: string;
+    thumbnailBucketId: string;
     createdAt: string;
     category: string;
     authorAvatar: string;
@@ -60,7 +62,7 @@ export class DataBaseServices {
         }
     }
     // create blog
-    async saveBlog({ title, content, authorEmail, thumbnail, createdAt, category, authorAvatar, author, readTime }: BlogData) {
+    async saveBlog({ title, content, authorEmail, thumbnail, createdAt, category, authorAvatar, author, readTime, thumbnailId, thumbnailBucketId }: BlogData) {
         try {
             const cratedDatabase = await database.createDocument(
                 '66c8c9a6000f305a13fe',  // database Id
@@ -71,6 +73,8 @@ export class DataBaseServices {
                     authorEmail: authorEmail,
                     content: content,
                     thumbnail: thumbnail,
+                    thumbnailId: thumbnailId,
+                    thumbnailBucketId: thumbnailBucketId,
                     author: author,
                     createdAt: createdAt,
                     category: category,
@@ -120,6 +124,7 @@ export class DataBaseServices {
             throw error
         }
     }
+
     // update blogs
     async updateBlog( id:string, {title, content, thumbnail, category }: updatedBlogData) {
         try {

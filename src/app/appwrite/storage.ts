@@ -1,5 +1,5 @@
 import { appWriteClient } from "./auth";
-import { Storage, ID } from "appwrite";
+import { Storage, ID, ImageGravity, ImageFormat } from "appwrite";
 import conf from "@/conf/conf";
 const storage = new Storage(appWriteClient);
 
@@ -25,17 +25,65 @@ export class StorageServices {
 
 
 
-    async getFileUrl({bucketId, fileId}:GetFile) {
-     try {
-        const file = await storage.getFileView(bucketId, fileId);
-        if(file) {
-            return file;
+    async getFileUrl({ bucketId, fileId }: GetFile) {
+        try {
+            const file = await storage.getFilePreview(
+                bucketId, 
+                fileId,
+                1000, // width (optional)
+                1000, // height (optional)
+                ImageGravity.Center, // gravity (optional)
+                100, // quality (optional)
+                50, // borderWidth (optional)
+                'CDCA30', // borderColor (optional)
+                50, // borderRadius (optional)
+                1, // opacity (optional)
+                -360, // rotation (optional)
+                'FFFFFF', // background (optional)
+                ImageFormat.Jpg // output (optional)
+                );
+            if (file) {
+                return file;
+            }
+        } catch (error) {
+            console.log(error, 'error getting file');
+            throw error
         }
-     } catch (error) {
-      console.log(error, 'error getting file');
-      throw error  
-     }
     }
+
+    // delete file
+
+    async deleteFile({ bucketId, fileId }: GetFile) {
+        try {
+            const file = await storage.deleteFile(bucketId, fileId);
+        } catch (error) {
+            console.log(error, 'error deleting file');
+            throw error
+        }
+    }
+    // async getFileView({ bucketId, fileId }: GetFile) {
+    //     try {
+    //         const file = await storage.getFilePreview(bucketId, fileId,
+    //             3000, // width (optional)
+    //             3000, // height (optional)
+    //             ImageGravity.Center, // gravity (optional)
+    //             100, // quality (optional)
+    //             10, // borderWidth (optional)
+    //             'CDCA30', // borderColor (optional)
+    //             50, // borderRadius (optional)
+    //             1, // opacity (optional)
+    //             -360, // rotation (optional)
+    //             'FFFFFF', // background (optional)
+    //             ImageFormat.Jpg // output (optional)
+    //         );
+    //         if (file) {
+    //             return file;
+    //         }
+    //     } catch (error) {
+    //         console.log(error, 'error getting file');
+    //         throw error
+    //     }
+    // }
 };
 
 const storageServices = new StorageServices();

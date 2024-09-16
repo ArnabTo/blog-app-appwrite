@@ -1,4 +1,5 @@
 import dataBaseServices from "@/app/appwrite/database";
+import storageServices from "@/app/appwrite/storage";
 import { useEffect, useState } from "react";
 
 // Define the Blog type
@@ -53,14 +54,19 @@ const useBlogs = () => {
         }
     };
 
-    const deleteBlog = async (blogId: string) =>{
-       try {
-         await dataBaseServices.deleteBlog(blogId);
-         setBlogs(prevBlogs => prevBlogs.filter(blog=> blog.$id !== blogId))
-       } catch (error) {
-        console.log(error, 'Error deleting blog')
-        setError('Failed to delete blog')
-       }
+    const deleteBlog = async (blogId: string, fileId: string, bucketId: string,) => {
+        try {
+            if (fileId) {
+                await storageServices.deleteFile({ bucketId, fileId });
+            }
+
+            await dataBaseServices.deleteBlog(bucketId);
+
+            setBlogs(prevBlogs => prevBlogs.filter(blog => blog.$id !== blogId))
+        } catch (error) {
+            console.log(error, 'Error deleting blog')
+            setError('Failed to delete blog')
+        }
     }
     useEffect(() => {
         fetchBlogs();

@@ -14,6 +14,8 @@ import { toast } from "sonner";
 type InputData = {
     title: string;
     thumbnail: FileList;
+    thumbnailBucketId: string;
+    thumbnailId: string;
     category: string;
     authorAvatar: string;
     author: string;
@@ -98,6 +100,8 @@ const CreateBlogPage = () => {
                             authorAvatar: profileAvatar || '',
                             createdAt: new Date().toLocaleDateString('en-GB', options),
                             category: finalCategory,
+                            thumbnailBucketId: bucketId,
+                            thumbnailId: fileId,
                             readTime: `${readTime} min read`, // Add read time
                         });
 

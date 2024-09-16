@@ -19,8 +19,8 @@ const DashboardComponent = () => {
     // Filter blogs by user email
     const userBlogs = blogs.filter((blog) => blog.authorEmail === user?.email);
 
-    const handleBlogDelete = async (targetBlogId: string) => {
-        deleteBlog(targetBlogId);
+    const handleBlogDelete = async (targetBlogId: string, fileId: string, bucketId: string) => {
+        deleteBlog(targetBlogId, fileId, bucketId);
         toast.success('Blog deleted successfully');
     }
    
@@ -69,7 +69,7 @@ const DashboardComponent = () => {
                                                             <DropdownItem href={`/dashboard/update-blog/${blog?.$id}`} key="new"><Link href={`/dashboard/update-blog/${blog?.$id}`}>Edit</Link></DropdownItem>
                                                             <DropdownItem key="copy">Change visibility</DropdownItem>
                                                             <DropdownItem key="edit">Share</DropdownItem>
-                                                            <DropdownItem onClick={() => handleBlogDelete(blog?.$id)} key="delete" className="text-danger" color="danger">
+                                                            <DropdownItem onClick={() => handleBlogDelete(blog?.$id, blog?.thumbnailId, blog?.thumbnailBucketId )} key="delete" className="text-danger" color="danger">
                                                                 Delete
                                                             </DropdownItem>
                                                         </DropdownMenu>
