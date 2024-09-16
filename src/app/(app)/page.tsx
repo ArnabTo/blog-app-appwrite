@@ -6,7 +6,7 @@ import ReduxProvider from "../ReduxProvider";
 export default function Home() {
 
   return (
-    <ReduxProvider count={0}>
+    <ReduxProvider>
       <HomePage/>
     </ReduxProvider>
   );

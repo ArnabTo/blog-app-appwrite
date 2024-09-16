@@ -17,7 +17,7 @@ export default function RootLayout({
     <div>
       <Providers>
         <AuthProviderWrapper>
-        <ReduxProvider count={0}>
+        <ReduxProvider>
           <NavigationBar />
           {children}
           <Footer />

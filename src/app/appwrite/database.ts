@@ -146,6 +146,24 @@ export class DataBaseServices {
             throw error
         }
     };
+
+    //update supports
+    async updateSupport(id: string, updatedSupports: number) {
+        try {
+            const response = await database.updateDocument(
+                '66c8c9a6000f305a13fe',  // database Id
+                '66c8ca010010a285f838',  // article collection Id
+                id,
+                {
+                    supports: updatedSupports
+                }
+            );
+            return response; // This will return the updated document
+        } catch (error) {
+            console.log(error, 'Error updating supports');
+            throw error;
+        }
+    }
     // delete blogs
     async deleteBlog(targetBlogId: string){
         try {

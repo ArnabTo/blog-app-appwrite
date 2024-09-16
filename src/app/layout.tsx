@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={poppins.className}>
         <Providers>
-          <ReduxProvider count={0}>
+          <ReduxProvider>
             {children}
             <Toaster />
           </ReduxProvider>
