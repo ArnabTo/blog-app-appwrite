@@ -3,7 +3,7 @@ import dataBaseServices from "@/app/appwrite/database";
 import storageServices from "@/app/appwrite/storage";
 import { Avatar, Button, Divider } from "@nextui-org/react";
 import DOMPurify from "dompurify";
-import { HandHeart } from "lucide-react";
+import { HandHeart, Heart } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react";
@@ -50,7 +50,7 @@ export default function BlogDetailPage() {
         }
     }, [params.blogid])
 
-    console.log(blogDetails)
+    console.log(blogDetails?.supports)
 
 
     if (loading) return <p>Loading...</p>
@@ -72,13 +72,20 @@ export default function BlogDetailPage() {
                         </span>
                     </div>
                 </div>
-                <div>
-                    {
-                        blogDetails?.supports > 0 ? <p><HandHeart className=" cursor-pointer" />{blogDetails?.supports}</p> : <p><HandHeart fill="red" className=" cursor-pointer" /> {blogDetails?.supports}</p>
-                    }
-                </div>
+                {
+                    blogDetails ?
+                        <div>
+                            {
+                                blogDetails?.supports == 0 ? <p className="flex items-center gap-2"><Heart className=" cursor-pointer" />{blogDetails?.supports}</p> : <p className="flex items-center"><Heart size={20} fill="black" className=" cursor-pointer" /> {blogDetails?.supports}</p>
+                            }
+                        </div>
+                        :
+                        <div>
+                            <p className="flex"><Heart className=" cursor-pointer" /> 0f</p>
+                        </div>
+                }
                 <Divider></Divider>
-                <Image src={blogDetails?.thumbnail ?? ''} className="w-full h-full rounded-md mb-10" width={500} height={500} alt={blogDetails?.title} />
+                <Image src={blogDetails?.thumbnail ?? ''} className="w-full h-full rounded-md mb-10" width={500} height={500} alt='blog thumbnail' />
                 <div className=" leading-10" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blogDetails?.content ?? '') }} />
             </div>
         </div>

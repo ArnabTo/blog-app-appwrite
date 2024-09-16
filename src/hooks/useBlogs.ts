@@ -1,3 +1,4 @@
+'use client';
 import dataBaseServices from "@/app/appwrite/database";
 import storageServices from "@/app/appwrite/storage";
 import { useEffect, useState } from "react";
@@ -8,6 +9,8 @@ type Blog = {
     title: string;
     content: string;
     thumbnail: string;
+    bucketId: string;
+    fileId: string;
     author: string;
     authorEmail: string;
     authorAvatar: string;
@@ -34,6 +37,8 @@ const useBlogs = () => {
                     title: doc.title,
                     content: doc.content,
                     thumbnail: doc.thumbnail,
+                    bucketId: doc.bucketId,
+                    fileId: doc.fileId,
                     author: doc.author,
                     authorEmail: doc.authorEmail,
                     authorAvatar: doc.authorAvatar,
@@ -54,25 +59,31 @@ const useBlogs = () => {
         }
     };
 
-    const deleteBlog = async (blogId: string, fileId: string, bucketId: string,) => {
+    const deleteThumbnail = async (bucketId: string, fileId: string) => {
         try {
-            if (fileId) {
-                await storageServices.deleteFile({ bucketId, fileId });
-            }
-
-            await dataBaseServices.deleteBlog(bucketId);
-
+            console.log(bucketId, fileId, 'sdflsdkfjlkdskjf')
+          const response =  await storageServices.deleteFile({bucketId, fileId});
+          console.log(response, 'Deleted thumbnail')
+        } catch (error) {
+            console.log(error, 'Error deleting thumbnail')
+            setError('Failed to delete thumbnail')
+        }
+    }
+    const deleteBlog = async (blogId: string) => {
+        try {
+            await dataBaseServices.deleteBlog(blogId);
             setBlogs(prevBlogs => prevBlogs.filter(blog => blog.$id !== blogId))
         } catch (error) {
             console.log(error, 'Error deleting blog')
             setError('Failed to delete blog')
         }
     }
+
     useEffect(() => {
         fetchBlogs();
     }, []);
 
-    return { blogs, loading, error, deleteBlog };
+    return { blogs, loading, error,deleteThumbnail, deleteBlog };
 };
 
 export default useBlogs;

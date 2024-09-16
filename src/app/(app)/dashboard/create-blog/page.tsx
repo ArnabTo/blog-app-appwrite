@@ -14,8 +14,8 @@ import { toast } from "sonner";
 type InputData = {
     title: string;
     thumbnail: FileList;
-    thumbnailBucketId: string;
-    thumbnailId: string;
+    bucketId: string;
+    fileId: string;
     category: string;
     authorAvatar: string;
     author: string;
@@ -83,7 +83,7 @@ const CreateBlogPage = () => {
                     const bucketId = uploadThumbnail.bucketId;
                     const fileId = uploadThumbnail.$id;
                     const thumbnailUrl = await storageServices.getFileUrl({ bucketId, fileId });
-                    if (thumbnailUrl) {
+                    if (thumbnailUrl && bucketId && fileId) {
                         setThumbnailUrl(thumbnailUrl.toString());
 
                         const options: Intl.DateTimeFormatOptions = {
@@ -91,6 +91,7 @@ const CreateBlogPage = () => {
                             month: 'long',
                             year: 'numeric',
                         };
+                        console.log(bucketId, fileId, 'bucketId, fileId');
                         const saveBlog = await dataBaseServices.saveBlog({
                             title: title,
                             content: content,
@@ -100,8 +101,8 @@ const CreateBlogPage = () => {
                             authorAvatar: profileAvatar || '',
                             createdAt: new Date().toLocaleDateString('en-GB', options),
                             category: finalCategory,
-                            thumbnailBucketId: bucketId,
-                            thumbnailId: fileId,
+                            bucketId: bucketId.toString(),
+                            fileId: fileId.toString(),
                             readTime: `${readTime} min read`, // Add read time
                         });
 

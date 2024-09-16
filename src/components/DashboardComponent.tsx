@@ -7,23 +7,23 @@ import { useTheme } from "next-themes";
 import { CirclePlus, Ellipsis, Option, Plus } from "lucide-react";
 import useBlogs from "@/hooks/useBlogs";
 import DOMPurify from "dompurify";
-import dataBaseServices from "@/app/appwrite/database";
-import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const DashboardComponent = () => {
     const { user, profileAvatar, loader } = useUser();
     const { theme } = useTheme();
 
-    const { blogs, deleteBlog } = useBlogs();
+    const { blogs, deleteBlog, deleteThumbnail } = useBlogs();
     // Filter blogs by user email
     const userBlogs = blogs.filter((blog) => blog.authorEmail === user?.email);
 
-    const handleBlogDelete = async (targetBlogId: string, fileId: string, bucketId: string) => {
-        deleteBlog(targetBlogId, fileId, bucketId);
-        toast.success('Blog deleted successfully');
+    const handleBlogDelete = async (targetBlogId: string, bucketId: string, fileId: string) => {
+
+       await deleteThumbnail(bucketId, fileId);
+       await deleteBlog(targetBlogId); 
+       toast.success('Blog deleted successfully');
     }
-   
+
     return (
         <div className="max-w-6xl mx-auto my-20">
             <div className="flex flex-col-reverse lg:flex-row space-y-10">
@@ -69,7 +69,7 @@ const DashboardComponent = () => {
                                                             <DropdownItem href={`/dashboard/update-blog/${blog?.$id}`} key="new"><Link href={`/dashboard/update-blog/${blog?.$id}`}>Edit</Link></DropdownItem>
                                                             <DropdownItem key="copy">Change visibility</DropdownItem>
                                                             <DropdownItem key="edit">Share</DropdownItem>
-                                                            <DropdownItem onClick={() => handleBlogDelete(blog?.$id, blog?.thumbnailId, blog?.thumbnailBucketId )} key="delete" className="text-danger" color="danger">
+                                                            <DropdownItem onClick={() => handleBlogDelete(blog.$id, blog?.bucketId, blog?.fileId)} key="delete" className="text-danger" color="danger">
                                                                 Delete
                                                             </DropdownItem>
                                                         </DropdownMenu>
@@ -80,12 +80,12 @@ const DashboardComponent = () => {
                                     ))
                                 ) : (
                                     <div>
-                                        {userBlogs ? (
+                                        {userBlogs.length === 0 ? (
+                                             <p className="text-xl font-bold text-center">No blogs found</p>
+                                        ) : (
                                             <div className="flex justify-center items-center">
                                                 <Spinner color="success" />
                                             </div>
-                                        ) : (
-                                            <p className="text-xl font-bold">No blogs found</p>
                                         )}
                                     </div>
                                 )

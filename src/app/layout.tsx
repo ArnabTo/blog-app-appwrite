@@ -3,7 +3,8 @@ import { Inter, Poppins, Tinos } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Toaster } from "sonner";
-import { ReduxProvider } from "./ReduxProvider";
+import ReduxProvider from "./ReduxProvider";
+
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={poppins.className}>
         <Providers>
-          <ReduxProvider>
+          <ReduxProvider count={0}>
             {children}
             <Toaster />
           </ReduxProvider>

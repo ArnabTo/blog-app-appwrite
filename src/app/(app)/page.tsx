@@ -1,12 +1,12 @@
 'use client'
 import HomePage from "@/components/Pages/HomePage";
-import { ReduxProvider } from "../ReduxProvider";
+import ReduxProvider from "../ReduxProvider";
 
 
 export default function Home() {
 
   return (
-    <ReduxProvider>
+    <ReduxProvider count={0}>
       <HomePage/>
     </ReduxProvider>
   );

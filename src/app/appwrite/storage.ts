@@ -27,21 +27,7 @@ export class StorageServices {
 
     async getFileUrl({ bucketId, fileId }: GetFile) {
         try {
-            const file = await storage.getFilePreview(
-                bucketId, 
-                fileId,
-                1000, // width (optional)
-                1000, // height (optional)
-                ImageGravity.Center, // gravity (optional)
-                100, // quality (optional)
-                50, // borderWidth (optional)
-                'CDCA30', // borderColor (optional)
-                50, // borderRadius (optional)
-                1, // opacity (optional)
-                -360, // rotation (optional)
-                'FFFFFF', // background (optional)
-                ImageFormat.Jpg // output (optional)
-                );
+            const file = await storage.getFileView(bucketId, fileId);
             if (file) {
                 return file;
             }
@@ -55,7 +41,9 @@ export class StorageServices {
 
     async deleteFile({ bucketId, fileId }: GetFile) {
         try {
-            const file = await storage.deleteFile(bucketId, fileId);
+            console.log(bucketId, fileId);
+            await storage.deleteFile(bucketId, fileId);
+            return {bucketId, fileId}
         } catch (error) {
             console.log(error, 'error deleting file');
             throw error
