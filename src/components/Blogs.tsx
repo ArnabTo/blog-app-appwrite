@@ -22,7 +22,7 @@ export default function Blogs() {
         setCurrentPage(page);
     }
 
-    console.log(blogs)
+
     return (
         <section className='max-w-7xl mx-auto mb-28'>
             <h1 className={`text-3xl font-extrabold mb-10 ${theme == 'dark' ? 'text-primary' : 'text-neutral'} `}>
@@ -75,9 +75,13 @@ export default function Blogs() {
                             })}
                         </div>
                         {/* Pagination */}
-                        <div className='flex justify-center'>
-                            <Pagination className='text-textcolor' total={totalPages} page={currentPage} initialPage={1} onChange={handlePageChange} />
-                        </div>
+                        {
+                            blogs.length > 8 &&
+                            <div className='flex justify-center'>
+                                <Pagination className={`${theme == 'dark' ? 'text-white' : 'text-textcolor'}`} total={totalPages} page={currentPage} initialPage={1} onChange={handlePageChange} />
+                            </div>
+                        }
+
                     </div>
             }
         </section>

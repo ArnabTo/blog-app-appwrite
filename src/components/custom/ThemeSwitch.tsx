@@ -1,49 +1,32 @@
 'use client';
 
-import { Switch, VisuallyHidden, useSwitch } from "@nextui-org/react";
+import { useEffect, useState } from "react";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 
-const ThemeSwitch = (props:any) => {
-  const { theme, setTheme } = useTheme();
+const ThemeSwitch = () => {
+  const { theme, setTheme, resolvedTheme } = useTheme(); // Use `resolvedTheme` to get the actual applied theme
   const [mounted, setMounted] = useState(false);
-  
-  useEffect(() => setMounted(true), []); // To avoid mismatched render on the server
 
-  const {
-    Component,
-    slots,
-    isSelected,
-    getBaseProps,
-    getInputProps,
-    getWrapperProps,
-  } = useSwitch(props);
+  // This useEffect ensures the component waits until mounted before rendering
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  if (!mounted) return null; // Avoid rendering before hydration
+  if (!mounted) return null; // Avoid rendering before hydration to prevent mismatch
 
-  const isDarkMode = theme === "dark";
+  const isDarkMode = resolvedTheme === "dark"; // Use resolvedTheme to determine if dark mode is active
 
   return (
-    <div className="flex flex-col gap-2">
-      <Component {...getBaseProps()}>
-        <VisuallyHidden>
-          <input {...getInputProps()} />
-        </VisuallyHidden>
-        <div
-          {...getWrapperProps()}
-          className={slots.wrapper({
-            class: [
-              "w-7 h-7",
-              "flex items-center justify-center",
-              "rounded-lg bg-transparent hover:bg-default-200 transition-all delay-100",
-            ],
-          })}
-          onClick={() => setTheme(isDarkMode ? "light" : "dark")} // Toggle between themes
-        >
-          {isDarkMode ? <SunIcon className='text-secondary'/> : <MoonIcon className="text-textcolor"/>}
-        </div>
-      </Component>
+    <div
+      className="w-7 h-7 flex items-center justify-center rounded-lg bg-transparent hover:bg-default-200 transition-all delay-100 cursor-pointer"
+      onClick={() => setTheme(isDarkMode ? "light" : "dark")} // Toggle between dark and light modes
+    >
+      {isDarkMode ? (
+        <SunIcon className="text-secondary" />
+      ) : (
+        <MoonIcon className="text-textcolor" />
+      )}
     </div>
   );
 };

@@ -8,6 +8,7 @@ import { CirclePlus, Ellipsis, Option, Plus } from "lucide-react";
 import useBlogs from "@/hooks/useBlogs";
 import DOMPurify from "dompurify";
 import { toast } from "sonner";
+import { useEffect } from "react";
 
 const DashboardComponent = () => {
     const { user, profileAvatar, loader } = useUser();
@@ -23,6 +24,7 @@ const DashboardComponent = () => {
        await deleteBlog(targetBlogId); 
        toast.success('Blog deleted successfully');
     }
+
 
     return (
         <div className="max-w-6xl mx-auto my-20">

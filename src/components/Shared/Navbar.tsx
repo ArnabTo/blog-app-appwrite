@@ -60,27 +60,27 @@ const NavigationBar = () => {
 
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
                 <NavbarItem isActive>
-                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} href="/">
+                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 ${ theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black' } ${ theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} href="/">
                         Home
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
+                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 ${ theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black' } ${ theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
                         About Us
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
+                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 ${ theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black' } ${ theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
                         Blogs
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
+                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 ${ theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black' } ${ theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
                         Blogs
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#">
+                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 ${ theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black' } ${ theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#">
                         Products
                     </Link>
                 </NavbarItem>
@@ -103,9 +103,11 @@ const NavigationBar = () => {
                             }
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Static Actions">
-                            <DropdownItem key="new">Profile</DropdownItem>
+                            <DropdownItem key="profile">
+                                <Link href="/user-profile" className={`${theme == 'dark' ? 'text-secondary' : 'text-textcolor'}`}>Profile</Link>
+                            </DropdownItem>
                             <DropdownItem key="copy">
-                                <Link href="/dashboard">Dashboard</Link>
+                                <Link href="/dashboard" className={`${theme == 'dark' ? 'text-secondary' : 'text-textcolor'}`}>Dashboard</Link>
                             </DropdownItem>
                             <DropdownItem key="edit">Edit file</DropdownItem>
                             {/* <DropdownItem key="sign out">
@@ -131,9 +133,6 @@ const NavigationBar = () => {
                                 <Button as={Link} href="/sign-in" className={` ${theme == 'dark' ? 'bg-white' : 'bg-textcolor'} ${ theme == 'dark' ? 'text-textcolor' : 'text-white' } rounded-md font-semibold px-6`} size="md">
                                     Sign In
                                 </Button>
-                            //                             <CustomButton as={Link} href="/sign-in" color="black" size="md">
-                            // sdfadsfsdafsd
-                            //                             </CustomButton>
                         }
 
                     </div>
