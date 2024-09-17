@@ -17,6 +17,7 @@ type Blog = {
     createdAt: string;
     category: string;
     readTime: string;
+    supports: number;
 };
 
 const useBlogs = () => {
@@ -45,6 +46,7 @@ const useBlogs = () => {
                     createdAt: doc.createdAt,
                     category: doc.category,
                     readTime: doc.readTime,
+                    supports: doc.supports
                 })) as Blog[];
 
                 setBlogs(blogData);
