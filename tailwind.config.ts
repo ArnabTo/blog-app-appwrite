@@ -12,7 +12,8 @@ const config: Config = {
     extend: {
       colors: {
         //ligth theme
-        primary: "#CAFF33",
+        // primary: "#CAFF33",
+        primary: "#ffff",
         secondary: "#faf8ff",
         accent: "#e3e0f3",
         neutral: "#303036",

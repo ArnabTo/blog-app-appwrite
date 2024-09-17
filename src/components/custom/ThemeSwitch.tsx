@@ -34,14 +34,14 @@ const ThemeSwitch = (props:any) => {
           {...getWrapperProps()}
           className={slots.wrapper({
             class: [
-              "w-8 h-8",
+              "w-7 h-7",
               "flex items-center justify-center",
-              "rounded-lg bg-default-100 hover:bg-default-200",
+              "rounded-lg bg-transparent hover:bg-default-200 transition-all delay-100",
             ],
           })}
           onClick={() => setTheme(isDarkMode ? "light" : "dark")} // Toggle between themes
         >
-          {isDarkMode ? <SunIcon  /> : <MoonIcon />}
+          {isDarkMode ? <SunIcon className='text-secondary'/> : <MoonIcon className="text-textcolor"/>}
         </div>
       </Component>
     </div>

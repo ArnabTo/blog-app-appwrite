@@ -9,7 +9,7 @@ import { useTheme } from "next-themes";
 
 const NavigationBar = () => {
 
-    const {theme} = useTheme();
+    const { theme } = useTheme();
     interface User {
         $id: string;
         $createdAt: string;
@@ -43,109 +43,119 @@ const NavigationBar = () => {
     ];
 
 
-const { user, profileAvatar, handleLogout } = useUser();
+    const { user, profileAvatar, handleLogout } = useUser();
     return (
-  
-            <Navbar onMenuOpenChange={setIsMenuOpen} className="shadow-md bg-transparent">
-                <NavbarContent>
-                    <NavbarMenuToggle
-                        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                        className="sm:hidden"
-                    />
-                    <NavbarBrand>
-                        {/* <AcmeLogo /> */}
-                        <p className="font-bold text-inherit">ACME</p>
-                    </NavbarBrand>
-                </NavbarContent>
 
-                <NavbarContent className="hidden sm:flex gap-4" justify="center">
-                    <NavbarItem isActive>
-                        <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${ theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} href="/">
-                            Home
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${ theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
-                            About Us
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${ theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
-                            Blogs
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${ theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#">
-                            Products
-                        </Link>
-                    </NavbarItem>
-                </NavbarContent>
-                <NavbarContent justify="end">
-                    <NavbarItem className="hidden lg:flex">
+        <Navbar onMenuOpenChange={setIsMenuOpen} className=" bg-transparent">
+            <NavbarContent>
+                <NavbarMenuToggle
+                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                    className="sm:hidden"
+                />
+                <NavbarBrand>
+                    {/* <AcmeLogo /> */}
+                    <p className="font-bold text-inherit">ACME</p>
+                </NavbarBrand>
+            </NavbarContent>
 
-                        <Dropdown>
-                            <DropdownTrigger>
-                                {
-                                    profileAvatar ? (
-                                        <Avatar
-                                            className="cursor-pointer" src={profileAvatar}
-                                        />
-                                    ) : (
-                                        <></>
-                                    )
-                                }
-                            </DropdownTrigger>
-                            <DropdownMenu aria-label="Static Actions">
-                                <DropdownItem key="new">Profile</DropdownItem>
-                                <DropdownItem key="copy">
-                                    <Link href="/dashboard">Dashboard</Link>
-                                </DropdownItem>
-                                <DropdownItem key="edit">Edit file</DropdownItem>
-                                {/* <DropdownItem key="sign out">
+            <NavbarContent className="hidden sm:flex gap-4" justify="center">
+                <NavbarItem isActive>
+                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} href="/">
+                        Home
+                    </Link>
+                </NavbarItem>
+                <NavbarItem>
+                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
+                        About Us
+                    </Link>
+                </NavbarItem>
+                <NavbarItem>
+                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
+                        Blogs
+                    </Link>
+                </NavbarItem>
+                <NavbarItem>
+                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
+                        Blogs
+                    </Link>
+                </NavbarItem>
+                <NavbarItem>
+                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 hover:bg-primary hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#">
+                        Products
+                    </Link>
+                </NavbarItem>
+                <NavbarItem>
+                    <ThemeSwitch />
+                </NavbarItem>
+            </NavbarContent>
+            <NavbarContent justify="end">
+                <NavbarItem className="hidden lg:flex">
+                    <Dropdown>
+                        <DropdownTrigger>
+                            {
+                                profileAvatar ? (
+                                    <Avatar
+                                        className="cursor-pointer" src={profileAvatar}
+                                    />
+                                ) : (
+                                    <></>
+                                )
+                            }
+                        </DropdownTrigger>
+                        <DropdownMenu aria-label="Static Actions">
+                            <DropdownItem key="new">Profile</DropdownItem>
+                            <DropdownItem key="copy">
+                                <Link href="/dashboard">Dashboard</Link>
+                            </DropdownItem>
+                            <DropdownItem key="edit">Edit file</DropdownItem>
+                            {/* <DropdownItem key="sign out">
                                     <CustomButton onClick={handleLogout} color="black" size="md">
                                         Sign out
                                     </CustomButton>
                                 </DropdownItem> */}
-                                <DropdownItem  onClick={handleLogout} key="delete" className="text-danger" color="danger">
-                                    Sign out
-                                </DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <div className="flex items-center gap-4">
-                            {
-                                user ?
-                                    // <CustomButton onClick={handleLogout} color="black" size="md">
-                                    //     Sign out
-                                    // </CustomButton>
-                                    <></>
-                                    :
-                                    <CustomButton as={Link} href="/sign-in" color="black" size="md">
-                                        Sign In
-                                    </CustomButton>
+                            <DropdownItem onClick={handleLogout} key="delete" className="text-danger" color="danger">
+                                Sign out
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                </NavbarItem>
+                <NavbarItem>
+                    <div className="flex items-center gap-4">
+                        {
+                            user ?
+                                // <CustomButton onClick={handleLogout} color="black" size="md">
+                                //     Sign out
+                                // </CustomButton>
+                                <></>
+                                :
+                                <Button as={Link} href="/sign-in" className={` ${theme == 'dark' ? 'bg-white' : 'bg-textcolor'} ${ theme == 'dark' ? 'text-textcolor' : 'text-white' } rounded-md font-semibold px-6`} size="md">
+                                    Sign In
+                                </Button>
+                            //                             <CustomButton as={Link} href="/sign-in" color="black" size="md">
+                            // sdfadsfsdafsd
+                            //                             </CustomButton>
+                        }
+
+                    </div>
+                </NavbarItem>
+            </NavbarContent>
+            <NavbarMenu>
+                {menuItems.map((item, index) => (
+                    <NavbarMenuItem key={`${item}-${index}`}>
+                        <Link
+                            color={
+                                index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
                             }
-                            <ThemeSwitch />
-                        </div>
-                    </NavbarItem>
-                </NavbarContent>
-                <NavbarMenu>
-                    {menuItems.map((item, index) => (
-                        <NavbarMenuItem key={`${item}-${index}`}>
-                            <Link
-                                color={
-                                    index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
-                                }
-                                className="w-full"
-                                href="#"
-                                size="lg"
-                            >
-                                {item}
-                            </Link>
-                        </NavbarMenuItem>
-                    ))}
-                </NavbarMenu>
-            </Navbar>
+                            className="w-full"
+                            href="#"
+                            size="lg"
+                        >
+                            {item}
+                        </Link>
+                    </NavbarMenuItem>
+                ))}
+            </NavbarMenu>
+        </Navbar>
 
     );
 };

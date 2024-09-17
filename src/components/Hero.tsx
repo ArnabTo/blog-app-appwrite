@@ -7,7 +7,9 @@ import 'swiper/css/pagination';
 
 import { Autoplay, EffectFade, Pagination } from 'swiper/modules';
 import Image from 'next/image';
-import { Avatar } from '@nextui-org/react';
+import { Avatar, Button } from '@nextui-org/react';
+import { CustomButton } from './custom/CustomButton';
+import { useTheme } from 'next-themes';
 
 const Hero = () => {
     type Blog = {
@@ -21,7 +23,7 @@ const Hero = () => {
         postDate: string;
         shortDescription: string;
     };
-
+    const { theme } = useTheme();
     const blogs: Blog[] = [
         {
             id: 1,
@@ -59,61 +61,124 @@ const Hero = () => {
     ];
 
     return (
-        <div className="relative -top-16 w-full h-[600px] sm:h-[500px] md:h-[600px] lg:h-[700px] rounded-lg">
-            <Swiper
-                spaceBetween={30}
-                effect={'fade'}
-                pagination={{
-                    clickable: true,
-                }}
-                autoplay={{
-                    delay: 3000,
-                    disableOnInteraction: false,
-                }}
-                modules={[EffectFade, Pagination, Autoplay]}
-                className="h-full"
-            >
-                {blogs.map((blog) => (
-                    <SwiperSlide key={blog.id}>
-                        <div
-                            className="relative w-full h-full bg-cover bg-center bg-fixed rounded-lg"
-                            style={{ backgroundImage: `url(${blog.thumbnail})` }}
-                        >
-                            {/* Overlay for dark effect */}
-                            <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+        <div className='my-11 space-y-5'>
+            <div className='flex flex-col justify-center items-center space-y-5'>
+                <h3 className='font-semibold'>The Blog</h3>
+                <h1 className='text-5xl font-bold'>Writings from Our Team</h1>
+                <p>Explore the latest news and insights from the blog</p>
+            </div>
+            <Button className={`flex justify-center items-center mx-auto ${theme == 'dark' ? 'bg-primary' : 'bg-textcolor'} ${theme == 'dark' ? 'text-textcolor' : 'text-secondary'} font-bold rounded-md`}>Subscribe</Button>
+            <div className="relative max-w-7xl mx-auto w-full h-[600px] sm:h-[500px] md:h-[600px] lg:h-[700px] rounded-xl">
+                <Swiper
+                    spaceBetween={30}
+                    effect={'fade'}
+                    pagination={{
+                        clickable: true,
+                    }}
+                    autoplay={{
+                        delay: 3000,
+                        disableOnInteraction: false,
+                    }}
+                    modules={[EffectFade, Pagination, Autoplay]}
+                    className="h-full"
+                >
+                    {blogs.map((blog) => (
+                        <SwiperSlide key={blog.id} className='rounded-xl'>
+                            <div
+                                className="relative w-full h-full bg-cover bg-center bg-fixed rounded-xl"
+                                style={{ backgroundImage: `url(${blog.thumbnail})` }}
+                            >
+                                {/* Overlay for dark effect */}
+                                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-xl"></div>
 
-                            {/* Blog details */}
-                            <div>
-                                <div className="absolute bottom-36 md:bottom-16 left-5 sm:left-10 z-10 w-full sm:w-2/3 md:w-1/2">
-                                    <div className="bg-[#E7E7E7] text-black border border-white w-fit px-2 sm:px-3 py-1 text-sm rounded-full">{blog.tag}</div>
-                                    <h2 className="text-2xl  text-primary sm:text-3xl md:text-4xl font-extrabold w-full">
-                                        {blog.title}
-                                    </h2>
-                                    <p className="mt-4 text-sm text-white sm:text-base md:text-lg">{blog.description}</p>
-                                </div>
+                                {/* Blog details */}
+                                <div>
+                                    <div className="absolute bottom-36 md:bottom-16 left-5 sm:left-10 z-10 w-full sm:w-2/3 md:w-1/2">
+                                        <div className="bg-[#E7E7E7] text-black border border-white w-fit px-2 sm:px-3 py-1 text-sm rounded-full">{blog.tag}</div>
+                                        <h2 className="text-2xl  text-primary sm:text-3xl md:text-4xl font-extrabold w-full">
+                                            {blog.title}
+                                        </h2>
+                                        <p className="mt-4 text-sm text-white sm:text-base md:text-lg">{blog.description}</p>
+                                    </div>
 
-                                <div className="absolute bottom-16 left-5 text-white z-10 md:hidden">
+                                    <div className="absolute bottom-16 left-5 text-white z-10 md:hidden">
                                         <div className="flex items-center gap-2 mb-2">
                                             <Avatar size="sm" src={blog.authorImage} />
                                             <p className="text-sm sm:text-base">{blog.author}</p>
                                         </div>
                                         <p className="text-xs sm:text-sm">{blog.postDate}</p>
                                     </div>
-                            </div>
-
-                            {/* Author details */}
-                            <div className="absolute bottom-16 right-5 text-white z-10 hidden md:block">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <Avatar size="md" src={blog.authorImage} />
-                                    <p className="text-sm sm:text-base">{blog.author}</p>
                                 </div>
-                                <p className="text-xs sm:text-sm">{blog.postDate}</p>
+
+                                {/* Author details */}
+                                <div className="absolute bottom-16 right-5 text-white z-10 hidden md:block">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <Avatar size="md" src={blog.authorImage} />
+                                        <p className="text-sm sm:text-base">{blog.author}</p>
+                                    </div>
+                                    <p className="text-xs sm:text-sm">{blog.postDate}</p>
+                                </div>
                             </div>
-                        </div>
-                    </SwiperSlide>
-                ))}
-            </Swiper>
-        </div>
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+            </div>
+        </div >
+        // <div className="relative -top-16 w-full h-[600px] sm:h-[500px] md:h-[600px] lg:h-[700px] rounded-lg">
+        //   <Swiper
+        //         spaceBetween={30}
+        //         effect={'fade'}
+        //         pagination={{
+        //             clickable: true,
+        //         }}
+        //         autoplay={{
+        //             delay: 3000,
+        //             disableOnInteraction: false,
+        //         }}
+        //         modules={[EffectFade, Pagination, Autoplay]}
+        //         className="h-full"
+        //     >
+        //         {blogs.map((blog) => (
+        //             <SwiperSlide key={blog.id}>
+        //                 <div
+        //                     className="relative w-full h-full bg-cover bg-center bg-fixed rounded-lg"
+        //                     style={{ backgroundImage: `url(${blog.thumbnail})` }}
+        //                 >
+        //                     {/* Overlay for dark effect */}
+        //                     <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+
+        //                     {/* Blog details */}
+        //                     <div>
+        //                         <div className="absolute bottom-36 md:bottom-16 left-5 sm:left-10 z-10 w-full sm:w-2/3 md:w-1/2">
+        //                             <div className="bg-[#E7E7E7] text-black border border-white w-fit px-2 sm:px-3 py-1 text-sm rounded-full">{blog.tag}</div>
+        //                             <h2 className="text-2xl  text-primary sm:text-3xl md:text-4xl font-extrabold w-full">
+        //                                 {blog.title}
+        //                             </h2>
+        //                             <p className="mt-4 text-sm text-white sm:text-base md:text-lg">{blog.description}</p>
+        //                         </div>
+
+        //                         <div className="absolute bottom-16 left-5 text-white z-10 md:hidden">
+        //                                 <div className="flex items-center gap-2 mb-2">
+        //                                     <Avatar size="sm" src={blog.authorImage} />
+        //                                     <p className="text-sm sm:text-base">{blog.author}</p>
+        //                                 </div>
+        //                                 <p className="text-xs sm:text-sm">{blog.postDate}</p>
+        //                             </div>
+        //                     </div>
+
+        //                     {/* Author details */}
+        //                     <div className="absolute bottom-16 right-5 text-white z-10 hidden md:block">
+        //                         <div className="flex items-center gap-2 mb-2">
+        //                             <Avatar size="md" src={blog.authorImage} />
+        //                             <p className="text-sm sm:text-base">{blog.author}</p>
+        //                         </div>
+        //                         <p className="text-xs sm:text-sm">{blog.postDate}</p>
+        //                     </div>
+        //                 </div>
+        //             </SwiperSlide>
+        //         ))}
+        //     </Swiper>
+        // </div>
     );
 };
 

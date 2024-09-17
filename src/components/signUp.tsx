@@ -13,6 +13,7 @@ import Image from "next/image";
 import { Loader } from "lucide-react";
 import { useAppDispatch, useAppStore } from "@/lib/hooks";
 import { setUserData } from "@/lib/features/userSlice";
+import { useTheme } from "next-themes";
 
 type InputData = {
   name: string;
@@ -24,6 +25,7 @@ type InputData = {
 
 export default function SignUp() {
 
+  const { theme } = useTheme();
   const [emailMsg, setEmailMsg] = useState('');
   const [passMsg, setPassMsg] = useState('');
   const [nameMsg, setNameMsg] = useState('');
@@ -46,7 +48,7 @@ export default function SignUp() {
       }
     }
     userCheck();
-  }, [])
+  }, [theme])
   const handleSignUp = async (data: InputData) => {
     setErrorMsg('');
     const { name, email, password, profileAvatar } = data;
@@ -127,7 +129,7 @@ export default function SignUp() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <div className="w-full md:w-1/3 bg-white border-2 px-10 py-5 rounded-2xl shadow-lg">
+      <div className={`w-full md:w-1/3 ${theme == 'dark' ? 'bg-textcolor' : 'bg-white'} px-10 py-5 rounded-2xl shadow-lg`}>
         <div className="flex flex-col gap-3 mb-3">
           <h1 className="text-4xl font-extrabold text-start">Sign Up</h1>
           <p className="text-lg">Create your account</p>
