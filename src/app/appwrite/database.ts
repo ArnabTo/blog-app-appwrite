@@ -27,6 +27,14 @@ type updatedBlogData = {
     thumbnail: string;
     category: string;
 }
+
+type CommentData = {
+    blogId: string;
+    userId: string;
+    content: string;
+    parentCommentId: string | null;
+    createdAt: string;
+}
 const database = new Databases(appWriteClient);
 
 export class DataBaseServices {
@@ -126,7 +134,7 @@ export class DataBaseServices {
     }
 
     // update blogs
-    async updateBlog( id:string, {title, content, thumbnail, category }: updatedBlogData) {
+    async updateBlog(id: string, { title, content, thumbnail, category }: updatedBlogData) {
         try {
             const updatedData = await database.updateDocument(
                 '66c8c9a6000f305a13fe',  // database Id
@@ -165,7 +173,7 @@ export class DataBaseServices {
         }
     }
     // delete blogs
-    async deleteBlog(targetBlogId: string){
+    async deleteBlog(targetBlogId: string) {
         try {
             const removeBlogfromDatabase = await database.deleteDocument(
                 '66c8c9a6000f305a13fe',  // database Id
@@ -173,10 +181,50 @@ export class DataBaseServices {
                 targetBlogId
             )
         } catch (error) {
-            
+
         }
     }
 
+    // add comment
+    async addComment({ blogId, userId, content, createdAt, parentCommentId }: CommentData) {
+        try {
+            const createdComment = await database.createDocument(
+                '66c8c9a6000f305a13fe',  // database Id
+                '66e9c45f000c957a84b9',  // comment collection Id
+                ID.unique(),
+                {
+                    blogId,
+                    userId,
+                    content,
+                    createdAt,
+                    parentCommentId, // Corrected the spelling here
+                }
+            );
+            if (createdComment) {
+                return createdComment;
+            }
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
+    async getComments(blogId: string) {
+        try {
+          const getComments = await database.listDocuments(
+            '66c8c9a6000f305a13fe', // database Id
+            '66e9c45f000c957a84b9', // comment collection Id
+            [Query.equal('blogId', blogId)]
+          );
+          if (getComments) {
+            return getComments;
+          }
+        } catch (error) {
+          console.log(error, 'Error fetching comments');
+          throw error;
+        }
+      }
+      
 
 };
 

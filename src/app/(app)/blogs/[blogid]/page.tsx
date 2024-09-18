@@ -1,6 +1,7 @@
 'use client';
 import dataBaseServices from "@/app/appwrite/database";
 import storageServices from "@/app/appwrite/storage";
+import CommentList from "@/components/CommentLIst";
 import { updateSupport } from "@/store/features/blogSuppoertSlice";
 import { AppDispatch, RootState } from "@/store/Store";
 import { Avatar, Button, Divider } from "@nextui-org/react";
@@ -113,6 +114,7 @@ export default function BlogDetailPage() {
                 <Image src={blogDetails?.thumbnail ?? ''} className="w-full h-full rounded-md mb-10" width={500} height={500} alt='blog thumbnail' />
                 <div className=" leading-10" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blogDetails?.content ?? '') }} />
             </div>
+        <CommentList blogId={params.blogid} />
         </div>
     )
 }
