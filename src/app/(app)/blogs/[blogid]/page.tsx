@@ -1,11 +1,10 @@
 'use client';
 import dataBaseServices from "@/app/appwrite/database";
-import storageServices from "@/app/appwrite/storage";
 import { updateSupport } from "@/store/features/blogSuppoertSlice";
 import { AppDispatch, RootState } from "@/store/Store";
 import { Avatar, Button, Divider } from "@nextui-org/react";
 import DOMPurify from "dompurify";
-import { HandHeart, Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useParams } from "next/navigation"

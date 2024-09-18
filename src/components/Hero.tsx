@@ -104,8 +104,7 @@ const Hero = () => {
                                         <h2 className="text-2xl  text-primary sm:text-3xl md:text-4xl font-extrabold w-full">
                                             {blog?.title}
                                         </h2>
-                                       <div dangerouslySetInnerHTML={{__html: blog?.content}} className='line-clamp-3'/>
-                                        {/* <p className="mt-4 text-sm text-white sm:text-base md:text-lg">{blog?.content}</p> */}
+                                       <div dangerouslySetInnerHTML={{__html: blog?.content}} className='line-clamp-3 text-primary'/>
                                     </div>
 
                                     <div className="absolute bottom-16 left-5 text-white z-10 md:hidden">

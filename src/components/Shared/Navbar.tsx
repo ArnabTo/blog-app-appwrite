@@ -54,7 +54,7 @@ const NavigationBar = () => {
                 />
                 <NavbarBrand>
                     {/* <AcmeLogo /> */}
-                    <p className="font-bold text-inherit">ACME</p>
+                    <p className="font-bold text-inherit">BlogVerse</p>
                 </NavbarBrand>
             </NavbarContent>
 
@@ -64,23 +64,18 @@ const NavigationBar = () => {
                         Home
                     </Link>
                 </NavbarItem>
-                <NavbarItem>
+                {/* <NavbarItem>
                     <Link className={`font-bold hover:text-textcolor  transition-all delay-100 ${ theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black' } ${ theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
                         About Us
                     </Link>
-                </NavbarItem>
+                </NavbarItem> */}
                 <NavbarItem>
-                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 ${ theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black' } ${ theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
+                    <Link href='/blogs' className={`font-bold hover:text-textcolor  transition-all delay-100 ${ theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black' } ${ theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground">
                         Blogs
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 ${ theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black' } ${ theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
-                        Blogs
-                    </Link>
-                </NavbarItem>
-                <NavbarItem>
-                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 ${ theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black' } ${ theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#">
+                    <Link href="/products"  className={`font-bold hover:text-textcolor  transition-all delay-100 ${ theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black' } ${ theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" >
                         Products
                     </Link>
                 </NavbarItem>
