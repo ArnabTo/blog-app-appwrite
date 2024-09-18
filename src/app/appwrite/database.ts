@@ -29,6 +29,7 @@ type updatedBlogData = {
 }
 
 type CommentData = {
+    $id: string;
     blogId: string;
     userId: string;
     content: string;
