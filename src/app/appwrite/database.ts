@@ -31,6 +31,8 @@ type updatedBlogData = {
 type CommentData = {
     blogId: string;
     userId: string;
+    userName: string;
+    userAvatar: string;
     comment: string;
     createdAt: string;
 }
@@ -209,7 +211,7 @@ export class DataBaseServices {
     // }
 
     // add comments 
-    async addComment({ blogId, comment, userId, createdAt }: CommentData) {
+    async addComment({ blogId, comment, userId, userName, userAvatar, createdAt }: CommentData) {
         try {
             const createComment = await database.createDocument(
                 '66c8c9a6000f305a13fe',  // database Id
@@ -218,6 +220,8 @@ export class DataBaseServices {
                 {
                     blogId,
                     userId,
+                    userName,
+                    userAvatar,
                     comment,
                     createdAt
                 }
@@ -230,7 +234,8 @@ export class DataBaseServices {
             throw error;
         }
     }
-    async getComments(blogId: string) {
+    async queryComments(blogId: string) {
+        console.log(blogId)
         try {
             const getComments = await database.listDocuments(
                 '66c8c9a6000f305a13fe', // database Id

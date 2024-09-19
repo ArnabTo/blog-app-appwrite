@@ -4,7 +4,7 @@ import { updateSupport } from "@/store/features/blogSuppoertSlice";
 import { AppDispatch, RootState } from "@/store/Store";
 import { Avatar, Button, Divider, Input } from "@nextui-org/react";
 import DOMPurify from "dompurify";
-import { Heart } from "lucide-react";
+import { Heart, Loader } from "lucide-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useParams } from "next/navigation"
@@ -34,15 +34,17 @@ type CommentData = {
     blogId: string;
     userId: string;
     comment: string;
+    userName: string;
+    userAvatar: string;
     createdAt: string;
 }
 
 export default function BlogDetailPage() {
 
-    const { user } = useUser();
+    const { user, profileAvatar } = useUser();
     const { theme } = useTheme();
     const [blogDetails, setBlogDetails] = useState<BlogData>();
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const params = useParams();
     const [localSupports, setLocalSupports] = useState<number>(0);
     const [comments, setComments] = useState<CommentData[]>([]);
@@ -63,8 +65,7 @@ export default function BlogDetailPage() {
             }
 
             const getComments = async () => {
-                const comments = await dataBaseServices.getComments(`${params.blogid}`);
-                console.log(comments);
+                const comments = await dataBaseServices.queryComments(`${params.blogid}`);
                 if (comments && comments.documents.length > 0) {
                     const commentData = comments.documents as unknown as CommentData[];
                     setComments(commentData);
@@ -80,7 +81,7 @@ export default function BlogDetailPage() {
         }
     }, [params.blogid])
 
-    console.log(comments)
+
     const handleSupport = async () => {
         if (blogDetails) {
             try {
@@ -107,26 +108,34 @@ export default function BlogDetailPage() {
         const form = e.target;
         const comment = form.comment.value;
 
-        if (blogDetails?.$id && user?.$id) {
-            const commentData: CommentData = {
-                blogId: blogDetails?.$id,
-                comment,
-                userId: user?.$id,
-                createdAt: new Date().toISOString(),
-            }
+        if (user) {
+            if (blogDetails?.$id && user?.$id && profileAvatar && user.name) {
+                const commentData: CommentData = {
+                    blogId: blogDetails?.$id,
+                    comment,
+                    userId: user?.$id,
+                    userName: user?.name,
+                    userAvatar: profileAvatar,
+                    createdAt: new Date().toISOString(),
+                }
 
-            try {
-                // await dispatch(addCmnt(commentData)).unwrap();
-                setComments((prevComments) => [...prevComments, commentData]);
-                await dispatch(addCmnt(commentData)).unwrap();
-                // If the comment is added successfully, update the local comments state
-            } catch (error) {
-                console.log(error, 'error adding comment');
+                try {
+                    // await dispatch(addCmnt(commentData)).unwrap();
+                    setComments((prevComments) => [...prevComments, commentData]);
+                    await dispatch(addCmnt(commentData)).unwrap();
+                    // If the comment is added successfully, update the local comments state
+                } catch (error) {
+                    console.log(error, 'error adding comment');
+                }
             }
         }
-
+        else {
+            toast.error('Please login to comment');
+        }
     }
-    if (loading) return <p>Loading...</p>
+
+    if (loading) return <div className="flex justify-center items-center h-screen"><Loader size={40} className="animate-spin transition-all delay-75"/></div>
+    
     return (
         <div className="max-w-3xl mx-auto my-10">
             <div className="space-y-5">
@@ -159,23 +168,36 @@ export default function BlogDetailPage() {
                         </div>
                 }
                 <Divider></Divider>
-                <Image src={blogDetails?.thumbnail ?? ''} className="w-full h-full rounded-md mb-10" width={500} height={500} alt='blog thumbnail' />
-                <div className=" leading-10" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blogDetails?.content ?? '') }} />
+                {
+                    blogDetails?.thumbnail && blogDetails?.content && <div>
+                        <Image src={blogDetails?.thumbnail} className="w-full h-full rounded-md mb-10" width={500} height={500} alt='blog thumbnail' />
+                        <div className=" leading-10" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blogDetails?.content) }} />
+                    </div>
+                }
             </div>
 
-            <div>
-                <div className="space-y-3">
-                    <form onSubmit={handleComment}>
-                        <Input name="comment" type="text" placeholder="Add a comment" />
+            <div className="pt-10">
+                <Divider></Divider>
+                <div className="space-y-5 mt-5">
+                    <form onSubmit={handleComment} className="flex items-center gap-2">
+                        <Input name="comment" type="text" placeholder="Add a comment" className="rounded-md" />
                         <Button type="submit" className="bg-textcolor text-primary rounded-md">Comment</Button>
                     </form>
 
-                    <div>
+                    <div className="space-y-5 px-5">
                         {
                             comments?.map(comment => (
-                                <p key={comment.createdAt}>
-                                    {comment.comment}
-                                </p>
+                                <div key={comment.createdAt}>
+                                    <div className="flex items-center gap-3">
+                                        <div>
+                                            <Avatar src={comment?.userAvatar} size="md" />
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <p className="text-lg font-semibold underline">{comment?.userName}</p>
+                                            <p>{comment?.comment}</p>
+                                        </div>
+                                    </div>
+                                </div>
                             ))
                         }
 
