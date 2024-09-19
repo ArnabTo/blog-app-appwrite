@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer from './features/authSlice';
 import blogSupportReducer from './features/blogSuppoertSlice';
-
+import commentReducer from './features/commentSlice';
 export const makeStore = () => {
   return configureStore({
     reducer: {
         auth: authReducer,
         blogSupport: blogSupportReducer,
+        comment: commentReducer
     },
   })
 }

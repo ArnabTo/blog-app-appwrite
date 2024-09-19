@@ -31,8 +31,7 @@ type updatedBlogData = {
 type CommentData = {
     blogId: string;
     userId: string;
-    content: string;
-    parentCommentId: string | null;
+    comment: string;
     createdAt: string;
 }
 const database = new Databases(appWriteClient);
@@ -186,45 +185,67 @@ export class DataBaseServices {
     }
 
     // add comment
-    async addComment({ blogId, userId, content, createdAt, parentCommentId }: CommentData) {
+    // async addComment({ blogId, userId, content, createdAt, parentCommentId }: CommentData) {
+    //     try {
+    //         const createdComment = await database.createDocument(
+    //             '66c8c9a6000f305a13fe',  // database Id
+    //             '66e9c45f000c957a84b9',  // comment collection Id
+    //             ID.unique(),
+    //             {
+    //                 blogId,
+    //                 userId,
+    //                 content,
+    //                 createdAt,
+    //                 parentCommentId, // Corrected the spelling here
+    //             }
+    //         );
+    //         if (createdComment) {
+    //             return createdComment;
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //         throw error;
+    //     }
+    // }
+
+    // add comments 
+    async addComment({ blogId, comment, userId, createdAt }: CommentData) {
         try {
-            const createdComment = await database.createDocument(
+            const createComment = await database.createDocument(
                 '66c8c9a6000f305a13fe',  // database Id
                 '66e9c45f000c957a84b9',  // comment collection Id
                 ID.unique(),
                 {
                     blogId,
                     userId,
-                    content,
-                    createdAt,
-                    parentCommentId, // Corrected the spelling here
+                    comment,
+                    createdAt
                 }
-            );
-            if (createdComment) {
-                return createdComment;
+            )
+            if (createComment) {
+                return createComment
             }
         } catch (error) {
-            console.log(error);
+            console.log(error, 'Error creating comment');
+            throw error;
+        }
+    }
+    async getComments(blogId: string) {
+        try {
+            const getComments = await database.listDocuments(
+                '66c8c9a6000f305a13fe', // database Id
+                '66e9c45f000c957a84b9', // comment collection Id
+                [Query.equal('blogId', blogId)]
+            );
+            if (getComments) {
+                return getComments;
+            }
+        } catch (error) {
+            console.log(error, 'Error fetching comments');
             throw error;
         }
     }
 
-    async getComments(blogId: string) {
-        try {
-          const getComments = await database.listDocuments(
-            '66c8c9a6000f305a13fe', // database Id
-            '66e9c45f000c957a84b9', // comment collection Id
-            [Query.equal('blogId', blogId)]
-          );
-          if (getComments) {
-            return getComments;
-          }
-        } catch (error) {
-          console.log(error, 'Error fetching comments');
-          throw error;
-        }
-      }
-      
 
 };
 

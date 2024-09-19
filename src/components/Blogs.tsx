@@ -48,8 +48,8 @@ export default function Blogs() {
                                             </CardBody>
                                             <CardFooter className="pb-0 pt-2 px-4 flex-col items-start relative z-10 space-y-2">
                                                 <small
-                                                    className={`text-default-500 px-2 py-1 rounded-full mb-2 ${theme == 'dark' ? 'text-textcolor' : 'text-textcolor'
-                                                        } ${theme == 'dark' ? 'bg-[#F1F0F1]' : 'bg-primary'}`}
+                                                    className={`text-default-500 px-2 py-1 rounded-full mb-2 ${theme == 'dark' ? 'text-textcolor' : 'text-primary'
+                                                        } ${theme == 'dark' ? 'bg-[#F1F0F1]' : 'bg-textcolor'}`}
                                                 >
                                                     {blog.category}
                                                 </small>
