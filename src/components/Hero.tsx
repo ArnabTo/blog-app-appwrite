@@ -68,10 +68,10 @@ const Hero = () => {
     console.log(topBlogs, 'top blogs')
     return (
         <div className='my-11 space-y-5'>
-            <div className='flex flex-col justify-center items-center space-y-5'>
+            <div className='flex flex-col justify-center items-center space-y-2 md:space-y-5'>
                 <h3 className='font-semibold'>The Blog</h3>
-                <h1 className='text-5xl font-bold'>Writings from Our Team</h1>
-                <p>Explore the latest news and insights from the blog</p>
+                <h1 className='text-4xl md:text-5xl text-center font-bold'>Writings from Our Team</h1>
+                <p className='text-center'>Explore the latest news and insights from the blog</p>
             </div>
             <Button className={`flex justify-center items-center mx-auto ${theme == 'dark' ? 'bg-primary' : 'bg-textcolor'} ${theme == 'dark' ? 'text-textcolor' : 'text-secondary'} font-bold rounded-md`}>Subscribe</Button>
             <div className="relative max-w-7xl mx-auto w-full h-[600px] sm:h-[500px] md:h-[600px] lg:h-[700px] rounded-xl">
