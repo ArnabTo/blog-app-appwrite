@@ -10,6 +10,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      width: {
+        'revert-layer': 'revert-layer',
+      },
       colors: {
         //ligth theme
         // primary: "#CAFF33",

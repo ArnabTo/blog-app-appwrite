@@ -134,6 +134,21 @@ export class DataBaseServices {
         }
     }
 
+    // fetch latest blogs
+    async fetchLatestBlogs() {
+        try {
+            const getBlogs = await database.listDocuments(
+                '66c8c9a6000f305a13fe', // database Id
+                '66c8ca010010a285f838', // article collection Id
+                [Query.orderDesc('$createdAt')],  // sort by created date
+            )
+            return getBlogs
+        } catch (error) {
+            console.log(error, "Error fetching latest blogs")
+            throw error
+        }
+    }
+
     // update blogs
     async updateBlog(id: string, { title, content, thumbnail, category }: updatedBlogData) {
         try {

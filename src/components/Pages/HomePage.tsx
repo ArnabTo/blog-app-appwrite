@@ -4,6 +4,7 @@ import Blogs from '../Blogs'
 import AdSection from '../AdsSection'
 import useBlogs from '@/hooks/useBlogs'
 import useUser from '@/hooks/useUser'
+import LatestBlogs from '../LatestBlogs'
 
 export default function HomePage() {
 
@@ -13,6 +14,7 @@ export default function HomePage() {
   return (
     <div>
         <Hero/>
+        <LatestBlogs/>
         <Blogs/>
         <AdSection/>
     </div>
