@@ -35,21 +35,11 @@ const NavigationBar = () => {
         name: string;
     }
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    // const menuItems = [
-    //     "Profile",
-    //     "Dashboard",
-    //     "Blogs",
-    //     "Log Out",
-    // ];
 
     const navItems = [
         {
             name: "Home",
             link: "/"
-        },
-        {
-            name: "Dashboard",
-            link: "/dashboard"
         },
         {
             name: "Blogs",
