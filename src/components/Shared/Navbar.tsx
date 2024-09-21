@@ -35,13 +35,65 @@ const NavigationBar = () => {
         name: string;
     }
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const menuItems = [
-        "Profile",
-        "Dashboard",
-        "Blogs",
-        "Log Out",
-    ];
+    // const menuItems = [
+    //     "Profile",
+    //     "Dashboard",
+    //     "Blogs",
+    //     "Log Out",
+    // ];
 
+    const navItems = [
+        {
+            name: "Home",
+            link: "/"
+        },
+        {
+            name: "Dashboard",
+            link: "/dashboard"
+        },
+        {
+            name: "Blogs",
+            link: "/blogs"
+        },
+        {
+            name: "Products",
+            link: "/products"
+        },
+        {
+            name: "Prodcast",
+            link: "/prodcast"
+        }
+    ];
+    const menuItems = [
+        {
+            name: "Home",
+            link: "/"
+        },
+        {
+            name: "Profile",
+            link: "/profile"
+        },
+        {
+            name: "Dashboard",
+            link: "/dashboard"
+        },
+        {
+            name: "Blogs",
+            link: "/blogs"
+        },
+        {
+            name: "Products",
+            link: "/products"
+        },
+        {
+            name: "Prodcast",
+            link: "/prodcast"
+        },
+        {
+            name: "Log Out",
+            link: "/logout"
+        }
+    ]
 
     const { user, profileAvatar, handleLogout } = useUser();
     return (
@@ -53,36 +105,27 @@ const NavigationBar = () => {
                     className="sm:hidden"
                 />
                 <NavbarBrand>
-                    {/* <AcmeLogo /> */}
-                    <p className="font-bold text-inherit">BlogVerse</p>
+                    <p className="font-bold text-xl text-inherit">BlogVerse</p>
                 </NavbarBrand>
             </NavbarContent>
 
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
-                <NavbarItem isActive>
-                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 ${ theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black' } ${ theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} href="/">
-                        Home
-                    </Link>
-                </NavbarItem>
-                {/* <NavbarItem>
-                    <Link className={`font-bold hover:text-textcolor  transition-all delay-100 ${ theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black' } ${ theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" href="#"  >
-                        About Us
-                    </Link>
-                </NavbarItem> */}
-                <NavbarItem>
-                    <Link href='/blogs' className={`font-bold hover:text-textcolor  transition-all delay-100 ${ theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black' } ${ theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground">
-                        Blogs
-                    </Link>
-                </NavbarItem>
-                <NavbarItem>
-                    <Link href="/products"  className={`font-bold hover:text-textcolor  transition-all delay-100 ${ theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black' } ${ theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground" >
-                        Products
-                    </Link>
-                </NavbarItem>
+                {navItems.map((item, index) => (
+                    <NavbarItem key={`${item}-${index}`}>
+                        <Link
+                            className={`font-bold hover:text-textcolor  transition-all delay-100 ${theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black'} ${theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground"
+                            href={item?.link}
+                            size="lg"
+                        >
+                            {item.name}
+                        </Link>
+                    </NavbarItem>
+                ))}
                 <NavbarItem>
                     <ThemeSwitch />
                 </NavbarItem>
             </NavbarContent>
+
             <NavbarContent justify="end">
                 <NavbarItem className="hidden lg:flex">
                     <Dropdown>
@@ -104,7 +147,6 @@ const NavigationBar = () => {
                             <DropdownItem key="copy">
                                 <Link href="/dashboard" className={`${theme == 'dark' ? 'text-secondary' : 'text-textcolor'}`}>Dashboard</Link>
                             </DropdownItem>
-                            <DropdownItem key="edit">Edit file</DropdownItem>
                             {/* <DropdownItem key="sign out">
                                     <CustomButton onClick={handleLogout} color="black" size="md">
                                         Sign out
@@ -120,12 +162,9 @@ const NavigationBar = () => {
                     <div className="flex items-center gap-4">
                         {
                             user ?
-                                // <CustomButton onClick={handleLogout} color="black" size="md">
-                                //     Sign out
-                                // </CustomButton>
                                 <></>
                                 :
-                                <Button as={Link} href="/sign-in" className={` ${theme == 'dark' ? 'bg-white' : 'bg-textcolor'} ${ theme == 'dark' ? 'text-textcolor' : 'text-white' } rounded-md font-semibold px-6`} size="md">
+                                <Button as={Link} href="/sign-in" className={` ${theme == 'dark' ? 'bg-white' : 'bg-textcolor'} ${theme == 'dark' ? 'text-textcolor' : 'text-white'} rounded-md font-semibold px-6`} size="md">
                                     Sign In
                                 </Button>
                         }
@@ -137,14 +176,11 @@ const NavigationBar = () => {
                 {menuItems.map((item, index) => (
                     <NavbarMenuItem key={`${item}-${index}`}>
                         <Link
-                            color={
-                                index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
-                            }
-                            className="w-full"
-                            href="#"
+                      className={`w-full font-bold hover:text-textcolor  transition-all delay-100 ${theme === 'dark' ? 'hover:bg-secondary' : 'hover:bg-black'} ${theme === 'dark' ? 'hover:text-textcolor' : 'hover:text-secondary'} hover:rounded-full hover:px-2 py-1 ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `} color="foreground"
+                            href={item?.link}
                             size="lg"
                         >
-                            {item}
+                            {item.name}
                         </Link>
                     </NavbarMenuItem>
                 ))}
