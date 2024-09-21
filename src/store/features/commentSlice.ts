@@ -43,9 +43,7 @@ const initialState: CommentState = {
 export const addCmnt = createAsyncThunk(
     'comment/addCmnt',
     async({blogId, userId, comment, createdAt, userName, userAvatar}: CommentData)=>{
-        console.log(userName)
         const response = await dataBaseServices.addComment({blogId, userId, userName, userAvatar ,comment, createdAt});
-        console.log(userName)
         return response;
     }
 )

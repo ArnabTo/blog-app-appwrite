@@ -42,7 +42,6 @@ const UpdatePage = () => {
         const currentBlogData = await dataBaseServices.queryBlogs(`${params.blogid}`);
         if (currentBlogData && currentBlogData.documents.length > 0) {
           const blogData = currentBlogData.documents[0];
-          // console.log(blogData)
           setValue('title', blogData.title);
           setContent(blogData.content);
           setThumbnailUrl(blogData.thumbnail);

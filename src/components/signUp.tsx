@@ -73,9 +73,7 @@ export default function SignUp() {
       // }
     }
 
-
     const selectedFile = data.profileAvatar;
-    console.log(selectedFile)
 
     try {
       setLoading(true);

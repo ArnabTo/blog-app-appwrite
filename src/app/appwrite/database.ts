@@ -111,7 +111,6 @@ export class DataBaseServices {
                 conf.appwriteArticleCollectionId // article collection Id
             )
             if (getBlogs) {
-                console.log(conf)
                 return getBlogs;
             }
         } catch (error) {
@@ -205,30 +204,6 @@ export class DataBaseServices {
 
         }
     }
-
-    // add comment
-    // async addComment({ blogId, userId, content, createdAt, parentCommentId }: CommentData) {
-    //     try {
-    //         const createdComment = await database.createDocument(
-    //             conf.appwriteDatabaseId,  // database Id
-    //             conf.appwriteCommentCollectionId,  // comment collection Id
-    //             ID.unique(),
-    //             {
-    //                 blogId,
-    //                 userId,
-    //                 content,
-    //                 createdAt,
-    //                 parentCommentId, // Corrected the spelling here
-    //             }
-    //         );
-    //         if (createdComment) {
-    //             return createdComment;
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //         throw error;
-    //     }
-    // }
 
     // add comments 
     async addComment({ blogId, comment, userId, userName, userAvatar, createdAt }: CommentData) {

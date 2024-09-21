@@ -91,7 +91,6 @@ const CreateBlogPage = () => {
                             month: 'long',
                             year: 'numeric',
                         };
-                        console.log(bucketId, fileId, 'bucketId, fileId');
                         const saveBlog = await dataBaseServices.saveBlog({
                             title: title,
                             content: content,
@@ -107,7 +106,6 @@ const CreateBlogPage = () => {
                         });
 
                         if (saveBlog) {
-                            console.log(saveBlog, 'Blog created successfully');
                             toast.success('Blog created successfully');
                             setTimeout(() => {
                                 router.push('/dashboard');

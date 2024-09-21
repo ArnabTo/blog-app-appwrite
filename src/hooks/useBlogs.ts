@@ -63,9 +63,7 @@ const useBlogs = () => {
 
     const deleteThumbnail = async (bucketId: string, fileId: string) => {
         try {
-            console.log(bucketId, fileId, 'sdflsdkfjlkdskjf')
           const response =  await storageServices.deleteFile({bucketId, fileId});
-          console.log(response, 'Deleted thumbnail')
         } catch (error) {
             console.log(error, 'Error deleting thumbnail')
             setError('Failed to delete thumbnail')
