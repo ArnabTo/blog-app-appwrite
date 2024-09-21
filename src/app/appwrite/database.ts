@@ -211,7 +211,7 @@ export class DataBaseServices {
     //     try {
     //         const createdComment = await database.createDocument(
     //             conf.appwriteDatabaseId,  // database Id
-    //             '66e9c45f000c957a84b9',  // comment collection Id
+    //             conf.appwriteCommentCollectionId,  // comment collection Id
     //             ID.unique(),
     //             {
     //                 blogId,
@@ -235,7 +235,7 @@ export class DataBaseServices {
         try {
             const createComment = await database.createDocument(
                 conf.appwriteDatabaseId,  // database Id
-                '66e9c45f000c957a84b9',  // comment collection Id
+                conf.appwriteCommentCollectionId,  // comment collection Id
                 ID.unique(),
                 {
                     blogId,
@@ -259,7 +259,7 @@ export class DataBaseServices {
         try {
             const getComments = await database.listDocuments(
                 conf.appwriteDatabaseId, // database Id
-                '66e9c45f000c957a84b9', // comment collection Id
+                conf.appwriteCommentCollectionId, // comment collection Id
                 [Query.equal('blogId', blogId)]
             );
             if (getComments) {
@@ -270,7 +270,6 @@ export class DataBaseServices {
             throw error;
         }
     }
-
 
 };
 
