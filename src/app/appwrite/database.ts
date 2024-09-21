@@ -108,7 +108,10 @@ export class DataBaseServices {
         try {
             const getBlogs = await database.listDocuments(
                 conf.appwriteDatabaseId, // database Id
-                conf.appwriteArticleCollectionId // article collection Id
+                conf.appwriteArticleCollectionId ,// article collection Id
+                [
+                    Query.equal('status', 'Published')
+                ]
             )
             if (getBlogs) {
                 return getBlogs;
@@ -119,6 +122,22 @@ export class DataBaseServices {
         }
     }
 
+    //get single user blog
+    async getUserBlogs(email: string) {
+        try {
+            const getBlogs = await database.listDocuments(
+                conf.appwriteDatabaseId, // database Id
+                conf.appwriteArticleCollectionId, // article collection Id
+                [
+                    Query.equal('authorEmail', email)
+                ]
+            )
+            return getBlogs;
+        } catch (error) {
+            console.log('Error fetching user blogs', error)
+            throw error
+        }
+    }
     // query blogs
     async queryBlogs(query: string) {
         try {

@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
-
+import Image from "next/image";
 // Define types for the blog data
 type InputData = {
     title: string;
@@ -152,7 +152,7 @@ const CreateBlogPage = () => {
 
                 <div className="mb-4">
                     {preview && (
-                        <img src={preview} alt="preview" className="w-full h-72 object-cover rounded-md" />
+                        <Image src={preview} alt="preview" className="w-auto h-auto object-cover rounded-md" />
                     )}
                     <Input
                         label="Thumbnail"

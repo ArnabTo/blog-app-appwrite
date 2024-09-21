@@ -8,32 +8,11 @@ import useUser from "@/hooks/useUser";
 import { useTheme } from "next-themes";
 
 const NavigationBar = () => {
-
+    
+    const { user, profileAvatar, handleLogout } = useUser();
+    
     const { theme } = useTheme();
-    interface User {
-        $id: string;
-        $createdAt: string;
-        $updatedAt: string;
-        accessedAt: string;
-        email: string;
-        emailVerification: boolean;
-        labels: any[];
-        mfa: boolean;
-        name: string;
-        passwordUpdate: string;
-        phone: string;
-        phoneVerification: boolean;
-        prefs: any;
-        registration: string;
-        status: boolean;
-        targets: any[];
-    }
-    interface UserType {
-        avatarBucketId: string;
-        avatarId: string;
-        email: string;
-        name: string;
-    }
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const navItems = [
@@ -61,7 +40,7 @@ const NavigationBar = () => {
         },
         {
             name: "Profile",
-            link: "/profile"
+            link: `/profile/${user?.email}`
         },
         {
             name: "Dashboard",
@@ -85,7 +64,6 @@ const NavigationBar = () => {
         }
     ]
 
-    const { user, profileAvatar, handleLogout } = useUser();
     return (
 
         <Navbar onMenuOpenChange={setIsMenuOpen} className=" bg-transparent">
@@ -132,7 +110,7 @@ const NavigationBar = () => {
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Static Actions">
                             <DropdownItem key="profile">
-                                <Link href="/user-profile" className={`${theme == 'dark' ? 'text-secondary' : 'text-textcolor'}`}>Profile</Link>
+                                <Link href={`/profile/${user?.email}`} className={`${theme == 'dark' ? 'text-secondary' : 'text-textcolor'}`}>Profile</Link>
                             </DropdownItem>
                             <DropdownItem key="copy">
                                 <Link href="/dashboard" className={`${theme == 'dark' ? 'text-secondary' : 'text-textcolor'}`}>Dashboard</Link>
