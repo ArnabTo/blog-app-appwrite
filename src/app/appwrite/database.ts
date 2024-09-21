@@ -1,5 +1,6 @@
 import { Databases, ID, Query } from "appwrite";
 import { appWriteClient } from "./auth";
+import conf from "@/conf/conf";
 
 type InputData = {
     name: string;
@@ -42,8 +43,8 @@ export class DataBaseServices {
     async insertData({ name, email, avatarId, avatarBucketId }: InputData) {
         try {
             const cratedDatabase = await database.createDocument(
-                '66c8c9a6000f305a13fe',  // databaseid
-                '66d1fb2700069104cb81', // userdata collectin id
+                conf.appwriteDatabaseId,  // databaseid
+                conf.appwriteUserCollectionId, // userdata collectin id
                 ID.unique(),
                 {
                     name: name,
@@ -61,7 +62,10 @@ export class DataBaseServices {
     }
     async getData() {
         try {
-            const readData = await database.listDocuments('66c8c9a6000f305a13fe', '66d1fb2700069104cb81');
+            const readData = await database.listDocuments(
+                conf.appwriteDatabaseId, // databaseid
+                conf.appwriteUserCollectionId // userdata collectin id
+            );
             if (readData) {
                 return readData
             }
@@ -74,8 +78,8 @@ export class DataBaseServices {
     async saveBlog({ title, content, authorEmail, thumbnail, createdAt, category, authorAvatar, author, readTime, bucketId, fileId }: BlogData) {
         try {
             const cratedDatabase = await database.createDocument(
-                '66c8c9a6000f305a13fe',  // database Id
-                '66c8ca010010a285f838',  // article collection Id
+                conf.appwriteDatabaseId,  // database Id
+                conf.appwriteArticleCollectionId,  // article collection Id
                 ID.unique(),
                 {
                     title: title,
@@ -103,10 +107,11 @@ export class DataBaseServices {
     async getBlogsData() {
         try {
             const getBlogs = await database.listDocuments(
-                '66c8c9a6000f305a13fe', // database Id
-                '66c8ca010010a285f838' // article collection Id
+                conf.appwriteDatabaseId, // database Id
+                conf.appwriteArticleCollectionId // article collection Id
             )
             if (getBlogs) {
+                console.log(conf)
                 return getBlogs;
             }
         } catch (error) {
@@ -119,8 +124,8 @@ export class DataBaseServices {
     async queryBlogs(query: string) {
         try {
             const getBlogs = await database.listDocuments(
-                '66c8c9a6000f305a13fe', // database Id
-                '66c8ca010010a285f838', // article collection Id
+                conf.appwriteDatabaseId, // database Id
+                conf.appwriteArticleCollectionId, // article collection Id
                 [
                     Query.equal("$id", query)
                 ]
@@ -138,8 +143,8 @@ export class DataBaseServices {
     async fetchLatestBlogs() {
         try {
             const getBlogs = await database.listDocuments(
-                '66c8c9a6000f305a13fe', // database Id
-                '66c8ca010010a285f838', // article collection Id
+                conf.appwriteDatabaseId, // database Id
+                conf.appwriteArticleCollectionId, // article collection Id
                 [Query.orderDesc('$createdAt')],  // sort by created date
             )
             return getBlogs
@@ -153,8 +158,8 @@ export class DataBaseServices {
     async updateBlog(id: string, { title, content, thumbnail, category }: updatedBlogData) {
         try {
             const updatedData = await database.updateDocument(
-                '66c8c9a6000f305a13fe',  // database Id
-                '66c8ca010010a285f838',  // article collection Id
+                conf.appwriteDatabaseId,  // database Id
+                conf.appwriteArticleCollectionId,  // article collection Id
                 id,
                 {
                     title,
@@ -175,8 +180,8 @@ export class DataBaseServices {
     async updateSupport(id: string, updatedSupports: number) {
         try {
             const response = await database.updateDocument(
-                '66c8c9a6000f305a13fe',  // database Id
-                '66c8ca010010a285f838',  // article collection Id
+                conf.appwriteDatabaseId,  // database Id
+                conf.appwriteArticleCollectionId,  // article collection Id
                 id,
                 {
                     supports: updatedSupports
@@ -192,8 +197,8 @@ export class DataBaseServices {
     async deleteBlog(targetBlogId: string) {
         try {
             const removeBlogfromDatabase = await database.deleteDocument(
-                '66c8c9a6000f305a13fe',  // database Id
-                '66c8ca010010a285f838',  // article collection Id
+                conf.appwriteDatabaseId,  // database Id
+                conf.appwriteArticleCollectionId,  // article collection Id
                 targetBlogId
             )
         } catch (error) {
@@ -205,7 +210,7 @@ export class DataBaseServices {
     // async addComment({ blogId, userId, content, createdAt, parentCommentId }: CommentData) {
     //     try {
     //         const createdComment = await database.createDocument(
-    //             '66c8c9a6000f305a13fe',  // database Id
+    //             conf.appwriteDatabaseId,  // database Id
     //             '66e9c45f000c957a84b9',  // comment collection Id
     //             ID.unique(),
     //             {
@@ -229,7 +234,7 @@ export class DataBaseServices {
     async addComment({ blogId, comment, userId, userName, userAvatar, createdAt }: CommentData) {
         try {
             const createComment = await database.createDocument(
-                '66c8c9a6000f305a13fe',  // database Id
+                conf.appwriteDatabaseId,  // database Id
                 '66e9c45f000c957a84b9',  // comment collection Id
                 ID.unique(),
                 {
@@ -253,7 +258,7 @@ export class DataBaseServices {
         console.log(blogId)
         try {
             const getComments = await database.listDocuments(
-                '66c8c9a6000f305a13fe', // database Id
+                conf.appwriteDatabaseId, // database Id
                 '66e9c45f000c957a84b9', // comment collection Id
                 [Query.equal('blogId', blogId)]
             );

@@ -63,9 +63,8 @@ const Hero = () => {
     // ];
 
     const { blogs } = useBlogs();
-    console.log(blogs, 'allblogs');
     const topBlogs = blogs.sort((a, b) => b.supports - a.supports).slice(0, 3);
-    console.log(topBlogs, 'top blogs')
+
     return (
         <div className='my-11 space-y-5'>
             <div className='flex flex-col justify-center items-center space-y-2 md:space-y-5'>
