@@ -248,22 +248,37 @@ export class DataBaseServices {
             throw error;
         }
     }
+    // async queryComments(blogId: string) {
+    //     console.log(blogId)
+    //     try {
+    //         const getComments = await database.listDocuments(
+    //             conf.appwriteDatabaseId, // database Id
+    //             conf.appwriteCommentCollectionId, // comment collection Id
+    //             [Query.equal('blogId', blogId)]
+    //         );
+    //         if (getComments) {
+    //             return getComments;
+    //         }
+    //     } catch (error) {
+    //         console.log(error, 'Error fetching comments');
+    //         throw error;
+    //     }
+    // }
+
     async queryComments(blogId: string) {
-        console.log(blogId)
         try {
             const getComments = await database.listDocuments(
                 conf.appwriteDatabaseId, // database Id
                 conf.appwriteCommentCollectionId, // comment collection Id
                 [Query.equal('blogId', blogId)]
             );
-            if (getComments) {
-                return getComments;
-            }
+            return getComments;
         } catch (error) {
-            console.log(error, 'Error fetching comments');
-            throw error;
+            console.log('Error fetching comments:', error);
+            return { total: 0 };  // Return a default value if there's an error
         }
     }
+    
 
 };
 
