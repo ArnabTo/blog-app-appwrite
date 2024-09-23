@@ -211,6 +211,24 @@ export class DataBaseServices {
             throw error;
         }
     }
+
+    //update status 
+    async updateStatus(id: string, updatedStatus: string) {
+        try {
+            const response = await database.updateDocument(
+                conf.appwriteDatabaseId,  // database Id
+                conf.appwriteArticleCollectionId,  // article collection Id
+                id,
+                {
+                    status: updatedStatus
+                }
+            )
+            return true
+        } catch (error) {
+          console.log(error, 'Error updating status'); 
+          throw error           
+        }
+    }
     // delete blogs
     async deleteBlog(targetBlogId: string) {
         try {
@@ -275,7 +293,7 @@ export class DataBaseServices {
             return getComments;
         } catch (error) {
             console.log('Error fetching comments:', error);
-            return { total: 0 };  // Return a default value if there's an error
+            // return { total: 0 };  // Return a default value if there's an error
         }
     }
     

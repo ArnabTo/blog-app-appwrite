@@ -72,8 +72,41 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
         fetchUserBlogs();
     }, [userEmail]);
 
-    console.log(publishedBlogs, UnpublishedBlogs,)
 
+    const handleUnpublishBlog = async (blogId: string) => {
+        try {
+            const response = await dataBaseServices.updateStatus(blogId, "Unpublished");
+            // if (response) {
+            //     setPublishedBlogs(prev => prev.filter(blog => blog.$id != blogId))
+            //     toast.success('Blog unpublished successfully');
+            // }
+
+            if (response) {
+                setPublishedBlogs((prev) => {
+                    const blogToUnpublish = prev.find(blog => blog.$id === blogId);
+                    
+                    if (blogToUnpublish) {
+                        setUnPublishedBlogs((prevUnPublished) => {
+                            // Ensure the blog is not already in the unpublished list
+                            const isAlreadyUnpublished = prevUnPublished.some(blog => blog.$id === blogId);
+                            if (!isAlreadyUnpublished) {
+                                return [...prevUnPublished, { ...blogToUnpublish, status: "Unpublished" }];
+                            }
+                            return prevUnPublished;
+                        });
+                    }
+    
+                    // Return new state for publishedBlogs, excluding the unpublished blog
+                    return prev.filter(blog => blog.$id !== blogId);
+                });
+    
+                toast.success('Blog unpublished successfully');
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error('Failed to unpublish blog');
+        }
+    }
     return (
         <div>
             <div className="max-w-6xl mx-auto my-20">
@@ -94,37 +127,24 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                                                             <div className="grid grid-cols-1 gap-3">
                                                                 {
                                                                     publishedBlogs.map((blog: Models.Document) => (
-                                                                        <Link key={blog.$id} href={`/blogs/${blog.$id}`}>
+                                                                        <div key={blog.$id}>
                                                                             <Card className="flex">
                                                                                 <CardBody>
-                                                                                    <div className="flex items-center">
-                                                                                        <div className="p-3 space-y-5">
-                                                                                            <h1 className="text-2xl font-extrabold">{blog.title}</h1>
-                                                                                            <div className="line-clamp-3" dangerouslySetInnerHTML={{ __html: blog.content }} />
-                                                                                            {/* <div className="flex justify-between">
-                                                                                                <div className="flex items-center w-2/3">
-                                                                                                    <span className="flex items-center gap-1">
-                                                                                                        <Heart></Heart>
-                                                                                                        {blog.supports}
-                                                                                                    </span>
-                                                                                                    <span className="flex items-center gap-1">
-                                                                                                        <MessageSquareMore />
-                                                                                                        {blog.commentsCount}
-                                                                                                    </span>
-                                                                                                </div>
-                                                                                                <Button className={`${ theme === 'dark' ? 'bg-primary' : 'bg-textcolor'} ${ theme === 'dark' ? 'text-textcolor' : 'text-secondary'}`}>Make Unpublish <BookDashed /></Button>
-                                                                                                <div></div>
-                                                                                            </div> */}
+                                                                                    <Link href={`/blogs/${blog.$id}`}>
+                                                                                        <div className="flex items-center">
+                                                                                            <div className="p-3 space-y-5">
+                                                                                                <h1 className="text-2xl font-extrabold">{blog.title}</h1>
+                                                                                                <div className="line-clamp-3" dangerouslySetInnerHTML={{ __html: blog.content }} />
+                                                                                            </div>
+                                                                                            <Image
+                                                                                                className="rounded-md"
+                                                                                                src={blog.thumbnail}
+                                                                                                alt="thumbnail"
+                                                                                                width={200}
+                                                                                                height={300}
+                                                                                            />
                                                                                         </div>
-                                                                                        <Image
-                                                                                            className="rounded-md"
-                                                                                            src={blog.thumbnail}
-                                                                                            alt="thumbnail"
-                                                                                            width={200}
-                                                                                            height={300}
-                                                                                        />
-                                                                                    </div>
-
+                                                                                    </Link>
                                                                                     <div className="flex justify-between p-3">
                                                                                         <div className="flex items-center gap-5">
                                                                                             <span className="flex items-center gap-1">
@@ -136,11 +156,12 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                                                                                                 {blog.commentsCount}
                                                                                             </span>
                                                                                         </div>
-                                                                                        <Button className={`${theme === 'dark' ? 'bg-primary' : 'bg-textcolor'} ${theme === 'dark' ? 'text-textcolor' : 'text-secondary'}`}>Make Unpublish <BookDashed /></Button>
+                                                                                        <Button onClick={() => handleUnpublishBlog(blog.$id)} className={`${theme === 'dark' ? 'bg-primary' : 'bg-textcolor'} ${theme === 'dark' ? 'text-textcolor' : 'text-secondary'}`}>Make Unpublish <BookDashed /></Button>
                                                                                     </div>
                                                                                 </CardBody>
                                                                             </Card>
-                                                                        </Link>
+
+                                                                        </div>
                                                                     ))
                                                                 }
                                                             </div>

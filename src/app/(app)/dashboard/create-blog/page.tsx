@@ -152,7 +152,7 @@ const CreateBlogPage = () => {
 
                 <div className="mb-4">
                     {preview && (
-                        <Image src={preview} alt="preview" className="w-auto h-auto object-cover rounded-md" />
+                        <Image width={1000} height={1000} src={preview} alt="preview" className="w-auto h-auto object-cover rounded-md" />
                     )}
                     <Input
                         label="Thumbnail"
