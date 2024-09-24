@@ -1,10 +1,10 @@
 'use client';
 import useUser from "@/hooks/useUser";
-import { Avatar, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Skeleton, Spinner, Tooltip } from "@nextui-org/react";
+import { Avatar, Button, Card, CardBody, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Skeleton, Spinner, Tooltip } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { CirclePlus, Ellipsis, Option, Plus } from "lucide-react";
+import { CirclePlus, Ellipsis, Heart, MessageSquareMore, Option, Plus } from "lucide-react";
 import useBlogs from "@/hooks/useBlogs";
 import DOMPurify from "dompurify";
 import { toast } from "sonner";
@@ -20,9 +20,9 @@ const DashboardComponent = () => {
 
     const handleBlogDelete = async (targetBlogId: string, bucketId: string, fileId: string) => {
 
-       await deleteThumbnail(bucketId, fileId);
-       await deleteBlog(targetBlogId); 
-       toast.success('Blog deleted successfully');
+        await deleteThumbnail(bucketId, fileId);
+        await deleteBlog(targetBlogId);
+        toast.success('Blog deleted successfully');
     }
 
 
@@ -42,48 +42,109 @@ const DashboardComponent = () => {
                             ) : (
                                 userBlogs && userBlogs.length > 0 ? (
                                     userBlogs.map((blog) => (
-                                        <div key={blog?.$id} className={`rounded-lg shadow-lg lg:pl-5 py-5 ${theme == 'dark' ? 'bg-textcolor' : 'bg-accent'}`}>
-                                            <Link href={`/blogs/${blog.$id}`} className="flex flex-col lg:flex-row justify-between items-center">
-                                                <div className="w-full lg:w-4/5">
-                                                    <div className="flex items-center gap-3">
-                                                        <Avatar src={blog.authorAvatar ?? ''} size="sm" />
-                                                        <span>{blog?.author}</span>
-                                                    </div>
-                                                    <div className="my-4">
-                                                        <div className="flex flex-col gap-1 mb-1">
-                                                            <p className="text-xl font-extrabold">{blog?.title}</p>
-                                                            <div className='line-clamp-3' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog?.content) }} />
+                                        // <div key={blog?.$id} className={`rounded-lg shadow-lg lg:pl-5 py-5 ${theme == 'dark' ? 'bg-textcolor' : 'bg-accent'}`}>
+                                        //     <Link href={`/blogs/${blog.$id}`} className="flex flex-col lg:flex-row justify-between items-center">
+                                        //         <div className="w-full lg:w-4/5">
+                                        //             <div className="flex items-center gap-3">
+                                        //                 <Avatar src={blog.authorAvatar ?? ''} size="sm" />
+                                        //                 <span>{blog?.author}</span>
+                                        //             </div>
+                                        //             <div className="my-4">
+                                        //                 <div className="flex flex-col gap-1 mb-1">
+                                        //                     <p className="text-xl font-extrabold">{blog?.title}</p>
+                                        //                     <div className='line-clamp-3' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog?.content) }} />
+                                        //                 </div>
+                                        //             </div>
+                                        //         </div>
+                                        //         <div className="w-full sm:w-52 h-52 relative">
+                                        //             <Image className="object-cover w-full h-full" fill src={blog?.thumbnail} alt="thumbnail" />
+                                        //         </div>
+                                        //     </Link>
+                                        //     <div className="flex justify-between items-center pr-">
+                                        //         <p className="text-gray-500">{blog?.createdAt}</p>
+                                        //         <div className="cursor-pointer mt-5 lg:pr-5">
+                                        //             <Dropdown>
+                                        //                 <DropdownTrigger>
+                                        //                     <Ellipsis />
+                                        //                 </DropdownTrigger>
+                                        //                 <DropdownMenu aria-label="Static Actions">
+                                        //                     <DropdownItem href={`/dashboard/update-blog/${blog?.$id}`} key="new"><Link href={`/dashboard/update-blog/${blog?.$id}`}>Edit</Link></DropdownItem>
+                                        //                     <DropdownItem key="copy">Change visibility</DropdownItem>
+                                        //                     <DropdownItem key="edit">Share</DropdownItem>
+                                        //                     <DropdownItem onClick={() => handleBlogDelete(blog.$id, blog?.bucketId, blog?.fileId)} key="delete" className="text-danger" color="danger">
+                                        //                         Delete
+                                        //                     </DropdownItem>
+                                        //                 </DropdownMenu>
+                                        //             </Dropdown>
+                                        //         </div>
+                                        //     </div>
+                                        // </div>
+                                        <div key={blog.$id}>
+                                            <Card className="flex">
+                                                <CardBody>
+                                                    <Link href={`/blogs/${blog.$id}`}>
+                                                        <div className="flex items-center">
+                                                            <div className="p-3 space-y-5">
+                                                            <p className="text-gray-500">{blog?.createdAt}</p>
+                                                                <h1 className="text-2xl font-extrabold">{blog.title}</h1>
+                                                                <div className="line-clamp-3" dangerouslySetInnerHTML={{ __html: blog.content }} />
+                                                                <div>
+                                                                    <small
+                                                                        className={`text-default-500 px-3 py-2 rounded-full ${theme == 'dark' ? 'text-textcolor' : 'text-primary'
+                                                                            } ${theme == 'dark' ? 'bg-[#F1F0F1]' : 'bg-textcolor'}`}
+                                                                    >
+                                                                        {blog.category}
+                                                                    </small>
+                                                                </div>
+                                                            </div>
+                                                            <Image
+                                                                className="rounded-md min-h-40"
+                                                                src={blog.thumbnail}
+                                                                alt="thumbnail"
+                                                                width={200}
+                                                                height={300}
+                                                            />
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div className="w-full sm:w-52 h-52 relative">
-                                                    <Image className="object-cover w-full h-full" fill src={blog?.thumbnail} alt="thumbnail" />
-                                                </div>
-                                            </Link>
-                                            <div className="flex justify-between items-center pr-">
-                                                <p className="text-gray-500">{blog?.createdAt}</p>
-                                                <div className="cursor-pointer mt-5 lg:pr-5">
-                                                    <Dropdown>
-                                                        <DropdownTrigger>
-                                                            <Ellipsis />
-                                                        </DropdownTrigger>
-                                                        <DropdownMenu aria-label="Static Actions">
-                                                            <DropdownItem href={`/dashboard/update-blog/${blog?.$id}`} key="new"><Link href={`/dashboard/update-blog/${blog?.$id}`}>Edit</Link></DropdownItem>
-                                                            <DropdownItem key="copy">Change visibility</DropdownItem>
-                                                            <DropdownItem key="edit">Share</DropdownItem>
-                                                            <DropdownItem onClick={() => handleBlogDelete(blog.$id, blog?.bucketId, blog?.fileId)} key="delete" className="text-danger" color="danger">
-                                                                Delete
-                                                            </DropdownItem>
-                                                        </DropdownMenu>
-                                                    </Dropdown>
-                                                </div>
-                                            </div>
+                                                    </Link>
+                                                    <div className="flex justify-between p-3">
+                                                        <div className="flex items-center gap-5">
+                                                            <span className="flex items-center gap-1">
+                                                                <Heart></Heart>
+                                                                {blog.supports}
+                                                            </span>
+                                                            <span className="flex items-center gap-1">
+                                                                <MessageSquareMore />
+                                                                {blog?.commentsCount}
+                                                            </span>
+                                                        </div>
+
+                                                        <div className="flex justify-between items-center pr-">
+                                                            <div className="cursor-pointer mt-5 lg:pr-5">
+                                                                <Dropdown>
+                                                                    <DropdownTrigger>
+                                                                        <Ellipsis />
+                                                                    </DropdownTrigger>
+                                                                    <DropdownMenu aria-label="Static Actions">
+                                                                        <DropdownItem href={`/dashboard/update-blog/${blog?.$id}`} key="new"><Link href={`/dashboard/update-blog/${blog?.$id}`}>Edit</Link></DropdownItem>
+                                                                        <DropdownItem key="copy">Change visibility</DropdownItem>
+                                                                        <DropdownItem key="edit">Share</DropdownItem>
+                                                                        <DropdownItem onClick={() => handleBlogDelete(blog.$id, blog?.bucketId, blog?.fileId)} key="delete" className="text-danger" color="danger">
+                                                                            Delete
+                                                                        </DropdownItem>
+                                                                    </DropdownMenu>
+                                                                </Dropdown>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                </CardBody>
+                                            </Card>
+
                                         </div>
                                     ))
                                 ) : (
                                     <div>
                                         {userBlogs.length === 0 ? (
-                                             <p className="text-xl font-bold text-center">No blogs found</p>
+                                            <p className="text-xl font-bold text-center">No blogs found</p>
                                         ) : (
                                             <div className="flex justify-center items-center">
                                                 <Spinner color="success" />
