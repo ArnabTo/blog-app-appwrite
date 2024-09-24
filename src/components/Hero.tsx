@@ -6,9 +6,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 import { Autoplay, EffectFade, Pagination } from 'swiper/modules';
-import Image from 'next/image';
 import { Avatar, Button } from '@nextui-org/react';
-import { CustomButton } from './custom/CustomButton';
 import { useTheme } from 'next-themes';
 import useBlogs from '@/hooks/useBlogs';
 

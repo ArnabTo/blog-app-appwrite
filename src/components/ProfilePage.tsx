@@ -2,7 +2,7 @@ import dataBaseServices from "@/app/appwrite/database";
 import useUser from "@/hooks/useUser";
 import { Button, Card, CardBody, CardFooter, Divider, Skeleton, Tab, Tabs } from "@nextui-org/react";
 import { Models } from "appwrite";
-import { BookDashed, Edit, Heart, MessageCircleMore, MessageSquareMore } from "lucide-react";
+import { BookCheck, BookDashed, Edit, Heart, MessageCircleMore, MessageSquareMore } from "lucide-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,34 +18,6 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
     const [UnpublishedBlogs, setUnPublishedBlogs] = useState<Models.Document[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
-    // useEffect(() => {
-    //     try {
-    //         setLoading(true);
-    //         const fetchUserBlogs = async () => {
-
-    //             if (userEmail) {
-    //                 const userBlogs = (await dataBaseServices.getUserBlogs(userEmail)).documents;
-
-    //                 const blogsWithCommentsCount = await Promise.all(userBlogs.map(async (blog: Models.Document) => {
-    //                     const commentsCount = await dataBaseServices.queryComments(blog.$id);
-    //                     return { ...blog, commentsCount };
-    //                 }));
-    //                 setUnPublishedBlogs(userBlogs.filter((blog: Models.Document) => blog.status === "Unpublished"));
-    //                 setPublishedBlogs(userBlogs.filter((blog: Models.Document) => blog.status === "Published"));
-    //             }
-    //         }
-
-
-    //         fetchUserBlogs();
-    //     } catch (error) {
-    //         toast.error('Failed to fetch user blogs');
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // }, [user])
-
-
-
     useEffect(() => {
         const fetchUserBlogs = async () => {
             try {
@@ -53,7 +25,6 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                 if (userEmail) {
                     const userBlogs = (await dataBaseServices.getUserBlogs(userEmail)).documents;
 
-                    // Fetch comments count for each blog
                     const blogsWithCommentsCount = await Promise.all(userBlogs.map(async (blog: Models.Document) => {
                         const commentsCount = await dataBaseServices.queryComments(blog.$id);
                         return { ...blog, commentsCount: commentsCount?.total || 0 };
@@ -76,10 +47,6 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
     const handleUnpublishBlog = async (blogId: string) => {
         try {
             const response = await dataBaseServices.updateStatus(blogId, "Unpublished");
-            // if (response) {
-            //     setPublishedBlogs(prev => prev.filter(blog => blog.$id != blogId))
-            //     toast.success('Blog unpublished successfully');
-            // }
 
             if (response) {
                 setPublishedBlogs((prev) => {
@@ -105,6 +72,33 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
         } catch (error) {
             console.log(error);
             toast.error('Failed to unpublish blog');
+        }
+    }
+
+    const handlePublishBlog = async (blogId: string) => {
+        try {
+            const response = await dataBaseServices.updateStatus(blogId, "Published");
+            if (response) {
+                setUnPublishedBlogs((prev)=> {
+                    const blogToPublish = prev.find(blog => blog.$id === blogId);
+
+                    if (blogToPublish) {
+                        setPublishedBlogs((prevPublished) => {
+                            // Ensure the blog is not already in the published list
+                            const isAlreadyPublished = prevPublished.some(blog => blog.$id === blogId);
+                            if (!isAlreadyPublished) {
+                                return [...prevPublished, { ...blogToPublish, status: "Published" }];
+                            }
+                            return prevPublished;
+                        })
+                    }
+                     // Return new state for unPublishedBlogs, excluding the published blog
+                     return prev.filter(blog => blog.$id !== blogId);
+                })
+                toast.success('Blog published successfully');
+            }
+        }catch (error) {
+            toast.error('Failed to publish blog');
         }
     }
     return (
@@ -156,7 +150,7 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                                                                                                 {blog.commentsCount}
                                                                                             </span>
                                                                                         </div>
-                                                                                        <Button onClick={() => handleUnpublishBlog(blog.$id)} className={`${theme === 'dark' ? 'bg-primary' : 'bg-textcolor'} ${theme === 'dark' ? 'text-textcolor' : 'text-secondary'}`}>Make Unpublish <BookDashed /></Button>
+                                                                                        <Button onClick={() => handleUnpublishBlog(blog.$id)} className={`${theme === 'dark' ? 'bg-primary' : 'bg-textcolor'} ${theme === 'dark' ? 'text-textcolor' : 'text-secondary'} rounded-md`}>Make Unpublish <BookDashed /></Button>
                                                                                     </div>
                                                                                 </CardBody>
                                                                             </Card>
@@ -185,25 +179,34 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                                                                     UnpublishedBlogs.map((blog: Models.Document) => (
                                                                         <Card key={blog.$id} className="flex">
                                                                             <CardBody>
-                                                                                <div className="flex items-center">
-                                                                                    <div className="p-3">
-                                                                                        <h1 className="text-2xl font-extrabold">{blog.title}</h1>
-                                                                                        <div className="line-clamp-3" dangerouslySetInnerHTML={{ __html: blog.content }} />
-                                                                                        <div>
-                                                                                            <span>
+                                                                            <Link href={`/blogs/${blog.$id}`}>
+                                                                                        <div className="flex items-center">
+                                                                                            <div className="p-3 space-y-5">
+                                                                                                <h1 className="text-2xl font-extrabold">{blog.title}</h1>
+                                                                                                <div className="line-clamp-3" dangerouslySetInnerHTML={{ __html: blog.content }} />
+                                                                                            </div>
+                                                                                            <Image
+                                                                                                className="rounded-md"
+                                                                                                src={blog.thumbnail}
+                                                                                                alt="thumbnail"
+                                                                                                width={200}
+                                                                                                height={300}
+                                                                                            />
+                                                                                        </div>
+                                                                                    </Link>
+                                                                                    <div className="flex justify-between p-3">
+                                                                                        <div className="flex items-center gap-5">
+                                                                                            <span className="flex items-center gap-1">
                                                                                                 <Heart></Heart>
                                                                                                 {blog.supports}
                                                                                             </span>
+                                                                                            <span className="flex items-center gap-1">
+                                                                                                <MessageSquareMore />
+                                                                                                {blog.commentsCount}
+                                                                                            </span>
                                                                                         </div>
+                                                                                        <Button onClick={() => handlePublishBlog(blog.$id)} className={`${theme === 'dark' ? 'bg-primary' : 'bg-textcolor'} ${theme === 'dark' ? 'text-textcolor' : 'text-secondary'} rounded-md`}>Make Publish <BookCheck /></Button>
                                                                                     </div>
-                                                                                    <Image
-                                                                                        className="rounded-md h-full"
-                                                                                        src={blog.thumbnail}
-                                                                                        alt="thumbnail"
-                                                                                        width={200}
-                                                                                        height={300}
-                                                                                    />
-                                                                                </div>
                                                                             </CardBody>
                                                                         </Card>
                                                                     ))
@@ -239,7 +242,6 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                             <Image className="rounded-full w-20 h-20" src={profileAvatar ?? ''} width={100} height={100} alt="avatar" />
                         )}
                         <p className="font-medium">{loader ? <Skeleton className="w-32 h-6" /> : user?.name}</p>
-                        {/* <p>{user?.followers} 5 Followers</p> */}
                         <p> 5 Followers</p>
                     </div>
                 </div>
