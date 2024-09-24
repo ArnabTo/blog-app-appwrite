@@ -8,12 +8,15 @@ import { CirclePlus, Ellipsis, Heart, MessageSquareMore, Option, Plus } from "lu
 import useBlogs from "@/hooks/useBlogs";
 import DOMPurify from "dompurify";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import dataBaseServices from "@/app/appwrite/database";
+import { Models } from "appwrite";
 
 const DashboardComponent = () => {
     const { user, profileAvatar, loader } = useUser();
     const { theme } = useTheme();
-
+    const [loading, setLoading] = useState(false);
+    const [usersBlogs, setUserBlogs] = useState<any[]>([]);
     const { blogs, deleteBlog, deleteThumbnail } = useBlogs();
     // Filter blogs by user email
     const userBlogs = blogs.filter((blog) => blog.authorEmail === user?.email);
@@ -25,6 +28,30 @@ const DashboardComponent = () => {
         toast.success('Blog deleted successfully');
     }
 
+    useEffect(() => {
+        const fetchUserBlogs = async () => {
+            try {
+                setLoading(true);
+                const userEmail = user?.email;
+                if (userEmail) {
+                    const userBlogs = (await dataBaseServices.getUserBlogs(userEmail)).documents;
+
+                    const blogsWithCommentsCount = await Promise.all(userBlogs.map(async (blog: Models.Document) => {
+                        const commentsCount = await dataBaseServices.queryComments(blog.$id);
+                        return { ...blog, commentsCount: commentsCount?.total || 0 };
+                    }));
+
+                    setUserBlogs(blogsWithCommentsCount);
+                }
+            } catch (error) {
+                toast.error('Failed to fetch user blogs');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserBlogs();
+    }, [user?.email]);
 
     return (
         <div className="max-w-6xl mx-auto my-20">
@@ -40,52 +67,15 @@ const DashboardComponent = () => {
                                     <Skeleton className="w-full h-24" />
                                 </>
                             ) : (
-                                userBlogs && userBlogs.length > 0 ? (
-                                    userBlogs.map((blog) => (
-                                        // <div key={blog?.$id} className={`rounded-lg shadow-lg lg:pl-5 py-5 ${theme == 'dark' ? 'bg-textcolor' : 'bg-accent'}`}>
-                                        //     <Link href={`/blogs/${blog.$id}`} className="flex flex-col lg:flex-row justify-between items-center">
-                                        //         <div className="w-full lg:w-4/5">
-                                        //             <div className="flex items-center gap-3">
-                                        //                 <Avatar src={blog.authorAvatar ?? ''} size="sm" />
-                                        //                 <span>{blog?.author}</span>
-                                        //             </div>
-                                        //             <div className="my-4">
-                                        //                 <div className="flex flex-col gap-1 mb-1">
-                                        //                     <p className="text-xl font-extrabold">{blog?.title}</p>
-                                        //                     <div className='line-clamp-3' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog?.content) }} />
-                                        //                 </div>
-                                        //             </div>
-                                        //         </div>
-                                        //         <div className="w-full sm:w-52 h-52 relative">
-                                        //             <Image className="object-cover w-full h-full" fill src={blog?.thumbnail} alt="thumbnail" />
-                                        //         </div>
-                                        //     </Link>
-                                        //     <div className="flex justify-between items-center pr-">
-                                        //         <p className="text-gray-500">{blog?.createdAt}</p>
-                                        //         <div className="cursor-pointer mt-5 lg:pr-5">
-                                        //             <Dropdown>
-                                        //                 <DropdownTrigger>
-                                        //                     <Ellipsis />
-                                        //                 </DropdownTrigger>
-                                        //                 <DropdownMenu aria-label="Static Actions">
-                                        //                     <DropdownItem href={`/dashboard/update-blog/${blog?.$id}`} key="new"><Link href={`/dashboard/update-blog/${blog?.$id}`}>Edit</Link></DropdownItem>
-                                        //                     <DropdownItem key="copy">Change visibility</DropdownItem>
-                                        //                     <DropdownItem key="edit">Share</DropdownItem>
-                                        //                     <DropdownItem onClick={() => handleBlogDelete(blog.$id, blog?.bucketId, blog?.fileId)} key="delete" className="text-danger" color="danger">
-                                        //                         Delete
-                                        //                     </DropdownItem>
-                                        //                 </DropdownMenu>
-                                        //             </Dropdown>
-                                        //         </div>
-                                        //     </div>
-                                        // </div>
+                                usersBlogs && usersBlogs.length > 0 ? (
+                                    usersBlogs.map((blog) => (
                                         <div key={blog.$id}>
                                             <Card className="flex">
                                                 <CardBody>
                                                     <Link href={`/blogs/${blog.$id}`}>
                                                         <div className="flex items-center">
                                                             <div className="p-3 space-y-5">
-                                                            <p className="text-gray-500">{blog?.createdAt}</p>
+                                                                <p className="text-gray-500">{blog?.createdAt}</p>
                                                                 <h1 className="text-2xl font-extrabold">{blog.title}</h1>
                                                                 <div className="line-clamp-3" dangerouslySetInnerHTML={{ __html: blog.content }} />
                                                                 <div>
@@ -135,7 +125,7 @@ const DashboardComponent = () => {
                                                                 </Dropdown>
                                                             </div>
                                                         </div>
-                                                        </div>
+                                                    </div>
                                                 </CardBody>
                                             </Card>
 
