@@ -15,7 +15,7 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
     const { theme } = useTheme();
     const { user, profileAvatar, loader } = useUser();
     const [publishedBlogs, setPublishedBlogs] = useState<Models.Document[]>([]);
-    const [UnpublishedBlogs, setUnPublishedBlogs] = useState<Models.Document[]>([]);
+    const [unPublishedBlogs, setUnPublishedBlogs] = useState<Models.Document[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -51,7 +51,7 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
             if (response) {
                 setPublishedBlogs((prev) => {
                     const blogToUnpublish = prev.find(blog => blog.$id === blogId);
-                    
+
                     if (blogToUnpublish) {
                         setUnPublishedBlogs((prevUnPublished) => {
                             // Ensure the blog is not already in the unpublished list
@@ -62,11 +62,11 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                             return prevUnPublished;
                         });
                     }
-    
+
                     // Return new state for publishedBlogs, excluding the unpublished blog
                     return prev.filter(blog => blog.$id !== blogId);
                 });
-    
+
                 toast.success('Blog unpublished successfully');
             }
         } catch (error) {
@@ -79,7 +79,7 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
         try {
             const response = await dataBaseServices.updateStatus(blogId, "Published");
             if (response) {
-                setUnPublishedBlogs((prev)=> {
+                setUnPublishedBlogs((prev) => {
                     const blogToPublish = prev.find(blog => blog.$id === blogId);
 
                     if (blogToPublish) {
@@ -92,12 +92,12 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                             return prevPublished;
                         })
                     }
-                     // Return new state for unPublishedBlogs, excluding the published blog
-                     return prev.filter(blog => blog.$id !== blogId);
+                    // Return new state for unPublishedBlogs, excluding the published blog
+                    return prev.filter(blog => blog.$id !== blogId);
                 })
                 toast.success('Blog published successfully');
             }
-        }catch (error) {
+        } catch (error) {
             toast.error('Failed to publish blog');
         }
     }
@@ -110,7 +110,7 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                         <div className="space-y-10">
                             <div className="flex w-full flex-col">
                                 <Tabs aria-label="Options">
-                                    <Tab key="published" title="Published">
+                                    <Tab key="published" title={`Published (${publishedBlogs.length})`}>
                                         {
                                             loader ? (
                                                 <Skeleton className="w-full h-24" />
@@ -129,6 +129,14 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                                                                                             <div className="p-3 space-y-5">
                                                                                                 <h1 className="text-2xl font-extrabold">{blog.title}</h1>
                                                                                                 <div className="line-clamp-3" dangerouslySetInnerHTML={{ __html: blog.content }} />
+                                                                                                <div>
+                                                                                                    <small
+                                                                                                        className={`text-default-500 px-3 py-2 rounded-full ${theme == 'dark' ? 'text-textcolor' : 'text-primary'
+                                                                                                            } ${theme == 'dark' ? 'bg-[#F1F0F1]' : 'bg-textcolor'}`}
+                                                                                                    >
+                                                                                                        {blog.category}
+                                                                                                    </small>
+                                                                                                </div>
                                                                                             </div>
                                                                                             <Image
                                                                                                 className="rounded-md"
@@ -166,47 +174,55 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                                             )
                                         }
                                     </Tab>
-                                    <Tab key="unpublished" title="Unpublished">
+                                    <Tab key="unpublished" title={`Unpublished (${unPublishedBlogs && unPublishedBlogs.length})`}>
                                         {
                                             loader ? (
                                                 <Skeleton className="w-full h-24" />
                                             ) : (
                                                 <div>
                                                     {
-                                                        UnpublishedBlogs && UnpublishedBlogs.length > 0 ?
+                                                        unPublishedBlogs && unPublishedBlogs.length > 0 ?
                                                             <div className="grid grid-cols-1 gap-3">
                                                                 {
-                                                                    UnpublishedBlogs.map((blog: Models.Document) => (
+                                                                    unPublishedBlogs.map((blog: Models.Document) => (
                                                                         <Card key={blog.$id} className="flex">
                                                                             <CardBody>
-                                                                            <Link href={`/blogs/${blog.$id}`}>
-                                                                                        <div className="flex items-center">
-                                                                                            <div className="p-3 space-y-5">
-                                                                                                <h1 className="text-2xl font-extrabold">{blog.title}</h1>
-                                                                                                <div className="line-clamp-3" dangerouslySetInnerHTML={{ __html: blog.content }} />
+                                                                                <Link href={`/blogs/${blog.$id}`}>
+                                                                                    <div className="flex items-center">
+                                                                                        <div className="p-3 space-y-5">
+                                                                                            <h1 className="text-2xl font-extrabold">{blog.title}</h1>
+                                                                                            <div className="line-clamp-3" dangerouslySetInnerHTML={{ __html: blog.content }} />
+                                                                                            <div>
+                                                                                                <small
+                                                                                                    className={`text-default-500 px-3 py-2 rounded-full ${theme == 'dark' ? 'text-textcolor' : 'text-primary'
+                                                                                                        } ${theme == 'dark' ? 'bg-[#F1F0F1]' : 'bg-textcolor'}`}
+                                                                                                >
+                                                                                                    {blog.category}
+                                                                                                </small>
                                                                                             </div>
-                                                                                            <Image
-                                                                                                className="rounded-md"
-                                                                                                src={blog.thumbnail}
-                                                                                                alt="thumbnail"
-                                                                                                width={200}
-                                                                                                height={300}
-                                                                                            />
                                                                                         </div>
-                                                                                    </Link>
-                                                                                    <div className="flex justify-between p-3">
-                                                                                        <div className="flex items-center gap-5">
-                                                                                            <span className="flex items-center gap-1">
-                                                                                                <Heart></Heart>
-                                                                                                {blog.supports}
-                                                                                            </span>
-                                                                                            <span className="flex items-center gap-1">
-                                                                                                <MessageSquareMore />
-                                                                                                {blog.commentsCount}
-                                                                                            </span>
-                                                                                        </div>
-                                                                                        <Button onClick={() => handlePublishBlog(blog.$id)} className={`${theme === 'dark' ? 'bg-primary' : 'bg-textcolor'} ${theme === 'dark' ? 'text-textcolor' : 'text-secondary'} rounded-md`}>Make Publish <BookCheck /></Button>
+                                                                                        <Image
+                                                                                            className="rounded-md"
+                                                                                            src={blog.thumbnail}
+                                                                                            alt="thumbnail"
+                                                                                            width={200}
+                                                                                            height={300}
+                                                                                        />
                                                                                     </div>
+                                                                                </Link>
+                                                                                <div className="flex justify-between p-3">
+                                                                                    <div className="flex items-center gap-5">
+                                                                                        <span className="flex items-center gap-1">
+                                                                                            <Heart></Heart>
+                                                                                            {blog.supports}
+                                                                                        </span>
+                                                                                        <span className="flex items-center gap-1">
+                                                                                            <MessageSquareMore />
+                                                                                            {blog.commentsCount}
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <Button onClick={() => handlePublishBlog(blog.$id)} className={`${theme === 'dark' ? 'bg-primary' : 'bg-textcolor'} ${theme === 'dark' ? 'text-textcolor' : 'text-secondary'} rounded-md`}>Make Publish <BookCheck /></Button>
+                                                                                </div>
                                                                             </CardBody>
                                                                         </Card>
                                                                     ))
