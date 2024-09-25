@@ -29,6 +29,10 @@ const NavigationBar = () => {
             link: "/products"
         },
         {
+            name: "Pricing",
+            link: "/pricing"
+        },
+        {
             name: "Prodcast",
             link: "/prodcast"
         }
