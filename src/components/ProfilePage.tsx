@@ -131,8 +131,8 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                                                                                                 <div className="line-clamp-3" dangerouslySetInnerHTML={{ __html: blog.content }} />
                                                                                                 <div>
                                                                                                     <small
-                                                                                                        className={`text-default-500 px-3 py-2 rounded-full ${theme == 'dark' ? 'text-textcolor' : 'text-primary'
-                                                                                                            } ${theme == 'dark' ? 'bg-[#F1F0F1]' : 'bg-textcolor'}`}
+                                                                                                        className={`text-default-500 px-3 py-2 rounded-full ${theme == 'dark' ? 'text-textcolor bg-[#F1F0F1]' : 'text-primary bg-textcolor'
+                                                                                                            }`}
                                                                                                     >
                                                                                                         {blog.category}
                                                                                                     </small>
@@ -158,7 +158,7 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                                                                                                 {blog.commentsCount}
                                                                                             </span>
                                                                                         </div>
-                                                                                        <Button onClick={() => handleUnpublishBlog(blog.$id)} className={`${theme === 'dark' ? 'bg-primary' : 'bg-textcolor'} ${theme === 'dark' ? 'text-textcolor' : 'text-secondary'} rounded-md`}>Make Unpublish <BookDashed /></Button>
+                                                                                        <Button onClick={() => handleUnpublishBlog(blog.$id)} className={`${theme === 'dark' ? 'bg-primary text-textcolor' : 'bg-textcolor text-secondary'} rounded-md`}>Make Unpublish <BookDashed /></Button>
                                                                                     </div>
                                                                                 </CardBody>
                                                                             </Card>

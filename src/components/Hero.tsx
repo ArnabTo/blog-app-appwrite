@@ -70,7 +70,7 @@ const Hero = () => {
                 <h1 className='text-4xl md:text-5xl text-center font-bold'>Writings from Our Team</h1>
                 <p className='text-center'>Explore the latest news and insights from the blog</p>
             </div>
-            <Button className={`flex justify-center items-center mx-auto ${theme == 'dark' ? 'bg-primary' : 'bg-textcolor'} ${theme == 'dark' ? 'text-textcolor' : 'text-secondary'} font-bold rounded-md`}>Subscribe</Button>
+            <Button className={`flex justify-center items-center mx-auto ${theme == 'dark' ? 'bg-primary text-textcolor' : 'bg-textcolor text-secondary'} font-bold rounded-md`}>Subscribe</Button>
             <div className="relative max-w-7xl mx-auto w-full h-[600px] sm:h-[500px] md:h-[600px] lg:h-[700px] rounded-xl">
                 <Swiper
                     spaceBetween={30}

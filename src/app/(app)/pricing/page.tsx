@@ -11,7 +11,7 @@ export default function Pricingpage() {
                 <div className="px-2 lg:px-10 space-y-5">
                     <span className="flex flex-col justify-center items-center gap-3">
                         <h1 className="text-5xl font-bold">Pricing</h1>
-                        <Chip size="lg" className={`${theme === 'dark' ? 'bg-primary' : 'bg-textcolor'} ${theme === 'dark' ? 'text-textcolor' : 'text-primary'} `}>Monthly</Chip>
+                        <Chip size="lg" className={`${theme === 'dark' ? 'bg-primary text-textcolor' : 'bg-textcolor text-primary'}`}>Monthly</Chip>
                     </span>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div className="space-y-3 w-full lg:w-[18rem] xl:w-[22rem] h-fit bg-textcolor text-[#d1cfcf] p-5 rounded-lg cursor-pointer">

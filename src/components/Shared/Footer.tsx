@@ -44,7 +44,7 @@ const Footer = () => {
                     <div>
                         <b className={`text-secondary text-xl ${theme === 'dark' ? 'text-textcolor' : 'text-secondary'}`}>Get Updates</b>
                         <div className="relative mt-2">
-                            <input className={`w-full py-3 px-3 outline-none rounded-lg ${theme === 'dark' ? 'bg-textcolor' : 'bg-secondary'} ${theme === 'dark' ? 'text-secondary' : 'text-textcolor'} `}/>
+                            <input className={`w-full py-3 px-3 outline-none rounded-lg ${theme === 'dark' ? 'bg-textcolor text-secondary' : 'bg-secondary text-textcolor'} `}/>
                             <button className="absolute w-1/4 right-2 top-1 text-textcolor bg-primary py-2 rounded-lg">Subscribe</button>
                         </div>
                     </div>

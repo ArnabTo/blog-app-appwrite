@@ -9,6 +9,9 @@ const conf = {
   
   appwriteBucketId : String(process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID),
   appwriteCommentCollectionId : String(process.env.NEXT_PUBLIC_APPWRITE_COMMENT_COLLECTION_ID),
+
+  stripeScretKey : String(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY),
+  stripePublisherKEy : String(process.env.NEXT_PUBLIC_PUBLISHER_KEY),
 }
 
 export default conf;

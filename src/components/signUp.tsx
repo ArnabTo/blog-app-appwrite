@@ -20,7 +20,6 @@ type InputData = {
   email: string;
   password: string;
   profileAvatar: FileList | File[];
-  // avatar: "https://th.bing.com/th/id/OIP.x7X2oAehk5M9IvGwO_K0PgHaHa?rs=1&pid=ImgDetMain"
 };
 
 export default function SignUp() {

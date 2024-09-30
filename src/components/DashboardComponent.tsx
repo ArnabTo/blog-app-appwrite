@@ -80,9 +80,7 @@ const DashboardComponent = () => {
                                                                 <div className="line-clamp-3" dangerouslySetInnerHTML={{ __html: blog.content }} />
                                                                 <div>
                                                                     <small
-                                                                        className={`text-default-500 px-3 py-2 rounded-full ${theme == 'dark' ? 'text-textcolor' : 'text-primary'
-                                                                            } ${theme == 'dark' ? 'bg-[#F1F0F1]' : 'bg-textcolor'}`}
-                                                                    >
+                                                                        className={`text-default-500 px-3 py-2 rounded-full ${theme == 'dark' ? 'text-textcolor bg-[#F1F0F1]' : 'text-primary bg-textcolor'}`}>
                                                                         {blog.category}
                                                                     </small>
                                                                 </div>

@@ -66,8 +66,7 @@ const LatestBlogs = () => {
                                 <Image className="w-full md:w-revert-layer rounded-md grayscale group-hover:grayscale-0 transition-all delay-100" src={latestBlogs[1]?.thumbnail} alt='blog' width={200} height={200} />
                                 <div>
                                     <small
-                                        className={`text-default-500 px-2 py-1 rounded-full mb-2 ${theme == 'dark' ? 'text-textcolor' : 'text-primary'
-                                            } ${theme == 'dark' ? 'bg-[#F1F0F1]' : 'bg-textcolor'}`}
+                                        className={`text-default-500 px-2 py-1 rounded-full mb-2 ${theme == 'dark' ? 'text-textcolor bg-[#F1F0F1]' : 'text-primary bg-textcolor'}`}
                                     >
                                         {latestBlogs[1]?.category}
                                     </small>
@@ -81,9 +80,7 @@ const LatestBlogs = () => {
                                 <Image className="w-full md:w-revert-layer rounded-md grayscale group-hover:grayscale-0 transition-all delay-100" src={latestBlogs[2]?.thumbnail} alt='blog' width={200} height={200} />
                                 <div>
                                     <small
-                                        className={`text-default-500 px-2 py-1 rounded-full mb-2 ${theme == 'dark' ? 'text-textcolor' : 'text-primary'
-                                            } ${theme == 'dark' ? 'bg-[#F1F0F1]' : 'bg-textcolor'}`}
-                                    >
+                                        className={`text-default-500 px-2 py-1 rounded-full mb-2 ${theme == 'dark' ? 'text-textcolor bg-[#F1F0F1]' : 'text-primary bg-textcolor'}`}>
                                         {latestBlogs[2]?.category}
                                     </small>
                                     <h2 className="text-2xl font-bold">{latestBlogs[2]?.title}</h2>
@@ -96,8 +93,8 @@ const LatestBlogs = () => {
                                 <Image className="w-full md:w-revert-layer rounded-md grayscale group-hover:grayscale-0 transition-all delay-100 " src={latestBlogs[3]?.thumbnail} alt='blog' width={200} height={200} />
                                 <div>
                                     <small
-                                        className={`text-default-500 px-2 py-1 rounded-full mb-2 ${theme == 'dark' ? 'text-textcolor' : 'text-primary'
-                                            } ${theme == 'dark' ? 'bg-[#F3F0F3]' : 'bg-textcolor'}`}
+                                        className={`text-default-500 px-2 py-1 rounded-full mb-2 ${theme == 'dark' ? 'text-textcolor bg-[#F3F0F3]' : 'text-primary bg-textcolor' 
+                                            }`}
                                     >
                                         {latestBlogs[3]?.category}
                                     </small>
