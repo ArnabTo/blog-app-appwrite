@@ -37,6 +37,15 @@ type CommentData = {
     comment: string;
     createdAt: string;
 }
+
+type PaymentData ={
+    userId: string;
+    amount: number;
+    currency: string;
+    paymentIntentId: string;
+    status: string;
+    paymentDate: Date;
+}
 const database = new Databases(appWriteClient);
 
 export class DataBaseServices {
@@ -294,6 +303,28 @@ export class DataBaseServices {
         } catch (error) {
             console.log('Error fetching comments:', error);
             // return { total: 0 };  // Return a default value if there's an error
+        }
+    }
+
+    // create payment intent
+    async createPaymentIntent({ userId, amount, currency, paymentIntentId, paymentDate, status}:PaymentData) {
+        try {
+            const paymentIntent = await database.createDocument(
+                conf.appwriteDatabaseId,  // database Id
+                "66fd536100371d5f91c9",  // payment collection Id
+                ID.unique(),
+                {
+                    userId,
+                    amount,
+                    currency,
+                    paymentIntentId,
+                    paymentDate,
+                    status
+                }
+            )
+            return paymentIntent
+        } catch (error) {
+            console.log(error, 'Error creating payment intent');
         }
     }
     

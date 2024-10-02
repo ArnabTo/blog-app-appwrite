@@ -2,6 +2,7 @@
 import { Badge, Button, Card, CardBody, CardHeader, Chip } from "@nextui-org/react";
 import { CircleDot } from "lucide-react";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 
 export default function Pricingpage() {
     const { theme } = useTheme();
@@ -46,7 +47,7 @@ export default function Pricingpage() {
                                     <li>Participation in members-only discussions or events.</li>
                                 </ul>
                             </div>
-                            <Button variant="bordered" color="secondary" className="w-full rounded-md border-textcolor text-textcolor group-hover:border-[#d1cfcf] group-hover:text-[#d1cfcf] hover:bg-primary font-bold">Get Started</Button>
+                          <Link href={`/checkout/${25}`}> <Button variant="bordered" color="secondary" className="w-full rounded-md border-textcolor text-textcolor group-hover:border-[#d1cfcf] group-hover:text-[#d1cfcf] hover:bg-primary font-bold">Get Started</Button></Link>
                         </div>
 
                         <div className="space-y-3 w-full lg:w-[18rem] xl:w-[22rem]  h-fit bg-primary border-textcolor border-2 p-5 rounded-lg group hover:bg-textcolor cursor-pointer">
@@ -66,7 +67,7 @@ export default function Pricingpage() {
                                     <li>Product selling and marketing support</li>
                                 </ul>
                             </div>
-                            <Button variant="bordered" color="secondary" className="w-full rounded-md border-textcolor text-textcolor group-hover:border-[#d1cfcf] group-hover:text-[#d1cfcf] hover:bg-primary font-bold">Get Started</Button>
+                            <Link href={`/checkout/${35}`}> <Button variant="bordered" color="secondary" className="w-full rounded-md border-textcolor text-textcolor group-hover:border-[#d1cfcf] group-hover:text-[#d1cfcf] hover:bg-primary font-bold">Get Started</Button></Link>
                         </div>
 
                     </div>
