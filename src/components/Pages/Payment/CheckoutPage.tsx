@@ -1,12 +1,11 @@
 'use client';
 import dataBaseServices from "@/app/appwrite/database";
-import calCulateAmount from "@/lib/calCulateAmount";
+import useUser from "@/hooks/useUser";
 import { Button } from "@nextui-org/react";
 import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { set } from "react-hook-form";
 import { toast } from "sonner";
 
 const CheckoutPage = ({ secret }: { secret: string }) => {
@@ -18,8 +17,8 @@ const CheckoutPage = ({ secret }: { secret: string }) => {
     const [message, setMessage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
-
-
+    const { user, currentUserData } = useUser();
+console.log(currentUserData)
     const handleSubmit = async (event: any) => {
         event.preventDefault();
 
@@ -54,24 +53,31 @@ const CheckoutPage = ({ secret }: { secret: string }) => {
                 console.log(paymentIntent)
                 setMessage('Payment succeeded!');
                 try {
-                    const paymentDetails = {
-                        userId: '1',
-                        amount: paymentIntent.amount / 100,
-                        currency: paymentIntent.currency,
-                        paymentIntentId: paymentIntent.id,
-                        status: paymentIntent.status,
-                        paymentDate: new Date(paymentIntent.created * 1000),
-                    }
-                    console.log(
-                        paymentDetails
-                    )
-                    const response = await dataBaseServices.createPaymentIntent(paymentDetails);
-                    if (response) {
-                        console.log(response, 'response in payment intent');
-                        toast.success('Payment successful!');
-                        setTimeout(() => {
-                            router.push(`/checkout/payment-success?amount=${paymentDetails.amount}`);
-                        },1000)
+                    if (currentUserData && currentUserData.$id) {
+                        const paymentDetails = {
+                            userId: currentUserData.$id,
+                            amount: paymentIntent.amount / 100,
+                            currency: paymentIntent.currency,
+                            paymentIntentId: paymentIntent.id,
+                            status: paymentIntent.status,
+                            paymentDate: new Date(paymentIntent.created * 1000),
+                        }
+                        console.log(
+                            paymentDetails
+                        )
+                        const response = await dataBaseServices.createPaymentIntent(paymentDetails);
+                        if (response && currentUserData?.$id) {
+                            //update user plan on database
+                            const plan = paymentIntent.amount === 25 ? 'Premium' : 'Business';
+                            const updateUserPlan = await dataBaseServices.updateUserPlan(currentUserData.$id, { plan: plan });
+                            console.log(response, 'response in payment intent');
+                            toast.success('Payment successful!');
+                            if (updateUserPlan) {
+                                setTimeout(() => {
+                                    router.push(`/checkout/payment-success?amount=${paymentDetails.amount}`);
+                                }, 1000)
+                            }
+                        }
                     }
                 } catch (error) {
                     toast.error('Payment failed!');

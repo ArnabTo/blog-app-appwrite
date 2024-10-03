@@ -9,6 +9,7 @@ import { Loader, Variable } from "lucide-react";
 import { AuthContext } from "@/context/AuthProvider";
 import { toast } from "sonner";
 import { Card, CardBody, Divider } from "@nextui-org/react";
+import { set } from "react-hook-form";
 
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_PUBLISHER_KEY as string);
@@ -20,6 +21,7 @@ const CreatePayment = () => {
     const params = useParams();
     const amount = calCulateAmount(Number(params.amount));
     const [clientSecret, setClientSecret] = useState('');
+    const [userNewPlan, setUserNewPlan] = useState<string>();
 
     useEffect(() => {
         const getClientSecret = async () => {
@@ -32,8 +34,14 @@ const CreatePayment = () => {
             setClientSecret(data.clientSecret);
         }
         getClientSecret();
-    }, [params.amount]);
 
+        if (params.amount == "25") {
+            setUserNewPlan('Premium');
+        } else if (params.amount === "35") {
+            setUserNewPlan('Business/Pro');
+        }
+    }, [params.amount]);
+console.log(userNewPlan, 'userNewPlan', amount)
     const appearence = {
         theme: 'flat',
         Variables: {
@@ -57,7 +65,7 @@ const CreatePayment = () => {
     }
     return (
         <div className="max-w-6xl mx-auto py-10 space-y-5 h-screen">
-               <h1 className="text-3xl font-bold">Checkout</h1>
+            <h1 className="text-3xl font-bold">Checkout</h1>
             <Card>
                 <CardBody>
                     <div className="flex flex-col md:flex-row gap-3 justify-center p-5">
@@ -66,7 +74,7 @@ const CreatePayment = () => {
                             <p className="text-gray-500 text-xl">Amount: {params.amount}$</p>
                         </div>
                         <div>
-                            <Divider orientation="vertical"/>
+                            <Divider orientation="vertical" />
                         </div>
                         <div className="w-full">
                             {

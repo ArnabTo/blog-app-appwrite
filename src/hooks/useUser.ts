@@ -25,10 +25,12 @@ const useUser = () => {
         targets: any[];
     }
     interface UserType {
+        $id: string;
         avatarBucketId: string;
         avatarId: string;
         email: string;
         name: string;
+        plan: string;
     }
     const [user, setUser] = useState<User | null>(null);
     const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -42,6 +44,7 @@ const useUser = () => {
         const checkUser = async () => {
             try {
                 const user = await authServices.getUser();
+                // console.log(user)
                 if (user) {
                     setUser(user);
                     setUserEmail(user.email);
@@ -64,15 +67,17 @@ const useUser = () => {
             try {
                 const userData = await dataBaseServices.getData();
                 if (userData) {
-                    const currentUserData = userData.documents.find((doc) => doc.email == userEmail)
-
-                    const requiredUserData = {
-                        avatarBucketId: currentUserData?.avatarBucketId,
-                        avatarId: currentUserData?.avatarId,
-                        email: currentUserData?.email,
-                        name: currentUserData?.name,
-                    }
-                    setCurrentUserData(requiredUserData);
+                    const currentUserData = (await dataBaseServices.getUserData(userEmail)).documents[0];
+              
+                    // const requiredUserData = {
+                    //     '$id'
+                    //     avatarBucketId: currentUserData?.avatarBucketId,
+                    //     avatarId: currentUserData?.avatarId,
+                    //     email: currentUserData?.email,
+                    //     name: currentUserData?.name,
+                    //     plan: currentUserData?.plan
+                    // }
+                    setCurrentUserData(currentUserData as unknown as UserType);
                     if (currentUserData) {
                         const bucketId = currentUserData.avatarBucketId;
                         const fildId = currentUserData.avatarId

@@ -59,7 +59,8 @@ export class DataBaseServices {
                     name: name,
                     email: email,
                     avatarId: avatarId,
-                    avatarBucketId: avatarBucketId
+                    avatarBucketId: avatarBucketId,
+                    plan: 'Free'
                 })
             if (cratedDatabase) {
                 return cratedDatabase
@@ -83,6 +84,42 @@ export class DataBaseServices {
             throw error
         }
     }
+
+    // get single user
+    async getUserData(query: string){
+        try {
+            const readData = await database.listDocuments(
+                conf.appwriteDatabaseId, // databaseid
+                conf.appwriteUserCollectionId, // userdata collectin id
+                [
+                    Query.equal('email', query)
+                ]
+            )
+            return readData;
+        } catch (error) {
+            console.log(error);
+            throw error
+        }
+    }
+
+    //update user plan
+    async updateUserPlan(id:string, {plan}: {plan: string}) {
+        try {
+                 const updatedData = await database.updateDocument(
+                    conf.appwriteDatabaseId,  // database Id
+                    conf.appwriteUserCollectionId,  // user collection Id
+                    id,
+                    {
+                        plan
+                    }
+                 )      
+                 return true
+        } catch (error) {
+            console.log(error, 'Error updating plan')
+            throw error
+        }
+    }
+
     // create blog
     async saveBlog({ title, content, authorEmail, thumbnail, createdAt, category, authorAvatar, author, readTime, bucketId, fileId }: BlogData) {
         try {
