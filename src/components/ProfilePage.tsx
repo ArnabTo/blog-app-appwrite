@@ -1,8 +1,8 @@
 import dataBaseServices from "@/app/appwrite/database";
 import useUser from "@/hooks/useUser";
-import { Button, Card, CardBody, CardFooter, Divider, Skeleton, Tab, Tabs } from "@nextui-org/react";
+import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Skeleton, Tab, Tabs } from "@nextui-org/react";
 import { Models } from "appwrite";
-import { BookCheck, BookDashed, Edit, Heart, MessageCircleMore, MessageSquareMore } from "lucide-react";
+import { BookCheck, BookDashed, Edit, Edit2, Heart, MessageCircleMore, MessageSquareMore } from "lucide-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,7 +13,7 @@ import { toast } from "sonner";
 export default function ProfilePage({ userEmail }: { userEmail: string }) {
 
     const { theme } = useTheme();
-    const { user, profileAvatar, loader } = useUser();
+    const { user, profileAvatar, loader, currentUserData } = useUser();
     const [publishedBlogs, setPublishedBlogs] = useState<Models.Document[]>([]);
     const [unPublishedBlogs, setUnPublishedBlogs] = useState<Models.Document[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -112,9 +112,11 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                                 <Tabs aria-label="Options">
                                     <Tab key="published" title={`Published (${publishedBlogs.length})`}>
                                         {
-                                            loader ? (
-                                                <Skeleton className="w-full h-24" />
-                                            ) : (
+                                            loader ? 
+                                            publishedBlogs.map((blog: Models.Document) => (
+                                                <Skeleton key={blog.$id} className="w-full h-24" />
+                                            ))
+                                             : (
                                                 <div>
                                                     {
                                                         publishedBlogs && publishedBlogs.length > 0 ?
@@ -176,9 +178,11 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                                     </Tab>
                                     <Tab key="unpublished" title={`Unpublished (${unPublishedBlogs && unPublishedBlogs.length})`}>
                                         {
-                                            loader ? (
-                                                <Skeleton className="w-full h-24" />
-                                            ) : (
+                                            loader ? 
+                                            unPublishedBlogs.map((blog: Models.Document) => (
+                                                <Skeleton key={blog.$id} className="w-full h-24" />
+                                            ))
+                                            : (
                                                 <div>
                                                     {
                                                         unPublishedBlogs && unPublishedBlogs.length > 0 ?
@@ -252,13 +256,23 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                     </div>
 
                     <div className="w-full lg:w-1/2 px-5 lg:h-screen flex flex-col items-center lg:justify-start">
-                        {loader ? (
-                            <Skeleton className="rounded-full w-20 h-20" />
-                        ) : (
-                            <Image className="rounded-full w-20 h-20" src={profileAvatar ?? ''} width={100} height={100} alt="avatar" />
-                        )}
-                        <p className="font-medium">{loader ? <Skeleton className="w-32 h-6" /> : user?.name}</p>
-                        <p> 5 Followers</p>
+                        <Card className="w-full p-5">
+                            <CardHeader className="flex flex-col justify-center items-center">
+                                {loader ? (
+                                    <Skeleton className="rounded-full w-20 h-20" />
+                                ) : (
+                                    <Image className="rounded-full w-20 h-20" src={profileAvatar ?? ''} width={100} height={100} alt="avatar" />
+                                )}
+                                <p className="font-medium">{loader ? <Skeleton className="w-32 h-6" /> : user?.name}</p>
+                                <p> 5 Followers</p>
+                            </CardHeader>
+                            <CardBody>
+                                <p className="text-textcolor font-bold">Account Plan: {loader ? <Skeleton className="w-32 h-6" /> : <span className="font-normal">{currentUserData?.plan}</span>}</p>
+                                <p className="text-textcolor font-bold flex items-center gap-1 cursor-pointer">Email: {loader ? <Skeleton className="w-32 h-6" /> : <span className="font-normal">{currentUserData?.email}</span>}
+                                    <Edit size={20} />
+                                </p>
+                            </CardBody>
+                        </Card>
                     </div>
                 </div>
             </div>
