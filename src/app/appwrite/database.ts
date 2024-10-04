@@ -46,6 +46,14 @@ type PaymentData ={
     status: string;
     paymentDate: Date;
 }
+
+type ProductData = {
+    name: string;
+    price: number;
+    details: string;
+    productThumbnail: string;
+    authorEmail: string;
+}
 const database = new Databases(appWriteClient);
 
 export class DataBaseServices {
@@ -348,7 +356,7 @@ export class DataBaseServices {
         try {
             const paymentIntent = await database.createDocument(
                 conf.appwriteDatabaseId,  // database Id
-                "66fd536100371d5f91c9",  // payment collection Id
+                conf.productCollectionId,  // payment collection Id
                 ID.unique(),
                 {
                     userId,
@@ -362,6 +370,29 @@ export class DataBaseServices {
             return paymentIntent
         } catch (error) {
             console.log(error, 'Error creating payment intent');
+        }
+    }
+
+    // add product
+    async addProduct({ name, price, details, productThumbnail, authorEmail }: ProductData) {
+        try {
+            const createProduct = await database.createDocument(
+                conf.appwriteDatabaseId,  // database Id
+                '66fff50600036e17a241',  // product collection Id
+                ID.unique(),
+                {
+                    name,
+                    price,
+                    details,
+                    productThumbnail,
+                    authorEmail
+                }
+                
+            )
+            return createProduct;
+        } catch (error) {
+            console.log(error, 'Error adding product');
+            throw error
         }
     }
     

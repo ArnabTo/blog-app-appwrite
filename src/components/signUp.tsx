@@ -72,7 +72,7 @@ export default function SignUp() {
       // }
     }
 
-    const selectedFile = data.profileAvatar;
+    // const selectedFile = data.profileAvatar;
 
     try {
       setLoading(true);

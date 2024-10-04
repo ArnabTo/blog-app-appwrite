@@ -1,57 +1,118 @@
 'use client';
 import useUser from "@/hooks/useUser";
-import { Avatar, Button, Card, CardBody, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Skeleton, Spinner, Tooltip } from "@nextui-org/react";
+import { Avatar, Button, Card, CardBody, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Skeleton, Spinner, Tooltip, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { CirclePlus, Ellipsis, Heart, MessageSquareMore, Option, Plus } from "lucide-react";
+import { CirclePlus, Ellipsis, Heart, MessageSquareMore, Option, Plus, PlusSquare } from "lucide-react";
 import useBlogs from "@/hooks/useBlogs";
 import DOMPurify from "dompurify";
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import dataBaseServices from "@/app/appwrite/database";
 import { Models } from "appwrite";
+import { useForm } from "react-hook-form";
+import storageServices from "@/app/appwrite/storage";
+import { on } from "events";
 
+type ProductData = {
+    name: string;
+    price: number;
+    details: string;
+    authorEmail: string;
+    productImage: FileList | File[];
+}
 const DashboardComponent = () => {
-    const { user, profileAvatar, loader } = useUser();
+    const { user, profileAvatar, loader, currentUserData } = useUser();
     const { theme } = useTheme();
     const [loading, setLoading] = useState(false);
     const [usersBlogs, setUserBlogs] = useState<any[]>([]);
     const { blogs, deleteBlog, deleteThumbnail } = useBlogs();
-    // Filter blogs by user email
-    const userBlogs = blogs.filter((blog) => blog.authorEmail === user?.email);
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+    const [preview, setPreview] = useState<string | null>(null);
+    const { register, handleSubmit, formState: { errors }, watch, reset } = useForm<ProductData>();
 
-    const handleBlogDelete = async (targetBlogId: string, bucketId: string, fileId: string) => {
+    const selectedFile = watch("productImage");
 
+    const onFileChange = useCallback(() => {
+        if (selectedFile && selectedFile.length > 0) {
+            const file = selectedFile[0];
+            const objectUrl = URL.createObjectURL(file);
+            setPreview(objectUrl);
+            return () => URL.revokeObjectURL(objectUrl);
+        }
+    }, [selectedFile]);
+
+    const handleBlogDelete = useCallback(async (targetBlogId: string, bucketId: string, fileId: string) => {
         await deleteThumbnail(bucketId, fileId);
         await deleteBlog(targetBlogId);
         toast.success('Blog deleted successfully');
-    }
+    }, [deleteThumbnail, deleteBlog]);
+
+    const fetchUserBlogs = useCallback(async () => {
+        try {
+            setLoading(true);
+            const userEmail = user?.email;
+            if (userEmail) {
+                const userBlogs = (await dataBaseServices.getUserBlogs(userEmail)).documents;
+
+                const blogsWithCommentsCount = await Promise.all(userBlogs.map(async (blog: any) => {
+                    const commentsCount = await dataBaseServices.queryComments(blog.$id);
+                    return { ...blog, commentsCount: commentsCount?.total || 0 };
+                }));
+
+                setUserBlogs(blogsWithCommentsCount);
+            }
+        } catch (error) {
+            toast.error('Failed to fetch user blogs');
+        } finally {
+            setLoading(false);
+        }
+    }, [user?.email]);
 
     useEffect(() => {
-        const fetchUserBlogs = async () => {
-            try {
-                setLoading(true);
-                const userEmail = user?.email;
-                if (userEmail) {
-                    const userBlogs = (await dataBaseServices.getUserBlogs(userEmail)).documents;
-
-                    const blogsWithCommentsCount = await Promise.all(userBlogs.map(async (blog: Models.Document) => {
-                        const commentsCount = await dataBaseServices.queryComments(blog.$id);
-                        return { ...blog, commentsCount: commentsCount?.total || 0 };
-                    }));
-
-                    setUserBlogs(blogsWithCommentsCount);
-                }
-            } catch (error) {
-                toast.error('Failed to fetch user blogs');
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchUserBlogs();
-    }, [user?.email]);
+    }, [fetchUserBlogs]);
+
+    useEffect(() => {
+        return onFileChange();
+    }, [onFileChange]);
+
+    const handleAddProduct = async (data: ProductData) => {
+        try {
+            setLoading(true);
+            const { name, price, details, productImage } = data;
+
+            if (productImage && productImage.length > 0) {
+                const uploadProductThumbnail = await storageServices.uploadFile(productImage[0]);
+
+                if (uploadProductThumbnail && user) {
+                    const { bucketId, $id: fileId } = uploadProductThumbnail;
+                    const getProductThumbnail = await storageServices.getFileUrl({ bucketId, fileId });
+
+                    if (getProductThumbnail) {
+                        const productDetails = {
+                            name,
+                            details,
+                            price: Number(price),
+                            authorEmail: user.email,
+                            productThumbnail: getProductThumbnail.href
+                        };
+
+                        await dataBaseServices.addProduct(productDetails);
+                        toast.success('Product added successfully');
+                        reset();
+                        onClose();
+                    }
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to add product');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="max-w-6xl mx-auto my-20">
@@ -73,7 +134,7 @@ const DashboardComponent = () => {
                                             <Card className="flex">
                                                 <CardBody>
                                                     <Link href={`/blogs/${blog.$id}`}>
-                                                        <div className="flex items-center">
+                                                        <div className="flex flex-col-reverse lg:flex-row items-center">
                                                             <div className="p-3 space-y-5">
                                                                 <p className="text-gray-500">{blog?.createdAt}</p>
                                                                 <h1 className="text-2xl font-extrabold">{blog.title}</h1>
@@ -86,7 +147,7 @@ const DashboardComponent = () => {
                                                                 </div>
                                                             </div>
                                                             <Image
-                                                                className="rounded-md min-h-40"
+                                                                className="min-h-40 w-full p-3 lg:p-0 object-cover rounded-lg"
                                                                 src={blog.thumbnail}
                                                                 alt="thumbnail"
                                                                 width={200}
@@ -131,7 +192,7 @@ const DashboardComponent = () => {
                                     ))
                                 ) : (
                                     <div>
-                                        {userBlogs.length === 0 ? (
+                                        {usersBlogs.length === 0 ? (
                                             <p className="text-xl font-bold text-center">No blogs found</p>
                                         ) : (
                                             <div className="flex justify-center items-center">
@@ -165,6 +226,48 @@ const DashboardComponent = () => {
                     <p className="font-medium">{loader ? <Skeleton className="w-32 h-6" /> : user?.name}</p>
                     {/* <p>{user?.followers} 5 Followers</p> */}
                     <p> 5 Followers</p>
+
+                    {
+                        currentUserData && currentUserData.plan == 'Business' && (
+                            <div className="w-full flex justify-center items-center gap-5">
+                                <Button onPress={onOpen}>Open Modal</Button>
+                                <Modal size="4xl" isOpen={isOpen} onOpenChange={onOpenChange} placement="bottom">
+                                    <ModalContent>
+                                        {(onClose) => (
+                                            <>
+                                                <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+                                                <ModalBody>
+                                                    <form onSubmit={handleSubmit(handleAddProduct)} className="space-y-5">
+                                                        <Input {...register("name", { required: true })} type="text" label="Title" />
+                                                        <p className="text-red-500">{errors.name && <span>This field is required</span>}</p>
+
+                                                        <Input {...register("details", { required: true })} type="text" label="Description" />
+                                                        <p className="text-red-500">{errors.details && <span>This field is required</span>}</p>
+
+                                                        <Input {...register("price", { required: true })} type="number" label="Price" />
+                                                        <p className="text-red-500">{errors.price && <span>This field is required</span>}</p>
+
+                                                        {preview && (
+                                                            <div>
+                                                                <Image src={preview} width={200} height={200} alt="product_thumbnail" />
+                                                            </div>
+                                                        )}
+                                                        <Input {...register("productImage", { required: true })} type="file" className="mb-10" />
+                                                        <p className="text-red-500">{errors.productImage && <span>This field is required</span>}</p>
+
+                                                        <span className="flex justify-end items-center gap-5 mt-10">
+                                                            <Button color="danger" variant="light" onPress={onClose}>Close</Button>
+                                                            <Button type="submit">Add <PlusSquare /></Button>
+                                                        </span>
+                                                    </form>
+                                                </ModalBody>
+                                            </>
+                                        )}
+                                    </ModalContent>
+                                </Modal>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
         </div>

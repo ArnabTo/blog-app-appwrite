@@ -267,8 +267,8 @@ export default function ProfilePage({ userEmail }: { userEmail: string }) {
                                 <p> 5 Followers</p>
                             </CardHeader>
                             <CardBody>
-                                <p className="text-textcolor font-bold">Account Plan: {loader ? <Skeleton className="w-32 h-6" /> : <span className="font-normal">{currentUserData?.plan}</span>}</p>
-                                <p className="text-textcolor font-bold flex items-center gap-1 cursor-pointer">Email: {loader ? <Skeleton className="w-32 h-6" /> : <span className="font-normal">{currentUserData?.email}</span>}
+                                <p className={`${theme === 'dark' ? 'text-primary' : 'text-textcolor'} font-bold`}>Account Plan: {loader ? <Skeleton className="w-32 h-6" /> : <span className="font-normal">{currentUserData?.plan}</span>}</p>
+                                <p className={`${theme === 'dark' ? 'text-primary' : 'text-textcolor'} font-bold flex items-center gap-1 cursor-pointer`}>Email: {loader ? <Skeleton className="w-32 h-6" /> : <span className="font-normal">{currentUserData?.email}</span>}
                                     <Edit size={20} />
                                 </p>
                             </CardBody>

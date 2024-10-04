@@ -41,7 +41,6 @@ export class StorageServices {
     }
 
     // delete file
-
     async deleteFile({ bucketId, fileId }: GetFile) {
         try {
             console.log(bucketId, fileId);

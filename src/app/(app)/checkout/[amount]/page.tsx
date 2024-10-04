@@ -41,7 +41,7 @@ const CreatePayment = () => {
             setUserNewPlan('Business/Pro');
         }
     }, [params.amount]);
-console.log(userNewPlan, 'userNewPlan', amount)
+
     const appearence = {
         theme: 'flat',
         Variables: {
@@ -64,7 +64,7 @@ console.log(userNewPlan, 'userNewPlan', amount)
         return <div className="h-screen flex items-center justify-center"><Loader size={40} className="animate-spin" /></div>
     }
     return (
-        <div className="max-w-6xl mx-auto py-10 space-y-5 h-screen">
+        <div className="max-w-6xl mx-auto py-10 space-y-5 my-32">
             <h1 className="text-3xl font-bold">Checkout</h1>
             <Card>
                 <CardBody>
