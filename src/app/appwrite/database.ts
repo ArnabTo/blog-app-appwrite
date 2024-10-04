@@ -356,7 +356,7 @@ export class DataBaseServices {
         try {
             const paymentIntent = await database.createDocument(
                 conf.appwriteDatabaseId,  // database Id
-                conf.productCollectionId,  // payment collection Id
+                "66fd536100371d5f91c9",  // payment collection Id
                 ID.unique(),
                 {
                     userId,
@@ -378,7 +378,7 @@ export class DataBaseServices {
         try {
             const createProduct = await database.createDocument(
                 conf.appwriteDatabaseId,  // database Id
-                '66fff50600036e17a241',  // product collection Id
+                conf.appwriteProductCollectionId,  // product collection Id
                 ID.unique(),
                 {
                     name,
@@ -396,6 +396,19 @@ export class DataBaseServices {
         }
     }
     
+    // get products
+    async getProducts() {
+        try {
+            const getProducts = await database.listDocuments(
+                conf.appwriteDatabaseId, // database Id
+                conf.appwriteProductCollectionId, // product collection Id
+            );
+            return getProducts;
+        } catch (error) {
+            console.log(error, 'Error fetching products');
+            throw error
+        }
+    }
 
 };
 

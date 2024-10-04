@@ -13,7 +13,7 @@ const conf = {
   stripeScretKey : String(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY),
   stripePublisherKEy : String(process.env.NEXT_PUBLIC_PUBLISHER_KEY),
 
-  productCollectionId : String(process.env.NEXT_PUBLIC_PRODUCT_COLLECTION_ID),
+  appwriteProductCollectionId : String(process.env.NEXT_PUBLIC_PRODUCT_COLLECTION_ID),
 }
 
 export default conf;
