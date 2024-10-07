@@ -293,9 +293,7 @@ console.log(userProducts)
                     userProducts.map((product) => (
                         <Card key={product.$id} className="w-[18rem] space-y-5 p-4" radius="lg">
                             <CardHeader>
-                                <p>
-                                    {product.name}
-                                </p>
+                                <Image src={product.productThumbnail} className="w-full" width={500} height={500} alt="product" />
                             </CardHeader>
                             <CardBody>
                                 <p >
@@ -306,9 +304,9 @@ console.log(userProducts)
                                 <div className="flex justify-between items-center">
                                     <div className="flex justify-center items-center gap-3">
                                         <p className="text-xl font-bold">{product.price} $</p>
-                                        {/* <Button variant="flat" color="success" size="sm" leftIcon={<Edit size={18} />}>  Edit</Button> */}
+                                        <Button variant="flat" color="success" size="sm">  Edit</Button>
                                     </div>
-                                    {/* <Button variant="flat" color="black" size="sm" leftIcon={<Trash size={18} />}>  Delete</Button> */}
+                                    <Button variant="flat" size="sm">  Delete</Button>
                                 </div>
                             </CardFooter>
                         </Card>
