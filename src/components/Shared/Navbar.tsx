@@ -1,6 +1,6 @@
 'use client';
 import authServices from "@/app/appwrite/auth";
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button, Image, Avatar, Switch, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button, Image, Avatar, Switch, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { CustomButton } from "../custom/CustomButton";
 import ThemeSwitch from "../custom/ThemeSwitch";
@@ -104,9 +104,13 @@ const NavigationBar = () => {
                         <DropdownTrigger>
                             {
                                 profileAvatar ? (
-                                    <Avatar
-                                        className="cursor-pointer" src={profileAvatar}
+                                    <User name={user?.name}
+                                    avatarProps={{ src: profileAvatar }}
+                                    description={user?.email}
+                                    isFocusable={true}
+                                    className="cursor-pointer" 
                                     />
+                                
                                 ) : (
                                     <></>
                                 )
