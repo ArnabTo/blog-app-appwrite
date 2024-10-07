@@ -410,6 +410,23 @@ export class DataBaseServices {
         }
     }
 
+    // get single product   
+    async getSingleUserProduct(query: string){
+        try {
+            const products = await database.listDocuments(
+                conf.appwriteDatabaseId, // database Id
+                conf.appwriteProductCollectionId, // product collection Id
+                [
+                    Query.equal('authorEmail', query)
+                ]
+            )
+            return products
+        } catch (error) {
+            console.log(error, 'Error fetching products');
+            throw error
+        }
+    }
+
 };
 
 const dataBaseServices = new DataBaseServices();

@@ -1,6 +1,6 @@
 'use client';
 import useUser from "@/hooks/useUser";
-import { Avatar, Button, Card, CardBody, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Skeleton, Spinner, Tooltip, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input } from "@nextui-org/react";
+import { Avatar, Button, Card, CardBody, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Skeleton, Spinner, Tooltip, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input, CardHeader, CardFooter } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
@@ -30,6 +30,7 @@ const DashboardComponent = () => {
     const { blogs, deleteBlog, deleteThumbnail } = useBlogs();
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const [preview, setPreview] = useState<string | null>(null);
+    const [userProducts, setUserProducts] = useState<any[]>([]);
     const { register, handleSubmit, formState: { errors }, watch, reset } = useForm<ProductData>();
 
     const selectedFile = watch("productImage");
@@ -70,14 +71,26 @@ const DashboardComponent = () => {
         }
     }, [user?.email]);
 
+    const fetchUserProducts = async () => {
+        try {
+            if(user?.email) {
+                const products = (await dataBaseServices.getSingleUserProduct(user?.email)).documents;
+                setUserProducts(products);   
+            }
+        } catch (error) {
+        toast.error('Failed to fetch user products');
+            console.log(error)
+        }
+    }
     useEffect(() => {
         fetchUserBlogs();
+        fetchUserProducts();
     }, [fetchUserBlogs]);
 
     useEffect(() => {
         return onFileChange();
     }, [onFileChange]);
-
+console.log(userProducts)
     const handleAddProduct = async (data: ProductData) => {
         try {
             setLoading(true);
@@ -268,6 +281,44 @@ const DashboardComponent = () => {
                             </div>
                         )
                     }
+
+
+{
+    userProducts.length === 0 ? (
+        <p className="text-xl font-bold text-center">No products found</p>
+    )
+        :(
+            <div>
+                {
+                    userProducts.map((product) => (
+                        <Card key={product.$id} className="w-[18rem] space-y-5 p-4" radius="lg">
+                            <CardHeader>
+                                <p>
+                                    {product.name}
+                                </p>
+                            </CardHeader>
+                            <CardBody>
+                                <p >
+                                    {product.details}
+                                </p>
+                            </CardBody>
+                            <CardFooter>
+                                <div className="flex justify-between items-center">
+                                    <div className="flex justify-center items-center gap-3">
+                                        <p className="text-xl font-bold">{product.price} $</p>
+                                        {/* <Button variant="flat" color="success" size="sm" leftIcon={<Edit size={18} />}>  Edit</Button> */}
+                                    </div>
+                                    {/* <Button variant="flat" color="black" size="sm" leftIcon={<Trash size={18} />}>  Delete</Button> */}
+                                </div>
+                            </CardFooter>
+                        </Card>
+
+                    ))
+                }
+            </div>
+        )
+
+}
                 </div>
             </div>
         </div>
