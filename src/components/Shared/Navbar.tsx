@@ -1,6 +1,6 @@
 'use client';
 import authServices from "@/app/appwrite/auth";
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button, Image, Avatar, Switch, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button, Image, Avatar, Switch, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User, Skeleton } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { CustomButton } from "../custom/CustomButton";
 import ThemeSwitch from "../custom/ThemeSwitch";
@@ -8,9 +8,9 @@ import useUser from "@/hooks/useUser";
 import { useTheme } from "next-themes";
 
 const NavigationBar = () => {
-    
+
     const { user, profileAvatar, handleLogout } = useUser();
-    
+
     const { theme } = useTheme();
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -105,12 +105,12 @@ const NavigationBar = () => {
                             {
                                 profileAvatar ? (
                                     <User name={user?.name}
-                                    avatarProps={{ src: profileAvatar }}
-                                    description={user?.email}
-                                    isFocusable={true}
-                                    className="cursor-pointer" 
+                                        avatarProps={{ src: profileAvatar }}
+                                        description={user?.email}
+                                        isFocusable={true}
+                                        className="cursor-pointer"
                                     />
-                                
+
                                 ) : (
                                     <></>
                                 )
@@ -149,10 +149,27 @@ const NavigationBar = () => {
                 </NavbarItem>
             </NavbarContent>
             <NavbarMenu>
+                <NavbarMenuItem>
+                    <div className="lg:hidden">
+                        {
+                            profileAvatar ? (
+                                <User name={user?.name}
+                                    avatarProps={{ src: profileAvatar }}
+                                    description={user?.email}
+                                    isFocusable={true}
+                                    className="cursor-pointer"
+                                />
+
+                            ) : (
+                                <><Skeleton className="w-10 h-10 rounded-full" /></>
+                            )
+                        }
+                    </div>
+                </NavbarMenuItem>
                 {menuItems.map((item, index) => (
                     <NavbarMenuItem key={`${item}-${index}`}>
                         <Link
-                      className={`w-full font-bold hover:text-textcolor  transition-all delay-100 ${theme === 'dark' ? 'hover:bg-secondary hover:text-textcolor text-secondary' : 'hover:bg-black hover:text-secondary text-textcolor'} hover:rounded-full hover:px-2 py-1`} color="foreground"
+                            className={`w-full font-bold hover:text-textcolor  transition-all delay-100 ${theme === 'dark' ? 'hover:bg-secondary hover:text-textcolor text-secondary' : 'hover:bg-black hover:text-secondary text-textcolor'} hover:rounded-full hover:px-2 py-1`} color="foreground"
                             href={item?.link}
                             size="lg"
                         >
