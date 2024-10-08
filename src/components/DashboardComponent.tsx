@@ -73,12 +73,12 @@ const DashboardComponent = () => {
 
     const fetchUserProducts = async () => {
         try {
-            if(user?.email) {
+            if (user?.email) {
                 const products = (await dataBaseServices.getSingleUserProduct(user?.email)).documents;
-                setUserProducts(products);   
+                setUserProducts(products.slice(0, 4));
             }
         } catch (error) {
-        toast.error('Failed to fetch user products');
+            toast.error('Failed to fetch user products');
             console.log(error)
         }
     }
@@ -90,7 +90,7 @@ const DashboardComponent = () => {
     useEffect(() => {
         return onFileChange();
     }, [onFileChange]);
-console.log(userProducts)
+    console.log(userProducts)
     const handleAddProduct = async (data: ProductData) => {
         try {
             setLoading(true);
@@ -283,40 +283,39 @@ console.log(userProducts)
                     }
 
 
-{
-    userProducts.length === 0 ? (
-        <p className="text-xl font-bold text-center">No products found</p>
-    )
-        :(
-            <div>
-                {
-                    userProducts.map((product) => (
-                        <Card key={product.$id} className="w-[18rem] space-y-5 p-4" radius="lg">
-                            <CardHeader>
-                                <Image src={product.productThumbnail} className="w-full" width={500} height={500} alt="product" />
-                            </CardHeader>
-                            <CardBody>
-                                <p >
-                                    {product.details}
-                                </p>
-                            </CardBody>
-                            <CardFooter>
-                                <div className="flex justify-between items-center">
-                                    <div className="flex justify-center items-center gap-3">
-                                        <p className="text-xl font-bold">{product.price} $</p>
-                                        <Button variant="flat" color="success" size="sm">  Edit</Button>
-                                    </div>
-                                    <Button variant="flat" size="sm">  Delete</Button>
+                    {
+                        userProducts.length === 0 ? (
+                            <p className="text-xl font-bold text-center">No products found</p>
+                        )
+                            : (
+                                <div className="space-y-5 mt-10">
+                                    {
+                                        userProducts.map((product) => (
+                                            <Card key={product.$id} className="w-[18rem]" radius="lg">
+                                                <CardHeader>
+                                                    <Image src={product.productThumbnail} className="w-full rounded-lg" width={500} height={500} alt="product" />
+                                                </CardHeader>
+                                                <CardBody>
+                                                    <span className="flex justify-between items-center">
+                                                        <p >
+                                                            {product.details}
+                                                        </p>
+                                                        <p className="text-xl font-bold">{product.price} $</p>
+                                                    </span>
+                                                </CardBody>
+                                                <CardFooter className="flex justify-between items-center pb-5">
+                                                    <Button variant="shadow" color="primary" className="text-textcolor" size="md">Edit</Button>
+                                                    <Button variant="shadow" color="danger" size="md"> Delete</Button>
+                                                </CardFooter>
+                                            </Card>
+
+                                        ))
+                                    }
+
+                                    <Link className="flex justify-center " href={`/dashboard/your-products/${user?.email}`}><Button className="mx-auto bg-primary text-textcolor rounded-lg" size="md" >See all...</Button></Link>
                                 </div>
-                            </CardFooter>
-                        </Card>
-
-                    ))
-                }
-            </div>
-        )
-
-}
+                            )
+                    }
                 </div>
             </div>
         </div>
