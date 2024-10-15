@@ -2,7 +2,7 @@
 import dataBaseServices from "@/app/appwrite/database";
 import { updateSupport } from "@/store/features/blogSuppoertSlice";
 import { AppDispatch, RootState } from "@/store/Store";
-import { Avatar, Button, Divider, Input } from "@nextui-org/react";
+import { Avatar, Button, Divider, Input, Textarea } from "@nextui-org/react";
 import DOMPurify from "dompurify";
 import { Heart, Loader } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -178,10 +178,10 @@ export default function BlogDetailPage() {
 
             <div className="pt-10">
                 <Divider></Divider>
-                <div className="space-y-5 mt-5">
-                    <form onSubmit={handleComment} className="flex items-center gap-2">
-                        <Input name="comment" type="text" placeholder="Add a comment" className="rounded-md" />
-                        <Button type="submit" className="bg-textcolor text-primary rounded-md">Comment</Button>
+                <div className="space-y-8 mt-5">
+                    <form onSubmit={handleComment} className="flex flex-col gap-2">
+                        <Textarea name="comment" type="text" placeholder="Add a comment" className="rounded-md" />
+                        <Button type="submit" className="w-full lg:w-1/4 ml-auto bg-textcolor text-primary rounded-full ">Post a Comment</Button>
                     </form>
 
                     <div className="space-y-5 px-5">
@@ -190,10 +190,13 @@ export default function BlogDetailPage() {
                                 <div key={comment.createdAt}>
                                     <div className="flex items-center gap-3">
                                         <div>
-                                            <Avatar src={comment?.userAvatar} size="md" />
+                                            <Avatar src={comment?.userAvatar} size="lg" />
                                         </div>
-                                        <div className="flex flex-col">
-                                            <p className="text-lg font-semibold underline">{comment?.userName}</p>
+                                        <div className="flex flex-col space-y-2">
+                                            <span className="flex items-center gap-1">
+                                            <p className="text-md font-semibold">{comment?.userName}</p>
+                                            <p className="text-gray-500 text-sm">{comment?.createdAt}</p>
+                                            </span>
                                             <p>{comment?.comment}</p>
                                         </div>
                                     </div>

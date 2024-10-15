@@ -4,16 +4,14 @@ import { Avatar, Button, Card, CardBody, Divider, Dropdown, DropdownItem, Dropdo
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { CirclePlus, Ellipsis, Heart, MessageSquareMore, Option, Plus, PlusSquare } from "lucide-react";
+import { CirclePlus, Ellipsis, Heart, MessageSquareMore, PlusSquare } from "lucide-react";
 import useBlogs from "@/hooks/useBlogs";
-import DOMPurify from "dompurify";
 import { toast } from "sonner";
 import { useCallback, useEffect, useState } from "react";
 import dataBaseServices from "@/app/appwrite/database";
-import { Models } from "appwrite";
 import { useForm } from "react-hook-form";
 import storageServices from "@/app/appwrite/storage";
-import { on } from "events";
+
 
 type ProductData = {
     name: string;
@@ -35,6 +33,7 @@ const DashboardComponent = () => {
 
     const selectedFile = watch("productImage");
 
+    // handle file change
     const onFileChange = useCallback(() => {
         if (selectedFile && selectedFile.length > 0) {
             const file = selectedFile[0];
@@ -44,12 +43,14 @@ const DashboardComponent = () => {
         }
     }, [selectedFile]);
 
+    // blog delete operation
     const handleBlogDelete = useCallback(async (targetBlogId: string, bucketId: string, fileId: string) => {
         await deleteThumbnail(bucketId, fileId);
         await deleteBlog(targetBlogId);
         toast.success('Blog deleted successfully');
     }, [deleteThumbnail, deleteBlog]);
 
+    // user blog fetch operation
     const fetchUserBlogs = useCallback(async () => {
         try {
             setLoading(true);
@@ -71,6 +72,8 @@ const DashboardComponent = () => {
         }
     }, [user?.email]);
 
+
+    // user product fetch operation
     const fetchUserProducts = async () => {
         try {
             if (user?.email) {
@@ -82,15 +85,20 @@ const DashboardComponent = () => {
             console.log(error)
         }
     }
+
+    
     useEffect(() => {
         fetchUserBlogs();
         fetchUserProducts();
     }, [fetchUserBlogs]);
 
+
     useEffect(() => {
         return onFileChange();
     }, [onFileChange]);
-    console.log(userProducts)
+
+
+    // product add operation
     const handleAddProduct = async (data: ProductData) => {
         try {
             setLoading(true);
@@ -127,6 +135,10 @@ const DashboardComponent = () => {
         }
     };
 
+    // product delete operation
+    const handleDeleteProduct = async (productId: string) => {
+        
+    }
     return (
         <div className="max-w-6xl mx-auto my-20">
             <div className="flex flex-col-reverse lg:flex-row space-y-10">
@@ -305,7 +317,7 @@ const DashboardComponent = () => {
                                                 </CardBody>
                                                 <CardFooter className="flex justify-between items-center pb-5">
                                                     <Button variant="shadow" color="primary" className="text-textcolor" size="md">Edit</Button>
-                                                    <Button variant="shadow" color="danger" size="md"> Delete</Button>
+                                                    <Button onClick={() => handleDeleteProduct(product.$id)} variant="shadow" color="danger" size="md"> Delete</Button>
                                                 </CardFooter>
                                             </Card>
 
