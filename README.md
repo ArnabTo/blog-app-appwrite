@@ -19,7 +19,7 @@ An intuitive and dynamic platform to share and discover insightful blogs!
 
 ## About The Project
 
-![Product Screenshot]([https://i.ibb.co.com/mGtTWNZ/Blog-Verse.png](https://i.ibb.co/qxQr81t/Blog-Verse-10-05-2024-09-53-PM.png))
+![Product Screenshot](https://i.ibb.co.com/mGtTWNZ/Blog-Verse.png](https://i.ibb.co/qxQr81t/Blog-Verse-10-05-2024-09-53-PM.png))
 
 There are many blogging platforms available online, but this project is designed to provide a smooth and elegant experience for both writers and readers. My goal is to create a platform that simplifies content creation while encouraging engagement.
 
