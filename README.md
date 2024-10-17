@@ -1,4 +1,4 @@
-<h1 align="center">Under Development!</h1>
+<h1 align="center">🚧 Under Development! 🚧</h1>
 <br/>
 <div align="center">
 <a href="https://github.com/ArnabTo/blog-app-appwrite">
