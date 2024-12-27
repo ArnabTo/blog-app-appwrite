@@ -37,16 +37,18 @@ export default function Blogs() {
                                 return (
                                     <Link href={`/blogs/${blog.$id}`} key={blog.id}>
                                         <Card className={`py-4 shadow-lg h-full group relative overflow-hidden  ${theme == 'dark' ? 'glass-dark' : 'glass-light'}`}>
-                                            <CardBody className="overflow-visible py-2 z-10">
-                                                <Image
-                                                    alt="Card background"
-                                                    className="object-cover rounded-xl w-full h-full grayscale group-hover:grayscale-0 transition-all duration-300"
-                                                    src={blog.thumbnail}
-                                                    width={270}
-                                                    height={270}
-                                                />
-                                            </CardBody>
-                                            <CardFooter className="pb-0 pt-2 px-4 flex-col items-start relative z-10 space-y-2">
+                                            <div className="overflow-hidden py-2 z-10 rounded-xl">
+                                                <div className="overflow-hidden rounded-xl">
+                                                    <Image
+                                                        alt="Card background"
+                                                        className="object-cover rounded-xl w-full min-h-[250px] group-hover:scale-110 brightness-50 group-hover:filter-none transition-all duration-300"
+                                                        src={blog.thumbnail}
+                                                        width={270}
+                                                        height={270}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <CardBody className="pb-0 pt-2 px-4 flex-col items-start relative z-10 space-y-2">
                                                 <small
                                                     className={`text-default-500 px-2 py-1 rounded-full mb-2 ${theme == 'dark' ? 'text-textcolor bg-[#F1F0F1]' : 'text-primary bg-textcolor'}`}>
                                                     {blog.category}
@@ -62,7 +64,7 @@ export default function Blogs() {
                                                     {blog?.title}
                                                 </h4>
                                                 <div className='line-clamp-3' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog?.content) }} />
-                                            </CardFooter>
+                                            </CardBody>
                                             <div
                                                 className={`absolute inset-0 rounded-xl ${theme == 'dark' ? 'glass-dark-bg' : 'glass-light-bg'
                                                     }`}

@@ -5,6 +5,7 @@ import AdSection from '../AdsSection'
 import useBlogs from '@/hooks/useBlogs'
 import useUser from '@/hooks/useUser'
 import LatestBlogs from '../LatestBlogs'
+import { useTheme } from 'next-themes'
 
 export default function HomePage() {
 

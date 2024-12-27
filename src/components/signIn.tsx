@@ -84,6 +84,8 @@ export default function SignIn() {
                         {...register('password', { required: true })}
                         type="password" label="Password" />
                     <p className="text-red-500">{errors.password && <span>This field is required</span>}{passMsg}</p>
+
+                    {errorMsg && <p className="text-red-500">{errorMsg}</p>}
                     <Button
                         type="submit"
                         color="success"

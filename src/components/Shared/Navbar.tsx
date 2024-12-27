@@ -11,7 +11,7 @@ const NavigationBar = () => {
 
     const { user, profileAvatar, handleLogout } = useUser();
 
-    const { theme } = useTheme();
+    const { theme, setTheme } = useTheme();
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -68,9 +68,16 @@ const NavigationBar = () => {
         }
     ]
 
+    useEffect(() => {
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme) {
+            setTheme(storedTheme);
+        }
+    }, [setTheme]);
+
     return (
 
-        <Navbar onMenuOpenChange={setIsMenuOpen} className=" bg-transparent">
+        <Navbar onMenuOpenChange={setIsMenuOpen} className="bg-transparent">
             <NavbarContent>
                 <NavbarMenuToggle
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
