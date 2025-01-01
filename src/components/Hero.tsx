@@ -66,11 +66,11 @@ const Hero = () => {
     return (
         <div className='my-11 space-y-5'>
             <div className='flex flex-col justify-center items-center space-y-2 md:space-y-5'>
-                <h3 className='font-semibold'>The Blog</h3>
+                <h3 className='font-semibold text-lg lg:text-xl'>The Blog</h3>
                 <h1 className='text-4xl md:text-5xl text-center font-bold'>Writings from Our Team</h1>
-                <p className='text-center'>Explore the latest news and insights from the blog</p>
+                <p className='text-center text-lg lg:text-xl'>Explore the latest news and insights from the blog</p>
             </div>
-            <Button className={`flex justify-center items-center mx-auto ${theme == 'dark' ? 'bg-primary text-textcolor' : 'bg-textcolor text-secondary'} font-bold rounded-md`}>Subscribe</Button>
+            <Button className='flex justify-center items-center mx-auto text-lg bg-button-light-bg text-button-light-text hover:bg-button-light-hover font-bold rounded-xl'>Subscribe</Button>
             <div className="relative max-w-7xl mx-auto w-full h-[600px] sm:h-[500px] md:h-[600px] lg:h-[700px] rounded-xl">
                 <Swiper
                     spaceBetween={30}
@@ -96,12 +96,12 @@ const Hero = () => {
 
                                 {/* Blog details */}
                                 <div>
-                                    <div className="absolute bottom-36 md:bottom-16 left-5 sm:left-10 z-10 w-full sm:w-2/3 md:w-1/2">
-                                        <div className="bg-[#E7E7E7] text-black border border-white w-fit px-2 sm:px-3 py-1 text-sm rounded-full">{blog?.category}</div>
-                                        <h2 className="text-2xl  text-primary sm:text-3xl md:text-4xl font-extrabold w-full">
+                                    <div className="absolute bottom-36 md:bottom-16 left-5 sm:left-10 z-10 w-full sm:w-2/3 md:w-1/2 space-y-2">
+                                        <div className="bg-badge-bg text-badge-text border border-white w-fit px-2 sm:px-3 py-1 text-sm rounded-full">{blog?.category}</div>
+                                        <h2 className="text-2xl text-text-dark sm:text-3xl md:text-4xl font-extrabold w-full">
                                             {blog?.title}
                                         </h2>
-                                       <div dangerouslySetInnerHTML={{__html: blog?.content}} className='line-clamp-3 text-primary'/>
+                                       <div dangerouslySetInnerHTML={{__html: blog?.content}} className='line-clamp-3 text-gray-300'/>
                                     </div>
 
                                     <div className="absolute bottom-16 left-5 text-white z-10 md:hidden">

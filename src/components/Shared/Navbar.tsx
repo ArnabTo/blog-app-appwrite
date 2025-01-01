@@ -92,7 +92,7 @@ const NavigationBar = () => {
                 {navItems.map((item, index) => (
                     <NavbarItem key={`${item}-${index}`}>
                         <Link
-                            className={`font-bold hover:text-textcolor  transition-all delay-100 ${theme === 'dark' ? 'text-secondary hover:bg-secondary hover:text-textcolor' : 'text-textcolor hover:bg-black hover:text-secondary'} hover:rounded-full hover:px-2 py-1`} color="foreground"
+                            className='font-bold transition-all delay-100 hover:opacity-100 text-text-light hover:text-text-dark dark:text-text-dark dark:hover:text-text-light hover:bg-primary-light dark:hover:bg-primary-dark  hover:rounded-full hover:px-2 py-1'
                             href={item?.link}
                             size="lg"
                         >
@@ -147,7 +147,7 @@ const NavigationBar = () => {
                             user ?
                                 <></>
                                 :
-                                <Button as={Link} href="/sign-in" className={` ${theme == 'dark' ? 'bg-white text-textcolor' : 'bg-textcolor text-white'} rounded-md font-semibold px-6`} size="md">
+                                <Button as={Link} href="/sign-in" className='bg-button-light-bg text-button-light-text hover:bg-button-light-hover dark:hover:text-button-dark-hover rounded-md font-semibold px-6' size="md">
                                     Sign In
                                 </Button>
                         }
@@ -173,10 +173,12 @@ const NavigationBar = () => {
                         }
                     </div>
                 </NavbarMenuItem>
+
+                {/* mobile device menu */}
                 {menuItems.map((item, index) => (
                     <NavbarMenuItem key={`${item}-${index}`}>
                         <Link
-                            className={`w-full font-bold hover:text-textcolor  transition-all delay-100 ${theme === 'dark' ? 'hover:bg-secondary hover:text-textcolor text-secondary' : 'hover:bg-black hover:text-secondary text-textcolor'} hover:rounded-full hover:px-2 py-1`} color="foreground"
+                            className={`w-full font-bold hover:text-textcolor transition-all delay-100 ${theme === 'dark' ? 'hover:bg-secondary hover:text-textcolor text-secondary' : 'hover:bg-black hover:text-secondary text-textcolor'} hover:rounded-full hover:px-2 py-1`} color="foreground"
                             href={item?.link}
                             size="lg"
                         >

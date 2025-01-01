@@ -61,45 +61,39 @@ export default function AllBlogs() {
                     All Blogs
                 </h1>
             </div>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-10 space-y-3'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-10 space-y-3 lg:space-y-0'>
                 {blogs.map((blog: any) => {
                     return (
                         <Link href={`/blogs/${blog.$id}`} key={blog.id}>
-                            <Card className={`py-4 shadow-lg rounded-xl h-full group relative overflow-hidden  ${theme == 'dark' ? 'glass-dark' : 'glass-light'}`}>
-                                <div className="overflow-hidden py-2 z-10 rounded-xl">
-                                    <div className="overflow-hidden rounded-xl">
-                                        <Image
-                                            alt="Card background"
-                                            className="object-cover rounded-xl w-full min-h-[250px] group-hover:scale-110 brightness-50 group-hover:filter-none transition-all duration-300"
-                                            src={blog.thumbnail}
-                                            width={270}
-                                            height={270}
-                                        />
-                                    </div>
+                        <Card className='shadow-lg h-full group relative bg-card-light-bg dark:bg-card-dark-bg'>
+                            <div className="overflow-hidden p-2 z-10 rounded-xl">
+                                    <Image
+                                        alt="Card background"
+                                        className="object-cover rounded-xl w-full min-h-[250px] group-hover:scale-110 brightness-50 group-hover:filter-none transition-all duration-300"
+                                        src={blog.thumbnail}
+                                        width={270}
+                                        height={270}
+                                    />
+                            </div>
+                            <CardBody className="pt-2 px-4 pb-5 flex-col items-start relative z-10 space-y-2">
+                                <small
+                                    className='bg-badge-bg text-badge-text px-2 py-1 rounded-full mb-2'>
+                                    {blog.category}
+                                </small>
+                                <div className='flex items-center gap-2'>
+                                    <Avatar size='sm' src={blog?.authorAvatar} />
+                                    <p className="text-tiny uppercase font-bold">{blog.author}</p>
                                 </div>
-                                <CardBody className="pb-0 pt-2 px-4 flex-col items-start relative z-10 space-y-2">
-                                    <small
-                                        className={`text-default-500 px-2 py-1 rounded-full mb-2 ${theme == 'dark' ? 'text-textcolor bg-primary' : 'text-primary bg-textcolor'}`}>
-                                        {blog.category}
-                                    </small>
-                                    <div className='flex items-center gap-2'>
-                                        <Avatar size='sm' src={blog?.authorAvatar} />
-                                        <p className="text-tiny uppercase font-bold">{blog.author}</p>
-                                    </div>
-                                    <h4
-                                        className={`font-bold text-2xl ${theme == 'dark' ? 'text-primary' : 'text-textcolor'
-                                            }`}
-                                    >
-                                        {blog?.title}
-                                    </h4>
-                                    <div className='line-clamp-3 text-lg text-gray-500' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog?.content) }} />
-                                </CardBody>
-                                <div
-                                    className={`absolute inset-0 rounded-xl ${theme == 'dark' ? 'glass-dark-bg' : 'glass-light-bg'
-                                        }`}
-                                />
-                            </Card>
-                        </Link>
+                                <h4
+                                    className='font-bold text-lg text-inherit'
+                                >
+                                    {blog?.title}
+                                </h4>
+                                <div className='line-clamp-3 dark:text-gray-400' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog?.content) }} />
+                            </CardBody>
+
+                        </Card>
+                    </Link>
                     );
                 })}
             </div>

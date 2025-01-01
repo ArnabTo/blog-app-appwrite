@@ -49,10 +49,10 @@ const LatestBlogs = () => {
                             <div className='absolute inset-0 backdrop-blur-md group-hover:backdrop-blur-0 transition-all duration-500 group-hover:bg-black group-hover:bg-opacity-50'></div>
 
                             <div className='relative translate-y-[35rem] group-hover:translate-y-0 md:group-hover:translate-y-56 lg:group-hover:translate-y-32 xl:group-hover:translate-y-36 z-10 transition-all duration-500'>
-                                <h2 className="text-xl md:text-3xl font-semibold text-secondary">{latestBlogs[0]?.title}</h2>
-                                <div className="line-clamp-2 text-primary" dangerouslySetInnerHTML={{ __html: latestBlogs[0]?.content }} />
+                                <h2 className="text-xl md:text-3xl font-semibold text-text-dark">{latestBlogs[0]?.title}</h2>
+                                <div className="line-clamp-2 text-gray-300" dangerouslySetInnerHTML={{ __html: latestBlogs[0]?.content }} />
                                 <Link href={`/blogs/${latestBlogs[0]?.$id}`}>
-                                    <button className="mt-4 px-4 py-2 bg-white text-textColor font-semibold rounded-md">
+                                    <button className="mt-4 px-4 py-2 bg-button-light-bg text-button-light-text hover:bg-button-light-hover font-semibold rounded-md transition-all duration-300">
                                         Read more →
                                     </button>
                                 </Link>
@@ -66,8 +66,7 @@ const LatestBlogs = () => {
                                 <Image className="w-full md:w-revert-layer rounded-md group-hover:scale-110 brightness-50 group-hover:filter-none transition-all delay-100" src={latestBlogs[1]?.thumbnail} alt='blog' width={200} height={200} />
                                 <div>
                                     <small
-                                        className={`text-default-500 px-2 py-1 rounded-full mb-2 ${theme == 'dark' ? 'text-textcolor bg-[#F1F0F1]' : 'text-primary bg-textcolor'}`}
-                                    >
+                                        className='bg-badge-bg text-badge-text px-2 py-1 rounded-full mb-2'>
                                         {latestBlogs[1]?.category}
                                     </small>
                                     <h2 className="text-2xl font-bold">{latestBlogs[1]?.title}</h2>
@@ -79,8 +78,8 @@ const LatestBlogs = () => {
                             <div className="flex flex-col md:flex-row items-center gap-3 group">
                                 <Image className="w-full md:w-revert-layer rounded-md group-hover:scale-110 brightness-50 group-hover:filter-none transition-all delay-100" src={latestBlogs[2]?.thumbnail} alt='blog' width={200} height={200} />
                                 <div>
-                                    <small
-                                        className={`text-default-500 px-2 py-1 rounded-full mb-2 ${theme == 'dark' ? 'text-textcolor bg-[#F1F0F1]' : 'text-primary bg-textcolor'}`}>
+                                <small
+                                        className='bg-badge-bg text-badge-text px-2 py-1 rounded-full mb-2'>
                                         {latestBlogs[2]?.category}
                                     </small>
                                     <h2 className="text-2xl font-bold">{latestBlogs[2]?.title}</h2>
@@ -92,10 +91,8 @@ const LatestBlogs = () => {
                             <div className="flex flex-col md:flex-row items-center gap-3 group">
                                 <Image className="w-full md:w-revert-layer rounded-md group-hover:scale-110 brightness-50 group-hover:filter-none transition-all delay-100 " src={latestBlogs[3]?.thumbnail} alt='blog' width={200} height={200} />
                                 <div>
-                                    <small
-                                        className={`text-default-500 px-2 py-1 rounded-full mb-2 ${theme == 'dark' ? 'text-textcolor bg-[#F3F0F3]' : 'text-primary bg-textcolor' 
-                                            }`}
-                                    >
+                                <small
+                                        className='bg-badge-bg text-badge-text px-2 py-1 rounded-full mb-2'>
                                         {latestBlogs[3]?.category}
                                     </small>
                                     <h2 className="text-2xl font-bold">{latestBlogs[3]?.title}</h2>

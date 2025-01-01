@@ -7,7 +7,7 @@ export const makeStore = () => {
     reducer: {
         auth: authReducer,
         blogSupport: blogSupportReducer,
-        comment: commentReducer
+        comment: commentReducer,
     },
   })
 }
